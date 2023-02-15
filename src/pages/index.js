@@ -1,11 +1,79 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from "next/head";
+import Image from "next/image";
+import { Inter } from "@next/font/google";
+import styles from "@/styles/Home.module.css";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { getSession, signOut } from "next-auth/react";
+import Header from "@/components/Header";
+import {
+  Box,
+  Grid,
+  Stack,
+  Tooltip,
+  Typography,
+  Avatar,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  CssBaseline,
+} from "@mui/material";
+import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
+import { getPublicTrees } from "@/utils/api";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+export default function Home({ data }) {
+  const { width, height } = useWindowDimensions();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [pageState, setPageState] = useState({
+    page: 0,
+    per_page: width > 450 ? 9 : 8,
+    offset: 0,
+    item_total: 0,
+    page_total: 0,
+    filter: "",
+  });
+
+  const [trees, setTrees] = useState([]);
+  function handleClick(id) {
+    console.log(id);
+    router.push(`/map/${id}`);
+  }
+  useEffect(() => {
+    setLoading(true);
+    console.log(data);
+    // if (!data) {
+    //   router.push("/login");
+    // }
+    getPublicTrees(
+      pageState.page,
+      pageState.per_page,
+      pageState.offset,
+      pageState.filter
+    )
+      .then((res) => {
+        setLoading(false);
+        console.log(res);
+        setTrees(res.items);
+        setPageState((prev) => ({
+          ...prev,
+          page: res.curPage,
+          per_page: width > 450 ? 9 : 8,
+          offset: res.offset,
+          item_total: res.itemsTotal,
+          page_total: res.pageTotal,
+        }));
+      })
+      .catch((e) => {
+        // signOut();
+        console.log(e);
+      });
+  }, [data]);
+
   return (
     <>
       <Head>
@@ -14,110 +82,252 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+      <Box>
+        <Header user={data?.user} />
+      </Box>
+      <Box
+        sx={{
+          backgroundColor: "#F2F1F6",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            justifyContent: "center",
+            alignContent: "center",
+            display: "flex",
+          }}
+        >
+          <Box>
+            <Typography
+              sx={{ fontSize: 25, fontWeight: 700, fontFamily: inter }}
             >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
+              Explore Best Courses
+            </Typography>
+            {/* <Box sx={{ display: "flex" }}>
+              {width > 450 ? (
+                <Box
+                  sx={{
+                    maxWidth: width - 20,
+                    display: "flex",
+                    overflowX: "auto",
+                  }}
+                >
+                  {tags.map((res) => {
+                    return (
+                      <Box
+                        onClick={() => {
+                          console.log(res);
+                          if (selectedTag == res.name) {
+                            setSelectedTag(null);
+                          } else {
+                            setSelectedTag(res.name);
+                          }
+                        }}
+                        sx={{
+                          cursor: "pointer",
+                          p: 1,
+                          border: 1,
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+                          borderColor: "#00A4FF",
+                          backgroundColor: "white",
+                          backgroundImage:
+                            res.name === selectedTag
+                              ? "linear-gradient(to right bottom, #00A4FF, #7BCCF9)"
+                              : null,
+                          borderRadius: 2,
+                          mr: 2,
+                          my: 2,
+                          "&:hover": {
+                            backgroundImage:
+                              "linear-gradient(to right bottom, #00A4FF, #7BCCF9)",
+                          },
+                        }}
+                      >
+                        <Typography
+                          noWrap
+                          sx={{
+                            fontSize: width > 450 ? 14 : 12,
+                            fontWeight: 600,
+                            color: res.name === selectedTag ? "white" : "black",
+                          }}
+                        >
+                          {res.name} {res.emoji}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              ) : (
+                <></>
+              )}
+              <Box sx={{ minWidth: 120, ml: "auto" }}>
+                <FormControl
+                  size="small"
+                  sx={{ backgroundColor: "white", minWidth: 120 }}
+                >
+                  <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={pageState.filter}
+                    label="Sort by"
+                    onChange={(e) => {
+                      setPageState((prev) => ({
+                        ...prev,
+                        filter: e.target.value,
+                      }));
+                    }}
+                  >
+                    <MenuItem value={"views"}>Most Popular</MenuItem>
+                    <MenuItem value={"recent"}>Most Recent</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box> */}
+            <Grid
+              sx={{
+                maxWidth: 1000,
+                overflow: "hidden",
+              }}
+              container
+              spacing={{ xs: 1, md: 3 }}
+              columns={{ xs: 2, sm: 3, md: 8 }}
+            >
+              {trees.map((row, index) => {
+                return (
+                  <Grid item xs={1} sm={1} md={2} key={index}>
+                    <Box
+                      onClick={() => handleClick(row.id)}
+                      sx={{
+                        display: "flex",
+                        overflow: "hidden",
+                        cursor: "pointer",
+                        flexDirection: "column",
+                        borderRadius: 3,
+                        backgroundImage: `url(${
+                          row.photo == "" ? media[4].photo : row.photo
+                        }) ,url(${
+                          row.photo == "" ? media[4].photo : row.photo
+                        })`,
+                        backgroundRepeat: `no-repeat, no-repeat`,
+                        backgroundPosition: `center`,
+                        height: 250,
+                        "&:hover": {
+                          opacity: 0.9,
+                        },
+                      }}
+                    >
+                      <Box sx={{ display: "flex" }}>
+                        <Box
+                          sx={{
+                            backgroundColor: "#00A4FF",
+                            m: 1,
+                            borderRadius: 3,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Typography
+                            sx={{
+                              color: "white",
+                              mx: 1,
+                              fontSize: 12,
+                            }}
+                          >
+                            {row.price == 0 ? "Free" : row.price}
+                          </Typography>
+                        </Box>
+                        <Tooltip
+                          title={`Created by ${row._user?.firstname} ${row._user?.lastname}`}
+                        >
+                          <Avatar
+                            sx={{
+                              ml: "auto",
+                              mr: 1,
+                              mt: 1,
+                              fontSize: 14,
+                            }}
+                            src={row._user?.photo_url}
+                          />
+                        </Tooltip>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          mt: "auto",
+                          backgroundImage:
+                            "linear-gradient(to top, rgba(0, 0, 0, 0.9)20%, rgba(0, 0, 0, 0)100%)",
+                          height: 125,
+                          p: 0.5,
+                        }}
+                      >
+                        <Box>
+                          <Stack
+                            direction={"row"}
+                            sx={{
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              mb: 1,
+                              mt: "auto",
+                            }}
+                          >
+                            <Typography
+                              sx={{
+                                display: "-webkit-box",
+                                overflow: "hidden",
+                                WebkitBoxOrient: "vertical",
+                                WebkitLineClamp: 2,
+                                fontWeight: 600,
+                                fontSize: 14,
+                                width: "80%",
+                                color: "white",
+                              }}
+                            >
+                              {row?.name}
+                            </Typography>
+                          </Stack>
+                          <Typography
+                            sx={{
+                              display: "-webkit-box",
+                              overflow: "hidden",
+                              WebkitBoxOrient: "vertical",
+                              WebkitLineClamp: 3,
+                              fontWeight: 400,
+                              fontSize: 12,
+                              color: "white",
+                            }}
+                          >
+                            {row?.description.toLowerCase()}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
+        </Box>
+      </Box>
     </>
-  )
+  );
+}
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  return {
+    props: { data: session },
+  };
 }
