@@ -1,7 +1,11 @@
-import { addNodeAttachments, getPreviewUrl } from "@/utils/api";
+import {
+  addNodeAttachments,
+  editNodeAttachments,
+  getPreviewUrl,
+} from "@/utils/api";
 import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function AddResourcePopup({
@@ -11,9 +15,12 @@ export default function AddResourcePopup({
   attachments,
   node,
   setAttachment,
+  selectedResource,
 }) {
   const { data: session } = useSession();
-  const [url, setUrl] = useState();
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   function newResourceHandler() {
     console.log(session);
@@ -39,7 +46,32 @@ export default function AddResourcePopup({
       });
     });
   }
-
+  function saveResourceHandler() {
+    const resource = {
+      node_id: node.id,
+      src: url,
+      preview_url: selectedResource.preview_url,
+      description: description,
+      title: title,
+    };
+    editNodeAttachments(selectedResource.id, resource).then((res) => {
+      console.log(res.data.resources);
+      setAttachment(res.data.resources);
+    });
+    handleClose();
+  }
+  useEffect(() => {
+    console.log(selectedResource);
+    if (selectedResource) {
+      setUrl(selectedResource.src);
+      setTitle(selectedResource.title);
+      setDescription(selectedResource.description);
+    } else {
+      setUrl("");
+      setTitle("");
+      setDescription("");
+    }
+  }, [selectedResource]);
   return (
     <Modal
       open={open}
@@ -62,74 +94,78 @@ export default function AddResourcePopup({
       >
         <Box sx={{ display: "flex" }}>
           <Typography sx={{ fontWeight: 600, alignSelf: "center" }}>
-            Add Resource
+            {selectedResource ? "Edit" : "Add"} Resource
           </Typography>
           <IconButton onClick={handleClose} sx={{ ml: "auto" }}>
             <CloseIcon />
           </IconButton>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            mt: 2,
-            justifyContent: "center",
-          }}
-        >
+        {selectedResource ? (
+          <></>
+        ) : (
           <Box
-            onClick={() => {}}
             sx={{
-              "&:hover": { opacity: 0.7 },
-              borderRadius: 2,
               display: "flex",
-              boxShadow: 0,
-              backgroundColor: "#00A4FF",
-
+              mt: 2,
               justifyContent: "center",
-              alignItems: "center",
-              width: 100,
-              p: 1,
-              flex: 1,
-              opacity: 0.7,
             }}
           >
-            <Typography sx={{ fontWeight: 500, color: "white" }}>
-              Paste Url
+            <Box
+              onClick={() => {}}
+              sx={{
+                "&:hover": { opacity: 0.7 },
+                borderRadius: 2,
+                display: "flex",
+                boxShadow: 0,
+                backgroundColor: "#00A4FF",
+
+                justifyContent: "center",
+                alignItems: "center",
+                width: 100,
+                p: 1,
+                flex: 1,
+                opacity: 0.7,
+              }}
+            >
+              <Typography sx={{ fontWeight: 500, color: "white" }}>
+                Paste Url
+              </Typography>
+            </Box>
+            <Typography
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mx: 1,
+                color: "#7B7B7B",
+              }}
+            >
+              or
             </Typography>
-          </Box>
-          <Typography
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              mx: 1,
-              color: "#7B7B7B",
-            }}
-          >
-            or
-          </Typography>
-          <Box
-            onClick={() => {}}
-            sx={{
-              "&:hover": { opacity: 0.7 },
-              borderRadius: 2,
-              display: "flex",
-              boxShadow: 0,
-              backgroundColor: "white",
-              color: "#00A4FF",
-              cursor: "pointer",
+            <Box
+              onClick={() => {}}
+              sx={{
+                "&:hover": { opacity: 0.7 },
+                borderRadius: 2,
+                display: "flex",
+                boxShadow: 0,
+                backgroundColor: "white",
+                color: "#00A4FF",
+                cursor: "pointer",
 
-              justifyContent: "center",
-              alignItems: "center",
-              width: 100,
-              p: 1,
-              flex: 1,
-              border: 1,
-              borderColor: "#DADADA ",
-            }}
-          >
-            <Typography sx={{ fontWeight: 500 }}>Embed Link</Typography>
+                justifyContent: "center",
+                alignItems: "center",
+                width: 100,
+                p: 1,
+                flex: 1,
+                border: 1,
+                borderColor: "#DADADA ",
+              }}
+            >
+              <Typography sx={{ fontWeight: 500 }}>Embed Link</Typography>
+            </Box>
           </Box>
-        </Box>
+        )}
         <TextField
           sx={{ my: 1 }}
           placeholder="http://www.example.com"
@@ -140,41 +176,79 @@ export default function AddResourcePopup({
             setUrl(e.target.value);
           }}
         />
-        {/* <TextField
-          sx={{ my: 1 }}
-          placeholder="Add a Title"
-          size="small"
-          fullWidth
-        />
-        <TextField
-          sx={{ my: 1 }}
-          rows={4}
-          multiline
-          placeholder="Add a description"
-          size="small"
-          fullWidth
-        /> */}
-        <Box
-          onClick={newResourceHandler}
-          sx={{
-            "&:hover": { opacity: 0.7 },
-            borderRadius: 2,
-            display: "flex",
-            boxShadow: 0,
-            backgroundColor: "#00A4FF",
-            cursor: "pointer",
-            mr: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            width: 100,
-            p: 1,
-            flex: 1,
-            color: "white",
-            ml: "auto",
-          }}
-        >
-          <Typography sx={{ fontWeight: 500 }}>Done</Typography>
-        </Box>
+        {selectedResource ? (
+          <>
+            <TextField
+              sx={{ my: 1 }}
+              placeholder="Add a Title"
+              size="small"
+              fullWidth
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
+            <TextField
+              sx={{ my: 1 }}
+              rows={4}
+              multiline
+              placeholder="Add a description"
+              size="small"
+              fullWidth
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+          </>
+        ) : (
+          <></>
+        )}
+        {selectedResource ? (
+          <Box
+            onClick={saveResourceHandler}
+            sx={{
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              boxShadow: 0,
+              backgroundColor: "#00A4FF",
+              cursor: "pointer",
+              mr: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: 100,
+              p: 1,
+              flex: 1,
+              color: "white",
+              ml: "auto",
+            }}
+          >
+            <Typography sx={{ fontWeight: 500 }}>Save</Typography>
+          </Box>
+        ) : (
+          <Box
+            onClick={newResourceHandler}
+            sx={{
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              boxShadow: 0,
+              backgroundColor: "#00A4FF",
+              cursor: "pointer",
+              mr: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: 100,
+              p: 1,
+              flex: 1,
+              color: "white",
+              ml: "auto",
+            }}
+          >
+            <Typography sx={{ fontWeight: 500 }}>Done</Typography>
+          </Box>
+        )}
       </Box>
     </Modal>
   );

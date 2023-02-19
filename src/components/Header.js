@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
@@ -201,12 +202,16 @@ export default function Header({
               px: 3,
             }}
           >
-            <Avatar
-              onClick={() => router.push(`/user/${session.user.id}`)}
-              src={
-                session.user.photo ? session.user.photo : session.user.photo_url
-              }
-            />
+            <Tooltip title="Profile">
+              <Avatar
+                onClick={() => router.push(`/user/${session.user.id}`)}
+                src={
+                  session.user.photo
+                    ? session.user.photo
+                    : session.user.photo_url
+                }
+              />
+            </Tooltip>
           </Box>
           <Menu
             anchorEl={anchorEl}

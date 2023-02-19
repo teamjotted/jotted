@@ -34,18 +34,41 @@ export default function SubNodeContent({
   tree,
   handleEditNode,
 }) {
-  const [open, setOpen] = useState(false);
+  // Dropdown for Node
   const [anchorEl, setAnchorEl] = useState(null);
-  const openSettings = Boolean(anchorEl);
   const handleCloseNodeSettings = () => {
     setAnchorEl(null);
   };
   const handleOpenNodeSettings = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  const openSettings = Boolean(anchorEl);
 
+  //Node Modal
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedResource();
+  };
+
+  const [selectedResource, setSelectedResource] = useState();
+
+  // Dropdown for Attachments
+  const [anchorElAttachments, setAnchorElAttachments] = useState(null);
+  const handleCloseAttachmentDropdown = () => {
+    setAnchorElAttachments(null);
+  };
+  const handleOpenAttachmentDropdown = (event, res) => {
+    console.log(res);
+    setSelectedResource(res);
+    setAnchorElAttachments(event.currentTarget);
+  };
+
+  // const handleOpenAttachmentDropdown = () => setAttachmentDropdown(true);
+  // const handleCloseAttachmentDropdown = () => setAttachmentDropdown(false);
+  const openAttachmentsDropdown = Boolean(anchorElAttachments);
+
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
     if (!destination) {
@@ -90,6 +113,11 @@ export default function SubNodeContent({
         setAttachment(res.data);
       });
     });
+  }
+  function handleEditAttachment() {
+    console.log("Editing:", selectedResource);
+    //setSelectedResource(res);
+    setOpen(true);
   }
 
   return (
@@ -297,11 +325,9 @@ export default function SubNodeContent({
                         </Box>
                         {treeAdmin ? (
                           <Box
-                            onClick={() => deleteResoueceHandler(res)}
                             sx={{
                               "&:hover": { opacity: 0.1 },
                               cursor: "pointer",
-                              mr: 1,
                               display: "flex",
                               ml: "auto",
                               justifyContent: "center",
@@ -309,8 +335,17 @@ export default function SubNodeContent({
                               fontWeight: 700,
                             }}
                           >
-                            <Tooltip title="Delete Resource">
-                              <DeleteIcon />
+                            <Tooltip title="Resource Settings">
+                              <MoreVertIcon
+                                onClick={(e) =>
+                                  handleOpenAttachmentDropdown(e, res)
+                                }
+                                sx={{
+                                  ml: "auto",
+                                  cursor: "pointer",
+                                  textAlign: "center",
+                                }}
+                              />
                             </Tooltip>
                           </Box>
                         ) : (
@@ -340,6 +375,63 @@ export default function SubNodeContent({
           )}
         </Droppable>
       </DragDropContext>
+      <Menu
+        anchorEl={anchorElAttachments}
+        id="account-menu"
+        open={openAttachmentsDropdown}
+        onClose={handleCloseAttachmentDropdown}
+        // onClick={}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+            mt: 1.5,
+            "& .MuiAvatar-root": {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1,
+            },
+            "&:before": {
+              content: '""',
+              display: "block",
+              position: "absolute",
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: "background.paper",
+              transform: "translateY(-50%) rotate(45deg)",
+              zIndex: 0,
+            },
+          },
+        }}
+        transformOrigin={{
+          horizontal: "right",
+          vertical: "top",
+        }}
+        anchorOrigin={{
+          horizontal: "right",
+          vertical: "bottom",
+        }}
+      >
+        <>
+          {treeAdmin && (
+            <MenuItem onClick={handleEditAttachment}>
+              <Typography sx={{ textAlign: "center" }}>Edit</Typography>
+            </MenuItem>
+          )}
+          <MenuItem onClick={deleteResoueceHandler}>
+            <Typography sx={{ textAlign: "center" }}>Delete</Typography>
+          </MenuItem>
+          <MenuItem disabled>
+            <Typography sx={{ textAlign: "center" }}>Report</Typography>
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleCloseAttachmentDropdown}>Close</MenuItem>
+        </>
+      </Menu>
       <Box>
         {treeAdmin && (
           <IconButton sx={{ cursor: "pointer" }} onClick={handleOpen}>
@@ -348,6 +440,7 @@ export default function SubNodeContent({
         )}
       </Box>
       <AddResourcePopup
+        selectedResource={selectedResource}
         open={open}
         handleClose={handleClose}
         attachments={attachments}

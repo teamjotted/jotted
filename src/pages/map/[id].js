@@ -13,7 +13,7 @@ import {
   saveUserTree,
 } from "@/utils/api";
 import { Box, CssBaseline, IconButton } from "@mui/material";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import ReactFlow, {
@@ -34,6 +34,8 @@ import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
 import SignInPopup from "@/components/Popup/SignInPopup";
 import { setTreeAdmin } from "@/store/newTreeData/newTree.action";
 import EditNodePopup from "@/components/Popup/EditNodePopup";
+import Sharepopup from "@/components/Popup/SharePopup";
+import EditTreePopup from "@/components/Popup/EditTreePopup";
 
 const onInit = (reactFlowInstance) =>
   console.log("flow loaded:", reactFlowInstance);
@@ -45,7 +47,8 @@ const nodeTypes = {
 };
 const panOnDrag = [1, 2];
 
-function Map({ data }) {
+function Map() {
+  const { data: session } = useSession();
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
@@ -71,6 +74,17 @@ function Map({ data }) {
   const [openLogin, setOpenLogin] = useState(false);
   const [unLinked, setUnLinked] = useState(false);
   const [tag, setTag] = useState([]);
+  //Tree Popup Component
+  const [openTree, setOpenTree] = useState(false);
+
+  const handleOpenTree = () => setOpenTree(true);
+  const handleCloseTree = () => setOpenTree(false);
+  //Share Popup Component
+  const [openShare, setOpenShare] = useState(false);
+  const handleOpenShare = () => setOpenShare(true);
+  const handleCloseShare = () => setOpenShare(false);
+
+  //Login Popup Component
   const handleOpenLogin = () => setOpenLogin(true);
   const handleCloseLogin = () => setOpenLogin(false);
   const [openEditNode, setOpenEditNode] = useState(false);
@@ -153,6 +167,7 @@ function Map({ data }) {
   useEffect(() => {
     isLoading(true);
     dispatch(setTreeAdmin(false));
+
     if (id) {
       console.log(id);
       getTreeById(id).then((res) => {
@@ -169,17 +184,50 @@ function Map({ data }) {
           setEdges(res);
           console.log(res);
         });
-
+        setEditedTree(json);
         console.log("Tree Data", json);
         if (json.isPublic == true) {
-          if (json.user_id == data.user.id) {
+          if (json.user_id == session?.user.id) {
             console.log(" This is a Tree Admin");
             dispatch(setTreeAdmin(true));
+          } else {
+            if (session?.user.id === 400) {
+              console.log(" This is a Master Admin");
+              dispatch(setTreeAdmin(true));
+            } else {
+              console.log(session);
+              console.log(" This is not a Tree Admin");
+              dispatch(setTreeAdmin(false));
+            }
+          }
+        } else {
+          if (json.user_id == session?.user.id) {
+            dispatch(setTreeAdmin(true));
+          } else {
+            const shared = json.shared_users.find(
+              (res) => res.user_id === session?.user.id
+            );
+            if (shared) {
+              if (shared.role == "viewer") {
+                dispatch(setTreeAdmin(false));
+              }
+              if (shared.role == "editor") {
+                dispatch(setTreeAdmin(true));
+              }
+              console.log(shared);
+            } else {
+              if (session.user.id === 456) {
+                console.log("Session is an Admin");
+                dispatch(setTreeAdmin(true));
+              } else {
+                router.push("/");
+              }
+            }
           }
         }
       });
     }
-  }, [id]);
+  }, [id, session]);
   const toggleDrawer = (newOpen) => () => {
     console.log(attachments);
     if (newOpen == false) {
@@ -202,6 +250,7 @@ function Map({ data }) {
       });
     });
   }
+
   function dislikeHandler(resource) {
     // toast.error("Disliked")
     console.log("dislike", resource);
@@ -420,6 +469,14 @@ function Map({ data }) {
   function handleSignIn() {
     handleOpenLogin();
   }
+  function editHandleOpen() {
+    setOpenTree(true);
+    console.log("edit map");
+  }
+  function shareHandleOpen() {
+    handleOpenShare();
+    console.log("share map");
+  }
   return (
     <Box>
       <CssBaseline />
@@ -485,8 +542,9 @@ function Map({ data }) {
         >
           <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
             <Header
+              editHandleOpen={editHandleOpen}
+              shareHandleOpen={shareHandleOpen}
               handleSignIn={handleSignIn}
-              user={data}
               treeDetails={treeDetails}
               treeadmin={treeAdmin}
             />
@@ -506,14 +564,14 @@ function Map({ data }) {
           setEditedTree={setEditedTree}
         />
       )}
-      {open && (
+      {openTree && (
         <EditTreePopup
           tag={tag}
           setTag={setTag}
-          saveTree={saveTree}
+          //saveTree={saveTree}
           editedTree={editedTree}
-          open={open}
-          handleClose={handleClose}
+          open={openTree}
+          handleClose={handleCloseTree}
           treeDetails={treeDetails}
           setEditedTree={setEditedTree}
         />
@@ -531,6 +589,17 @@ function Map({ data }) {
           setNodes={setNodes}
         />
       )}
+      {openShare && (
+        <Sharepopup
+          saveTree={saveTree}
+          setEditedTree={setEditedTree}
+          openShare={openShare}
+          tree={treeDetails}
+          setTreeDetails={setTreeDetails}
+          handleCloseShare={handleCloseShare}
+          setOpenShare={setOpenShare}
+        />
+      )}
     </Box>
   );
 }
@@ -542,18 +611,18 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+// export async function getServerSideProps({ req }) {
+//   const session = await getSession({ req });
 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return {
-    props: { data: session },
-  };
-}
+//   // if (!session) {
+//   //   return {
+//   //     redirect: {
+//   //       destination: "/",
+//   //       permanent: false,
+//   //     },
+//   //   };
+//   // }
+//   return {
+//     props: { data: session },
+//   };
+// }

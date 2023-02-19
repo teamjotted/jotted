@@ -268,8 +268,9 @@ export async function getMySharedTrees() {
   }
 }
 export async function shareMyTree(invited, tree_id) {
+  const { token } = await getSession();
   const headers = {
-    Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
+    Authorization: `Bearer ${token}`,
   };
   console.log(invited);
   try {

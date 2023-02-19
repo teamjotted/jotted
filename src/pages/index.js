@@ -7,15 +7,6 @@ import { getSession, signOut } from "next-auth/react";
 import Header from "@/components/Header";
 import {
   Box,
-  Grid,
-  Stack,
-  Tooltip,
-  Typography,
-  Avatar,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   CssBaseline,
   LinearProgress,
   CircularProgress,
@@ -30,7 +21,6 @@ import Layout from "@/components/Layout";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const [data, setData] = useState();
   const { width, height } = useWindowDimensions();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -73,7 +63,6 @@ export default function Home() {
   }
   useEffect(() => {
     setLoading(true);
-    console.log(data);
     // if (!data) {
     //   router.push("/login");
     // }
@@ -149,7 +138,6 @@ export default function Home() {
         handleSignIn={() => {
           router.push("/login");
         }}
-        user={data}
       />
       <CssBaseline />
       <Box
