@@ -1,10 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-
-import tree from "./treeSlice";
-
+import userDataReducer from "./userData/userData.reducer";
+import treeDataReducer from "./newTreeData/newTree.reducer";
+import nodeDataReducer from "./Node/node.reducer";
 const combinedReducer = combineReducers({
-  tree,
+  userData: userDataReducer,
+  treeData: treeDataReducer,
+  nodeData: nodeDataReducer,
 });
 
 export const makeStore = () =>

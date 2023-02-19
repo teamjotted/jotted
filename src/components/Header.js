@@ -12,11 +12,11 @@ import {
 import { useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export default function Header({
-  user,
   treeadmin,
-  onClick,
+  handleSignIn,
   treeDetails,
   editHandleOpen,
   shareHandleOpen,
@@ -28,7 +28,7 @@ export default function Header({
   scrollRef,
   seachHandler,
 }) {
-  //const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const [toggleE, setToggleE] = useState(false);
   const router = useRouter();
@@ -38,9 +38,10 @@ export default function Header({
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleClick = (event) => {
+  const handleOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   // useEffect(() => {
   // 	if (treeDetails) {
   // 		// mixpanel.people.append('trees_visited', { name: treeDetails?.name, id: treeDetails?.id });
@@ -61,6 +62,8 @@ export default function Header({
         justifyContent: "center",
         background: "white",
         padding: "5px",
+        boxShadow: "0px -5px 20px rgba(0, 0, 0, 0.25)",
+        mb: 1,
       }}
     >
       <Box
@@ -112,14 +115,18 @@ export default function Header({
           </Box>
         </>
       )}
-      <Box>
-        <Box sx={{ display: "flex", pt: 1 }}>
+      <Box sx={{ justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            pt: 1,
+          }}
+        >
           <Typography
             sx={{
-              alignSelf: "center",
               fontSize: 20,
               fontWeight: 700,
-              maxWidth: 300,
+              maxWidth: 500,
               display: "-webkit-box",
               overflow: "hidden",
               WebkitBoxOrient: "vertical",
@@ -128,46 +135,22 @@ export default function Header({
           >
             {treeDetails?.name}
           </Typography>
-
-          {/* <Fab sx={{ marginRight: '9px', zIndex: 0, width: '35px', height: '30px', minWidth: '35px', marginLeft: '15px', backgroundColor: '#FFF', alignSelf: 'center' }}>
-                <ModeEditOutlineTwoToneIcon onClick={editHandleOpen} />
-            </Fab> */}
           {treeadmin ? (
-            <>
-              <Box
-                onClick={editHandleOpen}
-                sx={{ alignSelf: "center", p: 1, cursor: "pointer" }}
-              >
-                <Typography
-                  sx={{ textDecoration: "underline", textAlign: "center" }}
-                >
-                  Edit
-                </Typography>
-              </Box>
-              <Box
-                onClick={shareHandleOpen}
-                sx={{ alignSelf: "center", p: 1, cursor: "pointer" }}
-              >
-                <Typography
-                  sx={{ textDecoration: "underline", textAlign: "center" }}
-                >
-                  Share
-                </Typography>
-              </Box>
-            </>
+            <KeyboardArrowDownIcon
+              onClick={handleOpen}
+              sx={{
+                display: "flex",
+                alignSelf: "center",
+                cursor: "pointer",
+                ml: 1,
+              }}
+            />
           ) : (
             <></>
           )}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        ></Box>
       </Box>
-      {!user ? (
+      {!session?.user ? (
         <Box
           sx={{
             ml: "auto",
@@ -177,9 +160,7 @@ export default function Header({
           }}
         >
           <Box
-            onClick={() => {
-              router.push("/login");
-            }}
+            onClick={handleSignIn}
             sx={{
               "&:hover": { opacity: 0.7 },
               borderRadius: 2,
@@ -221,13 +202,13 @@ export default function Header({
             }}
           >
             <Avatar
-              onClick={() => {
-                signOut();
-              }}
-              src={user.photo ? user.photo : user.photo_url}
+              onClick={() => router.push(`/user/${session.user.id}`)}
+              src={
+                session.user.photo ? session.user.photo : session.user.photo_url
+              }
             />
           </Box>
-          {/* <Menu
+          <Menu
             anchorEl={anchorEl}
             id="account-menu"
             open={open}
@@ -262,35 +243,17 @@ export default function Header({
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            {user
-              ? [
-                  <>
-                    <MenuItem
-                      onClick={() => {
-                        // router.push("/user/visits");
-                      }}
-                    >
-                      <Avatar src={user.photo} />
-                      {user.firstName} {user.lastName}
-                    </MenuItem>
-                  </>,
-                ]
-              : [
-                  <>
-                    <MenuItem onClick={handleOpenLogin}>
-                      <Avatar /> Sign In
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem
-                      onClick={() => {
-                        signOut();
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                  </>,
-                ]}
-          </Menu> */}
+            <>
+              <MenuItem onClick={shareHandleOpen}>
+                <Typography sx={{ textAlign: "center" }}>Share Map</Typography>
+              </MenuItem>
+              <MenuItem onClick={editHandleOpen}>
+                <Typography sx={{ textAlign: "center" }}>Edit</Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleClose}>Close</MenuItem>
+            </>
+          </Menu>
         </>
       )}
     </Box>

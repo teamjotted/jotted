@@ -1,6 +1,7 @@
 import axios from "axios";
-import { BASE_URL } from "./config";
 import cookie from "cookiejs";
+import { getSession } from "next-auth/react";
+import { BASE_URL } from "./config";
 
 export async function stripeConnect(id) {
   const headers = {
@@ -91,16 +92,11 @@ export async function saveUserTreePrivacy(id, edit) {
   }
 }
 export async function getUserById(id) {
-  const headers = {
-    Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
-  };
   try {
-    return await axios
-      .get(BASE_URL + `/user/${id}`, { headers })
-      .then((res) => {
-        console.log(res.data.email);
-        return res.data;
-      });
+    return await axios.get(BASE_URL + `/user/${id}`).then((res) => {
+      console.log(res.data.email);
+      return res.data;
+    });
   } catch (e) {
     console.log(e);
   }
@@ -126,12 +122,15 @@ export async function getNodeByTreeId(treeid) {
   }
 }
 
-export async function editNodeDetails(node_id, label, photo, treeid, dispatch) {
+export async function editNodeDetails(node_id, label, photo) {
   try {
     return await axios
-      .post(BASE_URL + `/naufeltree-details`, { node_id, label, photo })
+      .post(BASE_URL + `/naufeltree-details`, {
+        node_id,
+        label,
+        photo,
+      })
       .then((res) => {
-        getNodeByTreeId(dispatch, treeid);
         console.log(res);
         return res;
       });
@@ -176,6 +175,7 @@ export async function createTree(payload, dispatch) {
     throw error;
   }
 }
+
 export async function getTreeById(id) {
   try {
     return await axios.get(BASE_URL + `/tree/${id}`);
@@ -184,13 +184,34 @@ export async function getTreeById(id) {
   }
 }
 export async function getMyTrees() {
+  const { token } = await getSession();
+  console.log(token);
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    return await axios.get(BASE_URL + `/my_trees`, {
+      headers,
+    });
+  } catch (e) {
+    throw e;
+  }
+}
+export async function getTreesByUserId(id) {
+  const { token } = await getSession();
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  // const headers = "yes";
+
+  console.log(headers);
   try {
     return await axios
-      .get(BASE_URL + `/my_trees`, {
-        headers: {
-          Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
-        },
-      })
+      .get(BASE_URL + `/user_trees?user_id=${id}`)
       .then((res) => {
         return res.data;
       });
@@ -231,11 +252,12 @@ export async function getSearchTrees(page, per_page, offset, search_query) {
   }
 }
 export async function getMySharedTrees() {
+  const { token } = await getSession();
   try {
     return await axios
       .get(BASE_URL + `/shared/my_trees`, {
         headers: {
-          Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -289,6 +311,23 @@ export async function getUserEmail(email) {
   }
 }
 
+export async function getUserResources(user_id, page, per_page, offset) {
+  try {
+    return await axios
+      .get(
+        BASE_URL +
+          `/user_resources?user_id=${user_id}&page=${page}&per_page=${per_page}&offset=${offset}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        // toast.success(`Sharing your tree to ${res.data[0].firstname}`);
+        return res.data;
+      });
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+}
 export async function deleteNode(id, treeid, dispatch) {
   try {
     return await axios.delete(BASE_URL + `/naufeltree/${id}`).then((res) => {
@@ -354,7 +393,9 @@ export async function orderResource(payload) {
   console.log(payload);
   try {
     return await axios
-      .post(BASE_URL + "/resources_order", { resource: payload })
+      .post(BASE_URL + "/resources_order", {
+        resource: payload,
+      })
       .then((res) => {
         console.log(res);
         // getNodeAttachments(res.data.node_id, dispatch);
@@ -379,9 +420,16 @@ export async function getNodeAttachments(id) {
     console.log("ERROR:", error);
   }
 }
-export async function editNoteAttachments(id, attachment) {
+export async function editNodeAttachments(id, attachment) {
   try {
     return await axios.post(BASE_URL + `/resources/${id}`, attachment);
+  } catch (error) {
+    console.log("ERROR:", error);
+  }
+}
+export async function addNodeAttachments(attachment) {
+  try {
+    return await axios.post(BASE_URL + `/resources`, attachment);
   } catch (error) {
     console.log("ERROR:", error);
   }
@@ -425,7 +473,10 @@ export async function addTreeTags(tags, id) {
 }
 export async function userVisit(tree_id, user_id) {
   try {
-    return await axios.patch(BASE_URL + `/user_visit`, { tree_id, user_id });
+    return await axios.patch(BASE_URL + `/user_visit`, {
+      tree_id,
+      user_id,
+    });
   } catch (error) {
     console.log("ERROR:", error);
   }

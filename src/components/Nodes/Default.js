@@ -17,13 +17,13 @@ import {
 import { Handle } from "react-flow-renderer";
 import {
   deleteNodeAttachments,
-  editNoteAttachments,
   getNodeAttachments,
   getNodeDetailsById,
   deleteNode,
   editNode,
 } from "../../utils/api";
 import { useDispatch, useSelector } from "react-redux";
+import { setNodeId } from "@/store/Node/node.action";
 
 export default memo(
   ({ data, isConnectable, id, position, xPos, yPos, ...props }) => {
@@ -138,7 +138,7 @@ export default memo(
         />
         <Box
           onClick={() => {
-            //dispatch(setNodeId(id));
+            dispatch(setNodeId(id));
             console.log("CLICKED", id);
           }}
           sx={{

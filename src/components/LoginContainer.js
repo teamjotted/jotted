@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import useWindowDimensions from "../contexts/hooks/useWindowDimensions";
+import { signIn } from "next-auth/react";
 export default function LoginContainer({
   email,
   setEmail,
@@ -110,7 +111,9 @@ export default function LoginContainer({
               </Typography>
             </Box>
             <Box
-              onClick={googleHandler}
+              onClick={() => {
+                signIn("google");
+              }}
               sx={{
                 mt: 1,
                 flex: 1,

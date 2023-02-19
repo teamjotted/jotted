@@ -12,10 +12,13 @@ const options = {
       async authorize(credentials) {
         console.log(credentials);
         const { data } = await axios
-          .post(NEXT_PUBLIC_BASE_URL_LIVE + "/auth/login", {
-            email: credentials.email,
-            password: credentials.password,
-          })
+          .post(
+            "https://xg3n-4mh1-ngd5.n7.xano.io/api:w4ONEGEJ:v2/auth/login",
+            {
+              email: credentials.email,
+              password: credentials.password,
+            }
+          )
           .catch((e) => {
             console.log(e);
             return e;
@@ -48,7 +51,7 @@ const options = {
 
       const { data } = await axios
         .get(
-          `https://xm8g-uzzd-2jpy.n7.xano.io/api:ggPpPLaC/user_by_email/${token.email}`
+          `https://xg3n-4mh1-ngd5.n7.xano.io/api:w4ONEGEJ:v2/user_by_email?email=${token.email}`
         )
 
         .catch((e) => {
@@ -73,7 +76,7 @@ const options = {
       if (account.provider === "google") {
         const data = await axios
           .get(
-            "https://xm8g-uzzd-2jpy.n7.xano.io/api:rQfTuibR/oauth/google/continue",
+            "https://xg3n-4mh1-ngd5.n7.xano.io/api:U0aE1wpF:v2/oauth/google/continue",
             {
               params: { tokenn: account.access_token },
             }

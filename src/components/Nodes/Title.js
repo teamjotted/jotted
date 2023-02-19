@@ -5,7 +5,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Handle } from "react-flow-renderer";
 import {
   deleteNodeAttachments,
-  editNoteAttachments,
   getNodeAttachments,
   getNodeDetailsById,
 } from "../../utils/api";

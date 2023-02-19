@@ -19,12 +19,20 @@
     "cookiejs": "^2.1.2",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
+    "framer-motion": "^9.0.3",
+    "mixpanel-browser": "^2.45.0",
+    "mui-chips-input": "^2.0.0",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
     "react-flow-renderer": "^10.3.17",
-    "react-redux": "^8.0.5"
+    "react-material-ui-carousel": "^3.4.2",
+    "react-redux": "^8.0.5",
+    "react-toastify": "^9.1.1",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.4.2"
   }
 }

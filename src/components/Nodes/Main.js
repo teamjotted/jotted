@@ -19,7 +19,6 @@ import { Handle } from "react-flow-renderer";
 
 import {
   deleteNodeAttachments,
-  editNoteAttachments,
   getNodeAttachments,
   getNodeDetailsById,
   deleteNode,
@@ -28,6 +27,7 @@ import {
 
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { setNodeId } from "@/store/Node/node.action";
 
 export default memo(
   ({ data, isConnectable, id, position, xPos, yPos, ...props }) => {
@@ -62,16 +62,14 @@ export default memo(
 
         <Box
           onClick={() => {
-            //dispatch(setNodeId(id));
+            dispatch(setNodeId(id));
           }}
           sx={{
             backgroundImage: `url('${data.photo}')`,
             backgroundPosition: "center",
             backgroundSize: "cover",
             position: "relative",
-
             borderRadius: 2,
-
             overflow: "hidden",
             width: 200 / 2.5,
             height: 200 / 2.5,
