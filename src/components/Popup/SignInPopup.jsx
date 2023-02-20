@@ -143,7 +143,9 @@ export default function SignInPopup({
           </Typography>
         </Box>
         <Box
-          onClick={googleHandler}
+          onClick={() => {
+            signIn("google");
+          }}
           sx={{
             mt: 1,
             flex: 1,

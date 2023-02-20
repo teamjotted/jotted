@@ -2,6 +2,7 @@ import axios from "axios";
 import cookie from "cookiejs";
 import { getSession } from "next-auth/react";
 import { BASE_URL } from "./config";
+import { toast } from "react-toastify";
 
 export async function stripeConnect(id) {
   const headers = {
@@ -165,7 +166,7 @@ export async function createNodeEdge(dispatch, edge, treeid) {
     console.log(error);
   }
 }
-export async function createTree(payload, dispatch) {
+export async function createTree(payload) {
   try {
     return await axios.post(BASE_URL + "/tree", payload).then((res) => {
       console.log(res.data);

@@ -18,7 +18,6 @@ export default function LoginContainer({
   error,
   handleLogin,
   setNewUser,
-  googleHandler,
 }) {
   const { width, height } = useWindowDimensions();
 

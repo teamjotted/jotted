@@ -63,7 +63,6 @@ export default function Login({ data }) {
           error={error}
           handleLogin={handleLogin}
           setNewUser={setNewUser}
-          googleHandler={googleHandler}
         />
       ) : (
         <SignupContainer

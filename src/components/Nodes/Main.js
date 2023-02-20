@@ -35,10 +35,6 @@ export default memo(
     //const { treeAdmin } = useSelector((state) => state.treeData);
     const treeAdmin = false;
     //onClick={() => window.open(obj.src)
-    console.log(props);
-    useEffect(() => {
-      console.log(data);
-    }, []);
 
     return (
       <>

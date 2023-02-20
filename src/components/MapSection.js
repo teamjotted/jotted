@@ -22,7 +22,7 @@ export default function MapSection({ trees, handleClick, name, data }) {
   return (
     <Box sx={{ overflow: "hidden" }}>
       <Box sx={{ my: 1 }}>
-        <Typography sx={{ fontSize: 25, fontWeight: 700, fontFamily: inter }}>
+        <Typography sx={{ fontSize: 30, fontWeight: 700, fontFamily: inter }}>
           {name}
         </Typography>
       </Box>

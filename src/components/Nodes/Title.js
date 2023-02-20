@@ -28,7 +28,6 @@ export default memo(
     //const { treeAdmin } = useSelector((state) => state.treeData);
 
     useEffect(() => {
-      console.log(data);
       if (id) {
         getNodeDetailsById(id).then((res) => {
           getNodeAttachments(id).then((res) => {

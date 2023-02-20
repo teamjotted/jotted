@@ -19,7 +19,7 @@ import {
 } from "@/utils/api";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddResourcePopup from "../Popup/AddResourcePopup";
 
 import { toast } from "react-toastify";
@@ -46,10 +46,12 @@ export default function SubNodeContent({
 
   //Node Modal
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const handleClose = () => {
     setOpen(false);
-    setSelectedResource();
+    // setSelectedResource();
   };
 
   const [selectedResource, setSelectedResource] = useState();
@@ -105,12 +107,15 @@ export default function SubNodeContent({
 
     //setAttachment(updatedAttachments);
   }
-  function deleteResoueceHandler(resource) {
-    deleteNodeAttachments(resource.id).then((res) => {
+  function deleteResoueceHandler() {
+    console.log(selectedResource);
+    deleteNodeAttachments(selectedResource.id).then((res) => {
       console.log(res);
       toast.info("Resource Deleted");
-      getNodeAttachments(resource.node_id).then((res) => {
-        setAttachment(res.data);
+      handleCloseAttachmentDropdown();
+      getNodeAttachments(selectedResource.node_id).then((res) => {
+        console.log(res);
+        setAttachment(res?.data);
       });
     });
   }
@@ -120,6 +125,16 @@ export default function SubNodeContent({
     setOpen(true);
   }
 
+  useEffect(() => {
+    console.log(open);
+    console.log(anchorElAttachments);
+    // if (anchorElAttachments === false) {
+    //   setSelectedResource(null);
+    // }
+    // if (open == "false") {
+    //   setSelectedResource();
+    // }
+  }, [anchorElAttachments]);
   return (
     <Box sx={{ maxWidth: 450, p: 1 }}>
       <Box
@@ -434,7 +449,13 @@ export default function SubNodeContent({
       </Menu>
       <Box>
         {treeAdmin && (
-          <IconButton sx={{ cursor: "pointer" }} onClick={handleOpen}>
+          <IconButton
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              handleOpen();
+              setSelectedResource();
+            }}
+          >
             <AddIcon />
           </IconButton>
         )}

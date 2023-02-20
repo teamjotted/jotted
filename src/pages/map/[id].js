@@ -216,7 +216,7 @@ function Map() {
               }
               console.log(shared);
             } else {
-              if (session.user.id === 456) {
+              if (session?.user.id === 456) {
                 console.log("Session is an Admin");
                 dispatch(setTreeAdmin(true));
               } else {
