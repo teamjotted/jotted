@@ -13,7 +13,12 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { getMyTrees, getUserById, getUserResources } from "@/utils/api";
+import {
+  getMyTrees,
+  getUserById,
+  getUserResources,
+  stripeConnect,
+} from "@/utils/api";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import AddIcon from "@mui/icons-material/Add";
 import { motion } from "framer-motion";
@@ -38,7 +43,17 @@ export default function User({ data }) {
     page_total: 0,
     data: [],
   });
-  function stripeHandler() {}
+  function stripeHandler() {
+    // window.location.replace('google.com');
+    stripeConnect(user.id)
+      .then((res) => {
+        console.log(res);
+        window.open(res.data.result_1.response.result.url);
+      })
+      .catch((e) => {
+        toast.error(e.data.message);
+      });
+  }
   function newMapbtnHandler() {
     router.push("/map/create");
   }

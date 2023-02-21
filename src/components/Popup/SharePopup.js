@@ -35,6 +35,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { borderColor } from "@mui/system";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { NumericFormat } from "react-number-format";
+import { useSession } from "next-auth/react";
 
 const NumericFormatCustom = React.forwardRef(function NumericFormatCustom(
   props,
@@ -74,6 +75,8 @@ export default function Sharepopup({
   setEditedTree,
   classes,
 }) {
+  const { data: session, status } = useSession();
+
   // const [suggestions, setSuggestions] = useState([]);
   const [users, setUsers] = useState([]);
   const [invited, setInvited] = useState([]);
@@ -215,7 +218,7 @@ export default function Sharepopup({
     user.role = e;
     handleClose();
   }
-
+  console.log(session);
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -460,6 +463,7 @@ export default function Sharepopup({
                 Publish to Community
               </Typography>
               <Switch
+                defaultChecked={tree.isPublic}
                 value={tree.isPublic}
                 onChange={(e) => {
                   accessHandler(e.target.checked);
@@ -469,26 +473,39 @@ export default function Sharepopup({
             </Box>
             {tree.isPublic && (
               <>
-                <Typography
-                  sx={{ alignSelf: "center", fontWeight: 500, fontSize: 12 }}
-                >
-                  Leave empty if you want this map to be free.
-                </Typography>
-                {/* <TextField placeholder="$0.00" fullWidth size="small" /> */}
-                <TextField
-                  sx={{ mt: 1 }}
-                  size="small"
-                  fullWidth
-                  label="Amount"
-                  value={values.numberformat}
-                  onChange={handleChange}
-                  name="numberformat"
-                  id="formatted-numberformat-input"
-                  InputProps={{
-                    inputComponent: NumericFormatCustom,
-                  }}
-                  variant="outlined"
-                />
+                {session.user.stripe ? (
+                  <>
+                    <Typography
+                      sx={{
+                        alignSelf: "center",
+                        fontWeight: 500,
+                        fontSize: 12,
+                      }}
+                    >
+                      Leave empty if you want this map to be free.
+                    </Typography>
+                    {/* <TextField placeholder="$0.00" fullWidth size="small" /> */}
+                    <TextField
+                      disabled={tree.stripe.price_id ? true : false}
+                      sx={{ mt: 1 }}
+                      size="small"
+                      fullWidth
+                      label="Amount"
+                      value={
+                        tree.stripe.price_id ? tree.price : values.numberformat
+                      }
+                      onChange={handleChange}
+                      name="numberformat"
+                      id="formatted-numberformat-input"
+                      InputProps={{
+                        inputComponent: NumericFormatCustom,
+                      }}
+                      variant="outlined"
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
               </>
             )}
             <Stack

@@ -1,12 +1,13 @@
 import axios from "axios";
 import cookie from "cookiejs";
 import { getSession } from "next-auth/react";
-import { BASE_URL } from "./config";
+import { BASE_URL, STRIPE_URL } from "./config";
 import { toast } from "react-toastify";
 
 export async function stripeConnect(id) {
+  const { token } = await getSession();
   const headers = {
-    Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
+    Authorization: `Bearer ${token}`,
   };
   try {
     return await axios
@@ -14,6 +15,23 @@ export async function stripeConnect(id) {
       .then((res) => {
         console.log(res);
         return res;
+      });
+  } catch (error) {
+    throw error.response;
+  }
+}
+
+export async function stripePurchase(user_id, tree_id) {
+  const { token } = await getSession();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    return await axios
+      .post(BASE_URL + "/purchases", { user_id, tree_id }, { headers })
+      .then((res) => {
+        console.log(res);
+        return res.data;
       });
   } catch (error) {
     throw error.response;

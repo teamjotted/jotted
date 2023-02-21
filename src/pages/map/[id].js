@@ -14,6 +14,7 @@ import {
   getTreeById,
   getUserPurchases,
   saveUserTree,
+  stripePurchase,
 } from "@/utils/api";
 import {
   Box,
@@ -77,7 +78,13 @@ const nodeTypes = {
 };
 const panOnDrag = [1, 2];
 
-function AlertDialogSlide({ open, setOpenPaid, tree, router }) {
+function AlertDialogSlide({
+  open,
+  setOpenPaid,
+  tree,
+  router,
+  purchaseHandler,
+}) {
   return (
     <div>
       <Dialog
@@ -153,7 +160,7 @@ function AlertDialogSlide({ open, setOpenPaid, tree, router }) {
               </Typography>
             </Box>
             <Box
-              onClick={() => {}}
+              onClick={purchaseHandler}
               sx={{
                 flex: 1,
                 "&:hover": { opacity: 0.7 },
@@ -302,7 +309,13 @@ function Map() {
     setSelectedNode(null);
     setFilterValues({ nodeId: "" });
   };
-
+  function purchaseHandler() {
+    stripePurchase(session.user.id, id).then((res) => {
+      console.log(res);
+      window.open(res.api.response.result.url);
+      //need to check on success purchase
+    });
+  }
   function paidHandler() {
     getUserPurchases(session.user.id).then((res) => {
       console.log(res);
@@ -344,14 +357,14 @@ function Map() {
             console.log(" This is a Tree Admin");
             dispatch(setTreeAdmin(true));
           } else {
-            if (json.price < 0) {
+            if (json.price <= 0) {
               setPaidSate("free");
               if (session?.user.id === 400) {
                 console.log(" This is a Master Admin");
-                dispatch(setTreeAdmin(true));
+                dispatch(setTreeAdmin(false));
               } else {
                 console.log(session);
-                console.log(" This is not a Tree Admin");
+                console.log("This is not a Tree Admin");
                 dispatch(setTreeAdmin(false));
               }
             } else {
@@ -688,7 +701,7 @@ function Map() {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   };
-
+  console.log(paidState);
   return (
     <Box>
       <CssBaseline />
@@ -767,23 +780,25 @@ function Map() {
 
             <Controls />
             <Background color="#aaa" gap={20} />
-            <Box
-              sx={{
-                zIndex: 1000,
-                position: "absolute",
-                top: "90%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "#FEFEFF",
-                borderRadius: 2,
-                boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                px: 4,
-                py: 1,
-              }}
-            >
-              {" "}
-              <Toolbar />
-            </Box>
+            {treeAdmin && (
+              <Box
+                sx={{
+                  zIndex: 1000,
+                  position: "absolute",
+                  top: "90%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "#FEFEFF",
+                  borderRadius: 2,
+                  boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+                  px: 4,
+                  py: 1,
+                }}
+              >
+                {" "}
+                <Toolbar />
+              </Box>
+            )}
           </ReactFlow>
         </div>
       ) : (
@@ -797,6 +812,7 @@ function Map() {
             setOpenPaid={setOpenPaid}
             tree={treeDetails}
             router={router}
+            purchaseHandler={purchaseHandler}
           />
           <ReactFlow
             snapToGrid={true}
@@ -826,23 +842,25 @@ function Map() {
 
             <Controls />
             <Background color="#aaa" gap={20} />
-            <Box
-              sx={{
-                zIndex: 1000,
-                position: "absolute",
-                top: "90%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: "#FEFEFF",
-                borderRadius: 2,
-                boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                px: 4,
-                py: 1,
-              }}
-            >
-              {" "}
-              <Toolbar />
-            </Box>
+            {treeAdmin && (
+              <Box
+                sx={{
+                  zIndex: 1000,
+                  position: "absolute",
+                  top: "90%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  backgroundColor: "#FEFEFF",
+                  borderRadius: 2,
+                  boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+                  px: 4,
+                  py: 1,
+                }}
+              >
+                {" "}
+                <Toolbar />
+              </Box>
+            )}
           </ReactFlow>
         </div>
       )}
