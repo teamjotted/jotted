@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import { createTree } from "@/utils/api";
+import { createNode, createTree } from "@/utils/api";
 import {
   Box,
   CssBaseline,
@@ -49,6 +49,29 @@ export default function Create() {
     };
     createTree(tree).then((res) => {
       console.log(res);
+      const newNode = {
+        label: name,
+        photo: treePhoto,
+        type: "mainNode",
+        tree_id: res.id,
+        position: {
+          x: 100,
+          y: 100,
+        },
+        data: {
+          label: name,
+          position: {
+            x: 100,
+            y: 100,
+          },
+        },
+        index: 0,
+      };
+      console.log(newNode);
+      createNode(newNode).then((res) => {
+        console.log(res);
+      });
+
       router.push(`/map/${res.id}`);
     });
   }

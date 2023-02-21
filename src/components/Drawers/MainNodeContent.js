@@ -134,22 +134,7 @@ export default function MainNodeSidebar({
               {treeDetails?.description}
             </Typography>
           </Box>
-          {treeAdmin ? (
-            <IconButton
-              onClick={handleEditNode}
-              sx={{
-                width: 40,
-                height: 40,
-                alignSelf: "center",
-                ml: "auto",
-                mb: "auto",
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          ) : (
-            <></>
-          )}
+
           <Tooltip title="Options">
             <MoreVertIcon
               aria-expanded={open ? "true" : undefined}
@@ -183,8 +168,8 @@ export default function MainNodeSidebar({
             horizontal: "right",
           }}
         >
+          <MenuItem onClick={handleEditNode}>Edit</MenuItem>
           <MenuItem
-            disabled
             onClick={() => {
               mixpanel.track("Buy me a coffee", {
                 tree_id: treeDetails.id,

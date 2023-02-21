@@ -26,7 +26,17 @@ import {
 import { media } from "../../mock/NodePhotos";
 import Carousel from "react-material-ui-carousel";
 import { toast } from "react-toastify";
-
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 300,
+  bgcolor: "background.paper",
+  borderRadius: 5,
+  boxShadow: 24,
+  p: 4,
+};
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -90,6 +100,11 @@ export default function EditNodePopup({
       handleClose();
       toggleDrawer(false);
       // setNode(res.data);
+      getNodeByTreeId(treeDetails.id).then((res) => {
+        console.log(res);
+        setNodes(res);
+        //setSelectedNode(res)
+      });
     });
   };
   return (

@@ -39,9 +39,9 @@ export default memo(
     const [anchorEl, setAnchorEl] = useState(null);
     const [editNodeMode, setEditNodeMode] = useState(false);
     const [treeid, setTreeId] = useState();
-    const [treeAdmin, setTreeAdmin] = useState(false);
+    //const [treeAdmin, setTreeAdmin] = useState(false);
     const open = Boolean(anchorEl);
-    //const { treeAdmin } = useSelector((state) => state.treeData);
+    const { treeAdmin } = useSelector((state) => state.treeData);
 
     const saveEditNode = () => {
       console.log(position);
@@ -132,6 +132,8 @@ export default memo(
             background: "#ddd",
             borderRadius: "15px",
             border: treeAdmin ? "2px solid #ddd" : "",
+            boxShadow:
+              "rgba(0, 0, 0, 0.2) 0px 1px 3px 0px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 2px 1px -1px",
           }}
           onConnect={(params) => console.log("handle onConnect", params)}
           isConnectable={treeAdmin ? isConnectable : isConnectable}
@@ -164,7 +166,7 @@ export default memo(
           </Box>
           <Box
             sx={{
-              height: 50 / 2,
+              height: 50,
               maxWidth: 300 / 2.5,
               backgroundColor: "white",
               p: 0.5,

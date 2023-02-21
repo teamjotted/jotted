@@ -38,9 +38,10 @@ export default function MapCard({ row, handleClick }) {
             sx={{
               mx: 1,
               fontSize: 12,
+              fontWeight: 600,
             }}
           >
-            {row.price == 0 ? "Free" : row.price}
+            {row.price == 0 ? "Free" : "$" + row.price.toFixed(2)}
           </Typography>
         </Box>
         <Tooltip

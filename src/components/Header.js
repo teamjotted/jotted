@@ -250,7 +250,9 @@ export default function Header({
           >
             <>
               <MenuItem onClick={shareHandleOpen}>
-                <Typography sx={{ textAlign: "center" }}>Share Map</Typography>
+                <Typography sx={{ textAlign: "center" }}>
+                  Share/Publish
+                </Typography>
               </MenuItem>
               <MenuItem onClick={editHandleOpen}>
                 <Typography sx={{ textAlign: "center" }}>Edit</Typography>

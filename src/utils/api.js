@@ -157,10 +157,10 @@ export async function getNodeEdges(treeid) {
   }
 }
 
-export async function createNodeEdge(dispatch, edge, treeid) {
+export async function createNodeEdge(edge, treeid) {
   try {
     return await axios.post(BASE_URL + "/edges", edge).then((res) => {
-      getNodeEdges(dispatch, treeid);
+      getNodeEdges(treeid);
     });
   } catch (error) {
     console.log(error);
@@ -290,6 +290,38 @@ export async function shareMyTree(invited, tree_id) {
   }
 }
 
+export async function priceMyTree(tree_id, price) {
+  const { token } = await getSession();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    return await axios
+      .post(BASE_URL + `/tree_price`, { tree_id, price }, { headers })
+      .then((res) => {
+        return res;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getUserPurchases(id) {
+  const { token } = await getSession();
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    return await axios
+      .get(BASE_URL + `/purchases?user_id=${id}`, { headers })
+      .then((res) => {
+        return res.data;
+      });
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 export async function getUserEmail(email) {
   const headers = {
     Authorization: `Bearer ${cookie.get("j_ce_u") || ""}`,
@@ -330,11 +362,11 @@ export async function getUserResources(user_id, page, per_page, offset) {
     throw error;
   }
 }
-export async function deleteNode(id, treeid, dispatch) {
+export async function deleteNode(id, treeid) {
   try {
     return await axios.delete(BASE_URL + `/naufeltree/${id}`).then((res) => {
       console.log(res);
-      getNodeByTreeId(dispatch, treeid);
+      getNodeByTreeId(treeid);
 
       return res.data;
     });
@@ -342,10 +374,10 @@ export async function deleteNode(id, treeid, dispatch) {
     console.log(e);
   }
 }
-export async function createNode(node, dispatch) {
+export async function createNode(node) {
   try {
     return await axios.post(BASE_URL + `/naufeltree`, node).then((res) => {
-      getNodeByTreeId(dispatch, res.data.tree_id);
+      getNodeByTreeId(res.data.tree_id);
       return res.data;
     });
   } catch (error) {

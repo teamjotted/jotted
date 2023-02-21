@@ -32,8 +32,8 @@ import { setNodeId } from "@/store/Node/node.action";
 export default memo(
   ({ data, isConnectable, id, position, xPos, yPos, ...props }) => {
     const dispatch = useDispatch();
-    //const { treeAdmin } = useSelector((state) => state.treeData);
-    const treeAdmin = false;
+    const { treeAdmin } = useSelector((state) => state.treeData);
+    //const treeAdmin = false;
     //onClick={() => window.open(obj.src)
 
     return (
