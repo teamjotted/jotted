@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { media } from "../mock/NodePhotos";
-export default () => {
+export default function Toolbar() {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -22,7 +22,7 @@ export default () => {
             height: 200 / 3,
           }}
         >
-          <Box sx={{ height: 150 / 3, overflow: "hidden" }}>
+          <Box sx={{ height: "100%", overflow: "hidden" }}>
             <div animate={{ y: 0, scale: 1 }} whileHover={{ scale: 1.1 }}>
               <img
                 style={{
@@ -35,26 +35,6 @@ export default () => {
                 src={media[2].photo}
               />
             </div>
-          </Box>
-          <Box
-            sx={{
-              height: 50 / 2,
-              maxWidth: 300 / 2.5,
-              backgroundColor: "white",
-              p: 0.5,
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: 7,
-                fontWeight: 600,
-                color: "black",
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-              }}
-            ></Typography>
           </Box>
         </Box>
         <Typography
@@ -105,4 +85,4 @@ export default () => {
       </Box> */}
     </Box>
   );
-};
+}

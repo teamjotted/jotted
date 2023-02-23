@@ -26,6 +26,7 @@ import {
   saveUserTree,
   saveUserTreePrivacy,
   shareMyTree,
+  stripeConnect,
 } from "../../utils/api";
 import { MuiChipsInput } from "mui-chips-input";
 import { toast } from "react-toastify";
@@ -75,6 +76,17 @@ export default function Sharepopup({
   setEditedTree,
   classes,
 }) {
+  function stripeHandler() {
+    // window.location.replace('google.com');
+    stripeConnect(tree.user.id)
+      .then((res) => {
+        console.log(res);
+        window.open(res.data.result_1.response.result.url);
+      })
+      .catch((e) => {
+        toast.error(e.data.message);
+      });
+  }
   const { data: session, status } = useSession();
 
   // const [suggestions, setSuggestions] = useState([]);
@@ -357,7 +369,7 @@ export default function Sharepopup({
               </Box>
               {invited.map((res, index) => {
                 return (
-                  <Box sx={{ display: "flex" }}>
+                  <Box key={index} sx={{ display: "flex" }}>
                     <Avatar
                       sx={{
                         fontSize: 12,
@@ -504,7 +516,14 @@ export default function Sharepopup({
                     />
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <Typography
+                      onClick={stripeHandler}
+                      sx={{ fontWeight: 600, fontSize: 12, cursor: "pointer" }}
+                    >
+                      Make money from your map!
+                    </Typography>
+                  </>
                 )}
               </>
             )}

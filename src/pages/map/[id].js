@@ -7,6 +7,7 @@ import {
   createNode,
   createNodeEdge,
   createReaction,
+  deleteNodeEdge,
   editNode,
   getNodeAttachments,
   getNodeByTreeId,
@@ -15,6 +16,7 @@ import {
   getUserPurchases,
   saveUserTree,
   stripePurchase,
+  stripeVerifyPurchase,
 } from "@/utils/api";
 import {
   Box,
@@ -29,6 +31,8 @@ import {
   Slide,
   Divider,
   Avatar,
+  LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import { getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -63,6 +67,8 @@ import Toolbar from "@/components/Toolbar";
 import { media } from "../../mock/NodePhotos";
 import { borderRadius } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
+import Head from "next/head";
+import { motion } from "framer-motion";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -80,122 +86,129 @@ const panOnDrag = [1, 2];
 
 function AlertDialogSlide({
   open,
-  setOpenPaid,
   tree,
   router,
   purchaseHandler,
+  session,
+  handleOpenLogin,
 }) {
-  return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={() => {}}
-        TransitionComponent={Transition}
-        keepMounted
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <DialogTitle>{tree.name}</DialogTitle>
-          <IconButton
-            onClick={() => {
-              router.push("/");
-            }}
-            sx={{ ml: "auto", mr: 1 }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </Box>
-
-        <Divider />
-        <DialogContent>
-          <Box sx={{ display: "flex" }}>
-            <Avatar src={tree.user.photo_url} />
-            <Box sx={{ alignSelf: "center", ml: 1 }}>
-              <Typography sx={{ fontWeight: 500, textAlign: "center" }}>
-                {tree.user.firstname} {tree.user.lastname}
-              </Typography>
-            </Box>
+  if (tree) {
+    return (
+      <div>
+        <Dialog
+          open={open}
+          onClose={() => {}}
+          TransitionComponent={Transition}
+          keepMounted
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <DialogTitle>{tree.name}</DialogTitle>
+            <IconButton
+              onClick={() => {
+                router.push("/");
+              }}
+              sx={{ ml: "auto", mr: 1 }}
+            >
+              <CloseIcon />
+            </IconButton>
           </Box>
-          <DialogContentText sx={{ mt: 1 }} id="alert-dialog-slide-description">
-            <Typography sx={{ color: "black", fontWeight: 600 }}>
-              Description:{" "}
-            </Typography>
-            {tree.description}
-          </DialogContentText>
-        </DialogContent>
-        {/* <DialogActions>
+
+          <Divider />
+          <DialogContent>
+            <Box sx={{ display: "flex" }}>
+              <Avatar src={tree.user.photo_url} />
+              <Box sx={{ alignSelf: "center", ml: 1 }}>
+                <Typography sx={{ fontWeight: 500, textAlign: "center" }}>
+                  {tree.user.firstname} {tree.user.lastname}
+                </Typography>
+              </Box>
+            </Box>
+            <DialogContentText
+              sx={{ mt: 1 }}
+              id="alert-dialog-slide-description"
+            >
+              <Typography sx={{ color: "black", fontWeight: 600 }}>
+                Description:{" "}
+              </Typography>
+              {tree.description}
+            </DialogContentText>
+          </DialogContent>
+          {/* <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
           <Button onClick={handleClose}>Agree</Button>
         </DialogActions> */}
-        <Divider />
-        <DialogContent>
-          <Box sx={{ display: "flex" }}>
-            <Typography sx={{ fontWeight: 600 }}>Price: </Typography>
-            <Typography sx={{ fontWeight: 600, ml: 1 }}>
-              ${tree.price.toFixed(2)}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", mt: 2 }}>
-            <Box
-              onClick={() => {}}
-              sx={{
-                flex: 1,
-                "&:hover": { opacity: 0.7 },
-                borderRadius: 2,
-                display: "flex",
-                boxShadow: 0,
-                border: 1,
-                borderColor: "#00A4FF",
-                cursor: "pointer",
-                mr: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                p: 1,
-              }}
-            >
-              <Typography
-                sx={{ color: "#00A4FF", fontWeight: 600, fontSize: 12 }}
-              >
-                Save
+          <Divider />
+          <DialogContent>
+            <Box sx={{ display: "flex" }}>
+              <Typography sx={{ fontWeight: 600 }}>Price: </Typography>
+              <Typography sx={{ fontWeight: 600, ml: 1 }}>
+                ${tree.price.toFixed(2)}
               </Typography>
             </Box>
-            <Box
-              onClick={purchaseHandler}
-              sx={{
-                flex: 1,
-                "&:hover": { opacity: 0.7 },
-                borderRadius: 2,
-                display: "flex",
-                boxShadow: 0,
-                backgroundColor: "#00A4FF",
-                cursor: "pointer",
-                mr: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                p: 1,
-              }}
-            >
-              <Typography
-                sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
+            <Box sx={{ display: "flex", mt: 2 }}>
+              <Box
+                onClick={() => {}}
+                sx={{
+                  flex: 1,
+                  "&:hover": { opacity: 0.7 },
+                  borderRadius: 2,
+                  display: "flex",
+                  boxShadow: 0,
+                  border: 1,
+                  borderColor: "#00A4FF",
+                  cursor: "pointer",
+                  mr: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  p: 1,
+                }}
               >
-                Buy Now
-              </Typography>
+                <Typography
+                  sx={{ color: "#00A4FF", fontWeight: 600, fontSize: 12 }}
+                >
+                  Save
+                </Typography>
+              </Box>
+              <Box
+                onClick={session ? purchaseHandler : handleOpenLogin}
+                sx={{
+                  flex: 1,
+                  "&:hover": { opacity: 0.7 },
+                  borderRadius: 2,
+                  display: "flex",
+                  boxShadow: 0,
+                  backgroundColor: "#00A4FF",
+                  cursor: "pointer",
+                  mr: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  p: 1,
+                }}
+              >
+                <Typography
+                  sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
+                >
+                  Buy Now
+                </Typography>
+              </Box>
             </Box>
-          </Box>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
 }
 
-function Map() {
-  const { data: session } = useSession();
+function Map({ data }) {
+  // const { data: session } = useSession();
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
   const [loading, isLoading] = useState(false);
   const connectingNodeId = useRef(null);
+  const edgeUpdateSuccessful = useRef(true);
 
   //   const [treeadmin, setTreeAdmin] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -217,7 +230,7 @@ function Map() {
   const [tag, setTag] = useState([]);
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
-  const [paidState, setPaidSate] = useState("free");
+  const [paidState, setPaidSate] = useState();
   const handleOpenTree = () => setOpenTree(true);
   const handleCloseTree = () => setOpenTree(false);
   //Share Popup Component
@@ -236,8 +249,6 @@ function Map() {
 
   //Paid Confirm Popup
 
-  const [openPaid, setOpenPaid] = useState(false);
-
   const { node } = useSelector((state) => state.nodeData);
   const [openNode, setOpenNode] = useState(false);
   const { treeAdmin } = useSelector((state) => state.treeData);
@@ -248,16 +259,10 @@ function Map() {
     (state, newState) => ({ ...state, ...newState }),
     {
       name: "",
-      is_organization: 0,
       category: "",
       discipline: "",
-      age_group: "",
       tags: [""],
       description: "",
-      title: "",
-      topic: "",
-      snapshot: "",
-      last_viewed: 0,
     }
   );
   const onConnect = useCallback((edge) => {
@@ -310,99 +315,165 @@ function Map() {
     setFilterValues({ nodeId: "" });
   };
   function purchaseHandler() {
-    stripePurchase(session.user.id, id).then((res) => {
+    stripePurchase(data.user.id, id).then((res) => {
       console.log(res);
-      window.open(res.api.response.result.url);
+      window.open(res.response.result.url);
       //need to check on success purchase
     });
   }
-  function paidHandler() {
-    getUserPurchases(session.user.id).then((res) => {
-      console.log(res);
-      if (res) {
-        res.map((res) => {
-          if (res.tree_id == id) {
-            console.log("USER PAID FOR THIS TREE");
-            setPaidSate("paid");
-          }
-        });
+
+  async function checkPayStatus() {
+    console.log(treeDetails);
+    //if (!session) return false;
+
+    return await stripeVerifyPurchase(data.user.id, id).then((res) => {
+      if (res.purchase) {
+        if (res.purchase.stripe.status == "paid") {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
       }
     });
+  }
+
+  // useEffect(() => {
+  //   // toggleDrawer(false);
+
+  //   nodes.map((res) => {
+  //     if (res.type == "mainNode") {
+  //       console.log(res);
+  //       dispatch(setNodeId(res?.id));
+  //       setSelectedNode({
+  //         id: res?.id,
+  //         text: res?.label,
+  //         type: res?.type,
+  //         index: res?.index || res?.data.label,
+  //         photo: res?.photo,
+  //         type: res?.type,
+  //         index: res?.index,
+  //       });
+  //     }
+  //   });
+  // }, [nodes]);
+
+  async function paidMapHandler(json) {
+    if (data) {
+      const status = await checkPayStatus();
+
+      console.log(status);
+      if (status) {
+        setPaidSate(true);
+        isLoading(false);
+        return;
+      } else {
+        setPaidSate(false);
+        isLoading(false);
+        return;
+      }
+    } else {
+      setPaidSate(false);
+      isLoading(false);
+    }
+  }
+  function privateTreeHandler(json) {
+    return false;
   }
 
   useEffect(() => {
     isLoading(true);
     dispatch(setTreeAdmin(false));
-
-    if (id && session) {
+    if (id) {
+      //isLoading(true);
       console.log(id);
       getTreeById(id).then((res) => {
         const json = res.data;
         setTreeDetails(res.data);
         getNodeByTreeId(id).then((res) => {
-          isLoading(false);
           setNodes(res);
           console.log(res);
+          getNodeEdges(id).then((res) => {
+            setEdges(res);
+            console.log(res);
+            setEditedTree(json);
+            console.log("Tree Data", json);
+
+            // switch (json.isPublic) {
+            //   case true:
+            //     if(session){
+            //     isLoading(publicTreeHandler(json));
+            //     console.log("true");
+            //     } else{
+
+            //     }
+            //     break;
+            //   case false:
+            //     privateTreeHandler(json);
+            //     console.log("false");
+            //     break;
+            //   default:
+            // }
+            if (json.isPublic == true) {
+              if (json.user_id == data?.user.id && data) {
+                setPaidSate(true);
+                console.log("This is a Tree Admin");
+                dispatch(setTreeAdmin(true));
+                isLoading(false);
+              } else {
+                if (json.price == 0) {
+                  setPaidSate(true);
+                  isLoading(false);
+                  if (data?.user.role == 777) {
+                    console.log(" This is a Master Admin");
+                    dispatch(setTreeAdmin(true));
+                  } else {
+                    console.log(data);
+                    console.log("This is not a Tree Admin");
+                    dispatch(setTreeAdmin(false));
+                  }
+                } else {
+                  paidMapHandler(json);
+                }
+              }
+            } else {
+              setPaidSate(true);
+              if (json.user_id == data?.user.id) {
+                dispatch(setTreeAdmin(true));
+                isLoading(false);
+              } else {
+                const shared = json.shared_users.find(
+                  (res) => res.user_id === data?.user.id
+                );
+                if (shared) {
+                  if (shared.role == "viewer") {
+                    dispatch(setTreeAdmin(false));
+                    isLoading(false);
+                  }
+                  if (shared.role == "editor") {
+                    dispatch(setTreeAdmin(true));
+                    isLoading(false);
+                  }
+                  // console.log(shared);
+                } else {
+                  if (data?.user.id === 456) {
+                    console.log("Session is an Admin");
+                    dispatch(setTreeAdmin(true));
+                    isLoading(false);
+                  } else {
+                    router.push("/");
+                  }
+                }
+              }
+            }
+          });
         });
 
-        getNodeEdges(id).then((res) => {
-          isLoading(false);
-          setEdges(res);
-          console.log(res);
-        });
-        setEditedTree(json);
-        console.log("Tree Data", json);
-        if (json.isPublic == true) {
-          if (json.user_id == session?.user.id) {
-            console.log(" This is a Tree Admin");
-            dispatch(setTreeAdmin(true));
-          } else {
-            if (json.price <= 0) {
-              setPaidSate("free");
-              if (session?.user.id === 400) {
-                console.log(" This is a Master Admin");
-                dispatch(setTreeAdmin(false));
-              } else {
-                console.log(session);
-                console.log("This is not a Tree Admin");
-                dispatch(setTreeAdmin(false));
-              }
-            } else {
-              setOpenPaid(true);
-              setPaidSate("cost");
-              console.log("THIS IS A PAID MAP");
-              paidHandler();
-            }
-          }
-        } else {
-          setPaidSate("free");
-          if (json.user_id == session?.user.id) {
-            dispatch(setTreeAdmin(true));
-          } else {
-            const shared = json.shared_users.find(
-              (res) => res.user_id === session?.user.id
-            );
-            if (shared) {
-              if (shared.role == "viewer") {
-                dispatch(setTreeAdmin(false));
-              }
-              if (shared.role == "editor") {
-                dispatch(setTreeAdmin(true));
-              }
-              console.log(shared);
-            } else {
-              if (session?.user.id === 456) {
-                console.log("Session is an Admin");
-                dispatch(setTreeAdmin(true));
-              } else {
-                router.push("/");
-              }
-            }
-          }
-        }
+        // setEditedTree(json);
       });
     }
-  }, [id, session]);
+  }, [id, data]);
   const toggleDrawer = (newOpen) => () => {
     console.log(attachments);
     if (newOpen == false) {
@@ -483,7 +554,7 @@ function Map() {
     console.log(tag);
     if (tag.length > 0) {
       addTreeTags(tag, editedTree.id).then((res) => {
-        console.log(res);
+        //console.log(res);
       });
     }
     // setEditedTree({ tags: tag });
@@ -492,8 +563,9 @@ function Map() {
       .then((res) => {
         console.log(res);
         setEditedTree(res);
-        Tree_Get_By_Id();
-        setOpen(false);
+        //Tree_Get_By_Id();
+
+        handleCloseTree();
       })
       .catch((e) => {
         console.log(e.data.message);
@@ -612,7 +684,7 @@ function Map() {
     console.log(node);
     if (node) {
       console.log("OPEN LEFT");
-      isLoading(true);
+      //isLoading(true);
       getNodeAttachments(node).then((res) => {
         isLoading(false);
         console.log(res);
@@ -624,7 +696,6 @@ function Map() {
           } else {
             nextHandler();
           }
-
           setNextMode(false);
         }
       });
@@ -632,10 +703,10 @@ function Map() {
     } else {
       console.log("CLOSE LEFT");
       setOpenNode(false);
-
       dispatch(setNodeId(null));
     }
   }, [selectedNode]);
+
   useEffect(() => {
     setFrameRefresh(!frameRefresh);
   }, [frame]);
@@ -653,10 +724,9 @@ function Map() {
 
   const onDrop = useCallback(
     (event) => {
-      isLoading(true);
       event.preventDefault();
+      const { top, left } = reactFlowWrapper.current.getBoundingClientRect();
 
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData("application/reactflow");
 
       // check if the dropped element is valid
@@ -665,8 +735,8 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
+        x: event.clientX - left - 75,
+        y: event.clientY - top,
       });
       const newNode = {
         photo: media[Math.floor(Math.random() * 20).photo],
@@ -675,8 +745,8 @@ function Map() {
         position,
         data: {
           position: project({
-            x: event.clientX - reactFlowBounds.left,
-            y: event.clientY - reactFlowBounds.top,
+            x: event.clientX - left - 75,
+            y: event.clientY - top,
           }),
         },
         index: nodes.length,
@@ -685,7 +755,6 @@ function Map() {
       createNode(newNode).then((res) => {
         console.log(res);
         getNodeByTreeId(id).then((res) => {
-          isLoading(false);
           setNodes(res);
           console.log(res);
         });
@@ -696,222 +765,321 @@ function Map() {
     },
     [reactFlowInstance]
   );
-
   const onDragOver = (event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   };
-  console.log(paidState);
-  return (
-    <Box>
-      <CssBaseline />
-      <SideDrawerContainer
-        openNode={openNode}
-        toggleDrawer={toggleDrawer}
-        selectedNode={selectedNode}
-        nextHandler={nextHandler}
-        nodes={nodes}
-        treeDetails={treeDetails}
-        treeAdmin={treeAdmin}
-        handleEditNode={handleEditNode}
-        selectNode={selectNode}
-        attachments={attachments}
-        resource={resource}
-        resouceClickHandler={resouceClickHandler}
-        setAttachment={setAttachment}
+
+  const onEdgeUpdateStart = useCallback(() => {
+    edgeUpdateSuccessful.current = false;
+  }, []);
+
+  const onEdgeUpdate = useCallback((oldEdge, newConnection) => {
+    edgeUpdateSuccessful.current = true;
+    console.log(oldEdge);
+    // setEdges((els) => updateEdge(oldEdge, newConnection, els));
+  }, []);
+
+  const onEdgeUpdateEnd = useCallback((_, edge) => {
+    if (!edgeUpdateSuccessful.current) {
+      console.log(edge);
+      deleteNodeEdge(edge.id).then((res) => {
+        console.log(res);
+        getNodeEdges(id).then((res) => {
+          console.log(res);
+          setEdges(res);
+        });
+      });
+
+      // setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+    }
+
+    edgeUpdateSuccessful.current = true;
+  }, []);
+
+  // console.log(paidState);
+  if (!loading) {
+    return (
+      <Box>
+        <Head>
+          <title>{treeDetails?.name}</title>
+          <meta name="description" content={treeDetails?.description} />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href={treeDetails?.photo} />
+        </Head>
+
+        <>
+          <CssBaseline />
+          {paidState ? (
+            <>
+              <SideDrawerContainer
+                openNode={openNode}
+                toggleDrawer={toggleDrawer}
+                selectedNode={selectedNode}
+                nextHandler={nextHandler}
+                nodes={nodes}
+                treeDetails={treeDetails}
+                treeAdmin={treeAdmin}
+                handleEditNode={handleEditNode}
+                selectNode={selectNode}
+                attachments={attachments}
+                resource={resource}
+                resouceClickHandler={resouceClickHandler}
+                setAttachment={setAttachment}
+              >
+                <ResourceDrawer
+                  likeHandler={likeHandler}
+                  dislikeHandler={dislikeHandler}
+                  frameRefresh={frameRefresh}
+                  setFrameRefresh={setFrameRefresh}
+                  setFrame={setFrame}
+                  frame={frame}
+                  nextHandler={nextHandler}
+                  openUrl={openUrl}
+                  setOpenUrl={setOpenUrl}
+                  resource={resource}
+                  prevHandler={prevHandler}
+                  treeAdmin={treeAdmin}
+                />
+              </SideDrawerContainer>
+              <div
+                style={{ backgroundColor: "#FBF9FB" }}
+                className="wrapper"
+                ref={reactFlowWrapper}
+              >
+                <ReactFlow
+                  snapToGrid={true}
+                  snapGrid={[20, 20]}
+                  style={{ height: "100vh", visibility: "visible" }}
+                  nodes={nodes}
+                  nodeTypes={nodeTypes}
+                  // setViewport={setViewport}
+                  edges={edges}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={treeAdmin ? onEdgesChange : onEdgesChange}
+                  onConnect={treeAdmin ? onConnect : onConnect}
+                  onInit={onInit}
+                  nodesDraggable={treeAdmin ? true : false}
+                  onNodeDragStop={treeAdmin ? handleDragStop : handleDragStop}
+                  onNodeClick={treeAdmin ? handleNodeClick : handleNodeClick}
+                  fitView
+                  onDrop={onDrop}
+                  attributionPosition="top-right"
+                  onConnectStart={treeAdmin ? onConnectStart : null}
+                  onConnectStop={treeAdmin ? onConnectStop : null}
+                  onPaneClick={handleNodeBlur}
+                  onDragOver={onDragOver}
+                  onEdgeUpdate={onEdgeUpdate}
+                  onEdgeUpdateStart={onEdgeUpdateStart}
+                  onEdgeUpdateEnd={onEdgeUpdateEnd}
+                  // panOnScroll
+                  // selectionOnDrag
+                  // panOnDrag={panOnDrag}
+                >
+                  <Box
+                    sx={{ zIndex: 1000, position: "absolute", width: "100%" }}
+                  >
+                    <Header
+                      editHandleOpen={editHandleOpen}
+                      shareHandleOpen={shareHandleOpen}
+                      handleSignIn={handleSignIn}
+                      treeDetails={treeDetails}
+                      treeadmin={treeAdmin}
+                    />
+                  </Box>
+
+                  <Controls />
+                  <Background color="#aaa" gap={20} />
+                  {treeAdmin && (
+                    <Box
+                      sx={{
+                        zIndex: 1000,
+                        position: "absolute",
+                        top: "90%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        backgroundColor: "#FEFEFF",
+                        borderRadius: 2,
+                        boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+                        px: 4,
+                        py: 1,
+                      }}
+                    >
+                      {" "}
+                      <Toolbar />
+                    </Box>
+                  )}
+                </ReactFlow>
+              </div>
+            </>
+          ) : (
+            <div
+              style={{ backgroundColor: "#FBF9FB" }}
+              className="wrapper"
+              ref={reactFlowWrapper}
+            >
+              <AlertDialogSlide
+                session={data?.user}
+                open={!paidState}
+                tree={treeDetails}
+                router={router}
+                purchaseHandler={purchaseHandler}
+                handleOpenLogin={handleOpenLogin}
+              />
+              <ReactFlow
+                snapToGrid={true}
+                snapGrid={[20, 20]}
+                style={{ height: "100vh", visibility: "visible" }}
+                nodes={nodes}
+                nodeTypes={nodeTypes}
+                // setViewport={setViewport}
+                edges={edges}
+                onInit={onInit}
+                fitView
+                attributionPosition="top-right"
+                panOnDrag={false}
+                // panOnScroll
+                // selectionOnDrag
+                // panOnDrag={panOnDrag}
+                zoomOnDoubleClick={false}
+                zoomOnScroll={false}
+              >
+                <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
+                  <Header
+                    editHandleOpen={editHandleOpen}
+                    shareHandleOpen={shareHandleOpen}
+                    handleSignIn={handleSignIn}
+                    treeDetails={treeDetails}
+                    treeadmin={treeAdmin}
+                  />
+                </Box>
+
+                <Controls />
+                <Background color="#aaa" gap={20} />
+                {treeAdmin && (
+                  <Box
+                    sx={{
+                      zIndex: 1000,
+                      position: "absolute",
+                      top: "90%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "#FEFEFF",
+                      borderRadius: 2,
+                      boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+                      px: 4,
+                      py: 1,
+                    }}
+                  >
+                    {" "}
+                    <Toolbar />
+                  </Box>
+                )}
+              </ReactFlow>
+            </div>
+          )}
+          {paidState == null && (
+            <Box
+              sx={{
+                background: "#00000017",
+                display: "flex",
+                width: "100vw",
+                height: "100vh",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <CircularProgress size={100} />
+            </Box>
+          )}
+          {openLogin && (
+            <SignInPopup
+              setOpenLogin={setOpenLogin}
+              treeDetails={treeDetails}
+              //saveTree={saveTree}
+              open={openLogin}
+              handleCloseLogin={handleCloseLogin}
+              setEditedTree={setEditedTree}
+            />
+          )}
+          {openTree && (
+            <EditTreePopup
+              tag={tag}
+              setTag={setTag}
+              saveTree={saveTree}
+              editedTree={editedTree}
+              open={openTree}
+              handleClose={handleCloseTree}
+              treeDetails={treeDetails}
+              setEditedTree={setEditedTree}
+            />
+          )}
+          {openEditNode && (
+            <EditNodePopup
+              selectedNode={selectedNode}
+              open={openEditNode}
+              handleClose={handleEditNodeClose}
+              treeDetails={treeDetails}
+              setSelectedNode={setSelectedNode}
+              toggleDrawer={toggleDrawer(false)}
+              //setEditedTree={setEditedTree}
+              dispatch={dispatch}
+              setNodes={setNodes}
+            />
+          )}
+          {openShare && (
+            <Sharepopup
+              saveTree={saveTree}
+              setEditedTree={setEditedTree}
+              openShare={openShare}
+              tree={treeDetails}
+              setTreeDetails={setTreeDetails}
+              handleCloseShare={handleCloseShare}
+              setOpenShare={setOpenShare}
+            />
+          )}
+        </>
+      </Box>
+    );
+  } else {
+    return (
+      <Box
+        sx={{
+          background: "#00000017",
+          display: "flex",
+          width: "100vw",
+          height: "100vh",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
       >
-        <ResourceDrawer
-          likeHandler={likeHandler}
-          dislikeHandler={dislikeHandler}
-          frameRefresh={frameRefresh}
-          setFrameRefresh={setFrameRefresh}
-          setFrame={setFrame}
-          frame={frame}
-          nextHandler={nextHandler}
-          openUrl={openUrl}
-          setOpenUrl={setOpenUrl}
-          resource={resource}
-          prevHandler={prevHandler}
-          treeAdmin={treeAdmin}
-        />
-      </SideDrawerContainer>
-
-      {paidState == "paid" || paidState == "free" ? (
-        <div
-          style={{ backgroundColor: "#FBF9FB" }}
-          className="wrapper"
-          ref={reactFlowWrapper}
+        <motion.div
+          animate={{
+            scale: [2, 1, 2, 1, 1],
+            rotate: [0, 360, 180, 180, 360],
+            borderRadius: ["0%", "0%", "50%", "50%", "0%"],
+          }}
+          transition={{
+            duration: 3,
+            ease: "easeInOut",
+            times: [0, 0.2, 0.5, 0.8, 1],
+            repeat: Infinity,
+            repeatDelay: 1,
+          }}
         >
-          <ReactFlow
-            snapToGrid={true}
-            snapGrid={[20, 20]}
-            style={{ height: "100vh", visibility: "visible" }}
-            nodes={nodes}
-            nodeTypes={nodeTypes}
-            // setViewport={setViewport}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={treeAdmin ? onEdgesChange : onEdgesChange}
-            onConnect={treeAdmin ? onConnect : onConnect}
-            onInit={onInit}
-            nodesDraggable={treeAdmin ? true : false}
-            onNodeDragStop={treeAdmin ? handleDragStop : handleDragStop}
-            onNodeClick={treeAdmin ? handleNodeClick : handleNodeClick}
-            fitView
-            onDrop={onDrop}
-            attributionPosition="top-right"
-            onConnectStart={treeAdmin ? onConnectStart : null}
-            onConnectStop={treeAdmin ? onConnectStop : null}
-            onPaneClick={handleNodeBlur}
-            onDragOver={onDragOver}
-            // panOnScroll
-            // selectionOnDrag
-            // panOnDrag={panOnDrag}
-          >
-            <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
-              <Header
-                editHandleOpen={editHandleOpen}
-                shareHandleOpen={shareHandleOpen}
-                handleSignIn={handleSignIn}
-                treeDetails={treeDetails}
-                treeadmin={treeAdmin}
-              />
-            </Box>
-
-            <Controls />
-            <Background color="#aaa" gap={20} />
-            {treeAdmin && (
-              <Box
-                sx={{
-                  zIndex: 1000,
-                  position: "absolute",
-                  top: "90%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  backgroundColor: "#FEFEFF",
-                  borderRadius: 2,
-                  boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                  px: 4,
-                  py: 1,
-                }}
-              >
-                {" "}
-                <Toolbar />
-              </Box>
-            )}
-          </ReactFlow>
-        </div>
-      ) : (
-        <div
-          style={{ backgroundColor: "#FBF9FB" }}
-          className="wrapper"
-          ref={reactFlowWrapper}
-        >
-          <AlertDialogSlide
-            open={openPaid}
-            setOpenPaid={setOpenPaid}
-            tree={treeDetails}
-            router={router}
-            purchaseHandler={purchaseHandler}
-          />
-          <ReactFlow
-            snapToGrid={true}
-            snapGrid={[20, 20]}
-            style={{ height: "100vh", visibility: "visible" }}
-            nodes={nodes}
-            nodeTypes={nodeTypes}
-            // setViewport={setViewport}
-            edges={edges}
-            onInit={onInit}
-            fitView
-            attributionPosition="top-right"
-
-            // panOnScroll
-            // selectionOnDrag
-            // panOnDrag={panOnDrag}
-          >
-            <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
-              <Header
-                editHandleOpen={editHandleOpen}
-                shareHandleOpen={shareHandleOpen}
-                handleSignIn={handleSignIn}
-                treeDetails={treeDetails}
-                treeadmin={treeAdmin}
-              />
-            </Box>
-
-            <Controls />
-            <Background color="#aaa" gap={20} />
-            {treeAdmin && (
-              <Box
-                sx={{
-                  zIndex: 1000,
-                  position: "absolute",
-                  top: "90%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  backgroundColor: "#FEFEFF",
-                  borderRadius: 2,
-                  boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                  px: 4,
-                  py: 1,
-                }}
-              >
-                {" "}
-                <Toolbar />
-              </Box>
-            )}
-          </ReactFlow>
-        </div>
-      )}
-      {openLogin && (
-        <SignInPopup
-          setOpenLogin={setOpenLogin}
-          treeDetails={treeDetails}
-          //saveTree={saveTree}
-          open={openLogin}
-          handleCloseLogin={handleCloseLogin}
-          setEditedTree={setEditedTree}
-        />
-      )}
-      {openTree && (
-        <EditTreePopup
-          tag={tag}
-          setTag={setTag}
-          //saveTree={saveTree}
-          editedTree={editedTree}
-          open={openTree}
-          handleClose={handleCloseTree}
-          treeDetails={treeDetails}
-          setEditedTree={setEditedTree}
-        />
-      )}
-      {openEditNode && (
-        <EditNodePopup
-          selectedNode={selectedNode}
-          open={openEditNode}
-          handleClose={handleEditNodeClose}
-          treeDetails={treeDetails}
-          setSelectedNode={setSelectedNode}
-          toggleDrawer={toggleDrawer(false)}
-          //setEditedTree={setEditedTree}
-          dispatch={dispatch}
-          setNodes={setNodes}
-        />
-      )}
-      {openShare && (
-        <Sharepopup
-          saveTree={saveTree}
-          setEditedTree={setEditedTree}
-          openShare={openShare}
-          tree={treeDetails}
-          setTreeDetails={setTreeDetails}
-          handleCloseShare={handleCloseShare}
-          setOpenShare={setOpenShare}
-        />
-      )}
-    </Box>
-  );
+          <img width={40} height={40} src="/icon.png" />
+        </motion.div>
+        {/* <CircularProgress size={50} /> */}
+      </Box>
+    );
+  }
 }
 
 export default function MapProvider(props) {
@@ -921,18 +1089,18 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-// export async function getServerSideProps({ req }) {
-//   const session = await getSession({ req });
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
 
-//   // if (!session) {
-//   //   return {
-//   //     redirect: {
-//   //       destination: "/",
-//   //       permanent: false,
-//   //     },
-//   //   };
-//   // }
-//   return {
-//     props: { data: session },
-//   };
-// }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  return {
+    props: { data: session },
+  };
+}

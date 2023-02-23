@@ -167,7 +167,7 @@ export default function SignInPopup({
           </Typography>
         </Box>
         <Box sx={{ fontSize: 13, textAlign: "center", my: 2, fontWeight: 700 }}>
-          Don't have an account?
+          Dont have an account?
           <Typography
             onClick={() => {
               setNewUser(true);

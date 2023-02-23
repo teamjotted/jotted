@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { memo, useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";

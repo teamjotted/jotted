@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Avatar,
   Box,
+  Chip,
   Divider,
   Fab,
   Menu,
@@ -14,6 +15,7 @@ import { useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 
 export default function Header({
   treeadmin,
@@ -29,6 +31,7 @@ export default function Header({
   scrollRef,
   seachHandler,
 }) {
+  const { width } = useWindowDimensions();
   const { data: session, status } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const [toggleE, setToggleE] = useState(false);
@@ -54,6 +57,8 @@ export default function Header({
   // 		});
   // 	}
   // }, [treeDetails]);
+  //console.log(session);
+
   return (
     <Box
       sx={{
@@ -116,13 +121,46 @@ export default function Header({
           </Box>
         </>
       )}
-      <Box sx={{ justifyContent: "center" }}>
+      <Box sx={{ justifyContent: "center", flex: 1 }}>
         <Box
           sx={{
             display: "flex",
             pt: 1,
+            justifyContent: "center",
           }}
         >
+          {width > 600 ? (
+            <>
+              {treeadmin && (
+                <Chip
+                  color="error"
+                  size="small"
+                  sx={{ alignSelf: "center", mx: 0.5 }}
+                  label="Admin"
+                />
+              )}
+              {treeDetails?.isPublic && (
+                <Chip
+                  color="success"
+                  size="small"
+                  sx={{ alignSelf: "center", mx: 0.5 }}
+                  label="Public"
+                />
+              )}
+              {treeDetails?.price == 0 ? (
+                <Chip
+                  color="info"
+                  size="small"
+                  sx={{ alignSelf: "center", mx: 0.5 }}
+                  label="Free"
+                />
+              ) : (
+                <></>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
           <Typography
             sx={{
               fontSize: 20,
@@ -202,14 +240,12 @@ export default function Header({
               px: 3,
             }}
           >
-            <Tooltip title="Profile">
+            <Tooltip
+              title={`${session?.user.firstname} ${session?.user.lastname}`}
+            >
               <Avatar
-                onClick={() => router.push(`/user/${session.user.id}`)}
-                src={
-                  session.user.photo
-                    ? session.user.photo
-                    : session.user.photo_url
-                }
+                onClick={() => router.push(`/user/${session?.user.id}`)}
+                src={session?.user.photo_url}
               />
             </Tooltip>
           </Box>

@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import mixpanel from "mixpanel-browser";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useRouter } from "next/router";
 
 export default function MainNodeSidebar({
   nextHandler,
@@ -27,6 +28,7 @@ export default function MainNodeSidebar({
   handleEditNode,
   selectNode,
 }) {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
@@ -168,7 +170,7 @@ export default function MainNodeSidebar({
             horizontal: "right",
           }}
         >
-          <MenuItem onClick={handleEditNode}>Edit</MenuItem>
+          {treeAdmin && <MenuItem onClick={handleEditNode}>Edit</MenuItem>}
           <MenuItem
             onClick={() => {
               mixpanel.track("Buy me a coffee", {
@@ -201,8 +203,11 @@ export default function MainNodeSidebar({
             )} */}
           </Box>
           <Box sx={{ display: "flex" }}>
-            <AvatarGroup sx={{}} max={4}>
+            <AvatarGroup sx={{ cursor: "pointer" }} max={4}>
               <Tooltip
+                onClick={() => {
+                  router.push(`/user/${treeDetails?.user.id}`);
+                }}
                 title={`${treeDetails?.user.firstname} ${treeDetails?.user.lastname}`}
               >
                 <Avatar
@@ -223,6 +228,9 @@ export default function MainNodeSidebar({
                 return (
                   <>
                     <Tooltip
+                      onClick={() => {
+                        router.push(`/user/${res.shared_user?.id}`);
+                      }}
                       title={`${res.shared_user?.firstname} ${res.shared_user?.lastname}`}
                     >
                       <Avatar

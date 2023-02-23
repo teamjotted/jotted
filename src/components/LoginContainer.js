@@ -136,7 +136,7 @@ export default function LoginContainer({
             <Box
               sx={{ fontSize: 13, textAlign: "center", mt: 1, fontWeight: 700 }}
             >
-              Don't have an account?
+              Dont have an account?
               <Typography
                 onClick={() => {
                   setNewUser(true);

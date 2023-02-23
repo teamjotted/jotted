@@ -116,8 +116,9 @@ export default function EditTreePopup({
       {!deleteSure ? (
         <Box sx={style}>
           <Box sx={{ display: "flex" }}>
-            <Typography sx={{ fontSize: 14 }}>{treeDetails?.name}</Typography>
-
+            <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+              Edit Tree
+            </Typography>
             <IconButton onClick={handleClose} sx={{ ml: "auto" }}>
               <CloseIcon />
             </IconButton>
@@ -303,10 +304,10 @@ export default function EditTreePopup({
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={editedTree.discipline}
+              value={editedTree.category}
               label="Category"
               onChange={(e) => {
-                setEditedTree({ discipline: e.target.value });
+                setEditedTree({ category: e.target.value });
               }}
             >
               {DISCIPLINE_DATA_ARRAY.map((item, i) => (

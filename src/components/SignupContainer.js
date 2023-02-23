@@ -48,7 +48,7 @@ export default function SignupContainer({
         }}
       >
         <Typography style={{ color: "black", fontSize: 20, fontWeight: 600 }}>
-          let's get started
+          lets get started
         </Typography>
         <Box
           sx={{

@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { memo, useEffect, useState } from "react";
 import {
   Box,
@@ -144,47 +145,49 @@ export default memo(
             console.log("CLICKED", id);
           }}
           sx={{
+            backgroundImage: `url('${data.photo}')`,
+            backgroundPosition: "center",
+            backgroundSize: "cover",
             borderRadius: 2,
             overflow: "hidden",
             width: 200 / 2.5,
             height: 200 / 2.5,
           }}
         >
-          <Box sx={{ height: 150 / 3, overflow: "hidden" }}>
-            <div animate={{ y: 0, scale: 1 }} whileHover={{ scale: 1.1 }}>
-              <img
-                style={{
-                  display: "block",
-                  width: "100%",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  objectFit: "fill",
-                }}
-                src={data.photo}
-              />
-            </div>
-          </Box>
           <Box
             sx={{
-              height: 50,
-              maxWidth: 300 / 2.5,
-              backgroundColor: "white",
-              p: 0.5,
+              width: "100%",
+              height: "100%",
+              background:
+                "linear-gradient(to bottom,rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.5))",
             }}
           >
-            <Typography
+            <Box
               sx={{
-                fontSize: 7,
-                fontWeight: 600,
-                color: "black",
-                display: "-webkit-box",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
+                height: "100%",
+                maxWidth: 300 / 2.5,
+                p: 0.5,
+                display: "flex",
               }}
             >
-              {data.label}
-            </Typography>
+              <Typography
+                sx={{
+                  mt: "auto",
+                  textAlign: "center",
+                  fontSize: 7,
+                  fontWeight: 600,
+                  mb: 1,
+                  color: "black",
+                  display: "-webkit-box",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                  color: "white",
+                }}
+              >
+                {data.label}
+              </Typography>
+            </Box>
           </Box>
         </Box>
         {/* <input className="nodrag" type="color" onChange={data.onChange} defaultValue={data.color} /> */}

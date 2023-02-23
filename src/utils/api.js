@@ -38,6 +38,28 @@ export async function stripePurchase(user_id, tree_id) {
   }
 }
 
+export async function stripeVerifyPurchase(user_id, tree_id) {
+  const { token } = await getSession();
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+  try {
+    return await axios
+      .get(
+        BASE_URL + `/purchase_verify?user_id=${user_id}&tree_id=${tree_id}`,
+        { headers }
+      )
+      .then((res) => {
+        console.log(res);
+        return res.data;
+      });
+  } catch (error) {
+    throw error.response;
+  }
+}
+
 //api
 
 // let authToken = cookie.get('j_ce_u') || '';
@@ -184,6 +206,16 @@ export async function createNodeEdge(edge, treeid) {
     console.log(error);
   }
 }
+
+export async function deleteNodeEdge(id) {
+  try {
+    return await axios.delete(BASE_URL + "/edges/" + id).then((res) => {
+      return res.data;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 export async function createTree(payload) {
   try {
     return await axios.post(BASE_URL + "/tree", payload).then((res) => {
@@ -218,16 +250,26 @@ export async function getMyTrees() {
     throw e;
   }
 }
-export async function getTreesByUserId(id) {
+
+export async function getMyPurchasedTrees() {
   const { token } = await getSession();
+  console.log(token);
   const headers = {
     Accept: "application/json",
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
+  try {
+    return await axios.get(BASE_URL + `/my_purchased`, {
+      headers,
+    });
+  } catch (e) {
+    throw e;
+  }
+}
+export async function getTreesByUserId(id) {
   // const headers = "yes";
 
-  console.log(headers);
   try {
     return await axios
       .get(BASE_URL + `/user_trees?user_id=${id}`)
@@ -402,6 +444,18 @@ export async function createNode(node) {
     console.log(error);
   }
 }
+export async function editUser(id, payload) {
+  try {
+    return await axios.post(BASE_URL + `/user/${id}`, payload).then((res) => {
+      //getNodeByTreeId(dispatch, treeid);
+      //getNodeEdges(dispatch, treeid);
+      return res.data;
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function editNode(id, node, treeid, dispatch) {
   try {
     return await axios

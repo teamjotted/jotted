@@ -163,8 +163,10 @@ export default function Create() {
                   setCategory(e.target.value);
                 }}
               >
-                {DISCIPLINE_DATA_ARRAY.map((res) => (
-                  <MenuItem value={res}>{res}</MenuItem>
+                {DISCIPLINE_DATA_ARRAY.map((res, index) => (
+                  <MenuItem key={index} value={res}>
+                    {res}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
