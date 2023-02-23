@@ -1,4 +1,6 @@
 import { Avatar, Box, Stack, Tooltip, Typography } from "@mui/material";
+import Link from "next/link";
+import { useEffect } from "react";
 import { media } from "../mock/TreePhotos";
 
 export default function MapCard({ row, handleClick }) {

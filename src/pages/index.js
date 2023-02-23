@@ -28,6 +28,7 @@ import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import { motion } from "framer-motion";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
 const inter = Inter({ subsets: ["latin"] });
 
 const categories = ["Free", "Paid", "Education", "Business"];
@@ -77,6 +78,8 @@ export default function Home() {
     // if (!data) {
     //   router.push("/login");
     // }
+    router.prefetch("/map");
+
     getPublicTrees(
       pageState.page,
       pageState.per_page,
@@ -179,7 +182,7 @@ export default function Home() {
       sx={{ backgroundColor: "#F2F1F6", height: "100%", minHeight: "100vh" }}
     >
       <Head>
-        <title>Jotted | Home</title>
+        <title>Jotted</title>
         <meta name="description" content="Marketplace for microlearning" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />

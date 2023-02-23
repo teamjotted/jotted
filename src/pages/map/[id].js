@@ -806,6 +806,7 @@ function Map({ data }) {
           <meta name="description" content={treeDetails?.description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href={treeDetails?.photo} />
+          {/* <link rel="preload" as="script" href="critical.js" /> */}
         </Head>
 
         <>
