@@ -65,7 +65,7 @@ export default function EditProfilePopup({ open, handleClose, setUser }) {
         />
         <TextField
           onChange={(e) => {
-            setName(e.target.value);
+            setUsername(e.target.value);
           }}
           label="Username"
           value={username}

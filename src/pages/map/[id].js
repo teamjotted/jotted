@@ -200,8 +200,8 @@ function AlertDialogSlide({
   }
 }
 
-function Map({ data }) {
-  // const { data: session } = useSession();
+function Map() {
+  const { data } = useSession();
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
@@ -1090,18 +1090,18 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+// export async function getServerSideProps({ req }) {
+//   const session = await getSession({ req });
 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return {
-    props: { data: session },
-  };
-}
+//   // if (!session) {
+//   //   return {
+//   //     redirect: {
+//   //       destination: "/",
+//   //       permanent: false,
+//   //     },
+//   //   };
+//   // }
+//   return {
+//     props: { data: session },
+//   };
+// }
