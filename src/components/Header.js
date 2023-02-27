@@ -29,7 +29,7 @@ export default function Header({
   search,
   setSearch,
   scrollRef,
-  seachHandler,
+  searchHandler,
 }) {
   const { width } = useWindowDimensions();
   const { data: session, status } = useSession();
@@ -57,7 +57,6 @@ export default function Header({
   // 		});
   // 	}
   // }, [treeDetails]);
-  //console.log(session);
 
   return (
     <Box
@@ -87,35 +86,35 @@ export default function Header({
             onChange={(e) => {
               setSearch(e.target.value);
             }}
-            placeholder="search your personal knowledge base"
+            placeholder="search for a map"
             size="small"
             sx={{ flex: 2, mx: 2, color: "white", maxWidth: 400 }}
           />
           <Box
             onClick={() => {
-              if (scrollRef.current) {
-                scrollRef.current.scrollIntoView({
-                  behavior: "smooth",
-                  inline: "nearest",
-                  block: "start",
-                });
-              }
-              seachHandler();
+              // if (scrollRef.current) {
+              //   scrollRef.current.scrollIntoView({
+              //     behavior: "smooth",
+              //     inline: "nearest",
+              //     block: "start",
+              //   });
+              // }
+              searchHandler();
             }}
             sx={{
               "&:hover": { opacity: 0.7 },
               borderRadius: 2,
               display: "flex",
-              boxShadow: 0,
-              backgroundColor: "#00A4FF",
+              backgroundColor: "#F1F1F1",
               cursor: "pointer",
-              mr: 1,
+              ml: 1,
               justifyContent: "center",
               alignItems: "center",
               width: 100,
+              height: 40,
             }}
           >
-            <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
+            <Typography sx={{ color: "color", fontWeight: 600 }}>
               Search
             </Typography>
           </Box>
@@ -232,7 +231,33 @@ export default function Header({
           >
             {/* <BackButton onClick={onClick} />{" "} */}
           </Box>
-
+          <Box
+            onClick={() => {
+              router.push("/map/create");
+            }}
+            sx={{
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              backgroundColor: "white",
+              cursor: "pointer",
+              mr: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              width: 100,
+              p: 1,
+              height: 40,
+              alignSelf: "center",
+              border: 1,
+              borderColor: "#DADADA",
+            }}
+          >
+            <Typography
+              sx={{ color: "#151127", fontWeight: 600, fontSize: 14 }}
+            >
+              New Map
+            </Typography>
+          </Box>
           <Box
             sx={{
               ml: "auto",
@@ -245,7 +270,7 @@ export default function Header({
             >
               <Avatar
                 onClick={() => router.push(`/user/${session?.user.id}`)}
-                src={session?.user.photo_url}
+                src={session.user.photo_url}
               />
             </Tooltip>
           </Box>

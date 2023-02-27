@@ -20,7 +20,9 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import IFrameComponent from "./IFrameComponent";
-
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const style = {
   position: "absolute",
   top: "50%",
@@ -80,8 +82,9 @@ export default function ResourceDrawer({
             mx: width >= 450 ? 2 : 0,
             overflowY: width >= 450 ? "auto" : "auto",
             overflowX: "hidden",
-            maxWidth: width >= 450 ? width - 500 : width,
+            maxWidth: width >= 450 ? width - 525 : width,
             ml: "auto",
+            mr: 5,
             p: 1,
             "&::-webkit-scrollbar": {
               width: "0.2em",
@@ -100,24 +103,92 @@ export default function ResourceDrawer({
       >
         <Box sx={{}}>
           <Box
-            onClick={() => {
-              setFrame(null);
-              setOpenUrl(false);
-            }}
             sx={{
+              position: "fixed",
               zIndex: 100,
-              position: "absolute",
-              // opacity: 0.3,
-              // "&:hover": { opacity: 1 },
-              display: "flex",
-              m: 1,
-              cursor: "pointer",
+              right: 15,
             }}
           >
-            <IconButton sx={{ backgroundColor: "white" }}>
-              <CloseIcon />
-            </IconButton>
+            <Box
+              sx={{
+                boxShadow: 5,
+                backgroundColor: "white",
+                borderRadius: 20,
+                py: 0.5,
+              }}
+            >
+              <IconButton
+                onClick={() => {
+                  setFrame(null);
+                  setOpenUrl(false);
+                }}
+                size="small"
+                sx={{
+                  color: "#FF7B7B",
+                  width: 30,
+                  height: 30,
+                  display: "flex",
+                  m: 1,
+                  cursor: "pointer",
+                }}
+              >
+                <Tooltip title="Close" placement="left-start">
+                  <CloseIcon />
+                </Tooltip>
+              </IconButton>
+
+              <IconButton
+                onClick={() => {
+                  window.open(resource.src);
+                }}
+                size="small"
+                sx={{
+                  width: 30,
+                  height: 30,
+                  display: "flex",
+                  m: 1,
+                  cursor: "pointer",
+                }}
+              >
+                <Tooltip title="Open Link" placement="left-start">
+                  <InsertLinkIcon />
+                </Tooltip>
+              </IconButton>
+            </Box>
+            <Box
+              onClick={() => {
+                likeHandler(resource);
+              }}
+              sx={{
+                boxShadow: 5,
+                backgroundColor: "white",
+                borderRadius: 20,
+                mt: 1,
+                py: 0.5,
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#F1F1F1",
+                },
+              }}
+            >
+              <IconButton
+                disableRipple={true}
+                size="small"
+                sx={{
+                  width: 30,
+                  height: 30,
+                  display: "flex",
+                  m: 1,
+                  cursor: "pointer",
+                }}
+              >
+                <Tooltip title="Like" placement="left-start">
+                  <FavoriteBorderIcon />
+                </Tooltip>
+              </IconButton>
+            </Box>
           </Box>
+
           <motion.div
             animate={{ y: -5 }}
             transition={{ type: "spring" }}
@@ -132,71 +203,11 @@ export default function ResourceDrawer({
                 ) : (
                   <></>
                 )}
-                <Box sx={{ display: "flex", p: 2 }}>
-                  <Box
-                    onClick={() => {
-                      // const iframe = document.getElementById('reciever');
-                      // console.log(document.getElementById("reciever").onload());
-                    }}
-                    // onClick={() => {
-                    // 	prevHandler();
-                    // }}
-                    sx={{
-                      flex: 1,
-                      "&:hover": { opacity: 0.7 },
-                      borderRadius: 2,
-                      display: "flex",
-                      boxShadow: 0,
-                      borderColor: "#00A4FF",
-                      cursor: "pointer",
-                      mr: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      border: 1,
-                      p: 1,
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "white",
-                        fontWeight: 600,
-                        color: "#1D1D1D",
-                        fontSize: 12,
-                      }}
-                    >
-                      Back
-                    </Typography>
-                  </Box>
-                  <Box
-                    onClick={() => {
-                      nextHandler();
-                    }}
-                    sx={{
-                      flex: 1,
-                      "&:hover": { opacity: 0.7 },
-                      borderRadius: 2,
-                      display: "flex",
-                      boxShadow: 0,
-                      backgroundColor: "#00A4FF",
-                      cursor: "pointer",
-                      mr: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      p: 1,
-                    }}
-                  >
-                    <Typography
-                      sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
-                    >
-                      Next
-                    </Typography>
-                  </Box>
-                </Box>
                 <Box
                   sx={{
                     display: "flex",
                     backgroundColor: "#F2F1F6",
-                    m: 2,
+                    my: 1,
                     borderRadius: 3,
                   }}
                 >
@@ -235,10 +246,24 @@ export default function ResourceDrawer({
                     )}
                   </Box>
 
-                  <Box sx={{ p: 1, ml: "auto" }}>
+                  <Box sx={{ p: 1, ml: "auto", display: "flex" }}>
+                    <Box
+                      sx={{
+                        "&:hover": { opacity: 0.7 },
+                        display: "flex",
+                        cursor: "pointer",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        p: 1,
+                      }}
+                    >
+                      <Tooltip placement="left-start" title="Previous">
+                        <ArrowBackIcon sx={{ "&:hover": { opacity: 0.1 } }} />
+                      </Tooltip>
+                    </Box>
                     <Box
                       onClick={() => {
-                        window.open(resource.src);
+                        nextHandler();
                       }}
                       sx={{
                         "&:hover": { opacity: 0.7 },
@@ -249,8 +274,10 @@ export default function ResourceDrawer({
                         p: 1,
                       }}
                     >
-                      <Tooltip title="Go to Link">
-                        <InsertLinkIcon sx={{ "&:hover": { opacity: 0.1 } }} />
+                      <Tooltip placement="right-start" title="Next">
+                        <ArrowForwardIcon
+                          sx={{ "&:hover": { opacity: 0.1 } }}
+                        />
                       </Tooltip>
                     </Box>
                   </Box>
@@ -258,7 +285,7 @@ export default function ResourceDrawer({
               </>
             </Box>
             <Box sx={{ p: 2 }}>
-              <Box
+              {/* <Box
                 sx={{
                   display: "flex",
                   boxShadow: 3,
@@ -321,13 +348,13 @@ export default function ResourceDrawer({
                     {resource?.dislikes}
                   </Typography>
                 </Box>
-              </Box>
+              </Box> */}
             </Box>
             <Box
               sx={{
                 display: "flex",
                 backgroundColor: "#F2F1F6",
-                m: 2,
+
                 borderRadius: 3,
               }}
             >

@@ -77,7 +77,7 @@ export default function Login({ data }) {
           setNewUser={setNewUser}
         />
       )}
-      {/* <Box style={{ flex: 1 }}>
+      <Box style={{ flex: 1 }}>
         <CardMedia
           sx={{
             height: "100%",
@@ -85,12 +85,12 @@ export default function Login({ data }) {
             justifyContent: "center",
             pb: 30,
             px: 5,
+            backgroundColor: "#151127",
           }}
           component="box"
           image="/images/backdrops/loginsplash.svg"
-        >
-        </CardMedia>
-      </Box> */}
+        ></CardMedia>
+      </Box>
     </Box>
   );
 }

@@ -106,7 +106,7 @@ function AlertDialogSlide({
             <DialogTitle>{tree.name}</DialogTitle>
             <IconButton
               onClick={() => {
-                router.push("/");
+                router.back();
               }}
               sx={{ ml: "auto", mr: 1 }}
             >
@@ -296,6 +296,25 @@ function Map() {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    // toggleDrawer(false);
+    //to make sure
+    nodes.map((res) => {
+      if (res.type == "mainNode") {
+        console.log(res);
+        dispatch(setNodeId(res?.id));
+        setSelectedNode({
+          id: res?.id,
+          text: res?.label,
+          type: res?.type,
+          photo: res?.photo,
+          index: res?.index,
+        });
+      }
+    });
+  }, []);
+
   const handleNodeClick = (e, node) => {
     console.log("NODE", node);
 
@@ -487,7 +506,7 @@ function Map() {
   function likeHandler(resource) {
     console.log("like", resource);
     // toast.success("Liked")
-    createReaction(user.id, resource.id, "like").then(() => {
+    createReaction(data.user.id, resource.id, "like").then(() => {
       console.log(resource.tree_id);
       getNodeAttachments(resource.node_id).then((res) => {
         console.log(res);
@@ -691,6 +710,7 @@ function Map() {
         setAttachment(res?.data);
         if (nextMode) {
           console.log("NEXT MODE");
+          console.log(res.data);
           if (res.data?.length > 0) {
             resouceClickHandler(res.data[0]);
           } else {

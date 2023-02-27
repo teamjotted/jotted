@@ -343,7 +343,6 @@ export default function MainNodeSidebar({
                                 }}
                                 src={res.photo}
                               />
-
                               <Box sx={{ cursor: "pointer", ml: 2 }}>
                                 <>
                                   <Typography

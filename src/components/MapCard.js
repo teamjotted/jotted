@@ -14,6 +14,7 @@ export default function MapCard({ row, handleClick }) {
         flexDirection: "column",
         borderRadius: 2,
         mx: 1,
+        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.20)",
         backgroundImage: `url(${
           row.photo == "" ? media[4].photo : row.photo
         }) ,url(${row.photo == "" ? media[4].photo : row.photo})`,

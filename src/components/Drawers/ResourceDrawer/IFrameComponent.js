@@ -1,5 +1,5 @@
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 export default function IFrameComponent({ frame, resource }) {
   const { width, height } = useWindowDimensions();
