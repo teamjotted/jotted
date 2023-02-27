@@ -7,6 +7,9 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import StarsIcon from "@mui/icons-material/Stars";
 import PaymentsIcon from "@mui/icons-material/Payments";
+
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+
 export default function Sidebar({ router }) {
   const [cur, setCur] = useState();
   //const router = useRouter();
@@ -123,7 +126,7 @@ export default function Sidebar({ router }) {
           Free
         </Typography>
       </Box>
-      <Box
+      {/* <Box
         onClick={() => {
           // if (catalog != "paid") {
           //   router.push("/paid");
@@ -155,7 +158,7 @@ export default function Sidebar({ router }) {
         >
           Paid
         </Typography>
-      </Box>
+      </Box> */}
       <Box
         onClick={() => {
           if (catalog != "recent") {
@@ -175,7 +178,7 @@ export default function Sidebar({ router }) {
           alignItems: "center",
         }}
       >
-        <PaymentsIcon
+        <LocalFireDepartmentIcon
           sx={{
             mr: 2,
             fontSize: 20,

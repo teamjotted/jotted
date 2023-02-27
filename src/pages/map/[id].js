@@ -273,7 +273,8 @@ function Map() {
       tree_id: id,
       type: "smoothstep",
     };
-    createNodeEdge(dispatch, newEdge, id);
+    console.log(newEdge);
+    createNodeEdge(newEdge, id);
   }, []);
   function handleDragStop(e, node, nodeArr) {
     console.log(node);
@@ -481,7 +482,7 @@ function Map() {
                     dispatch(setTreeAdmin(true));
                     isLoading(false);
                   } else {
-                    router.push("/");
+                    //router.push("/");
                   }
                 }
               }
@@ -805,6 +806,7 @@ function Map() {
       console.log(edge);
       deleteNodeEdge(edge.id).then((res) => {
         console.log(res);
+        console.log(id);
         getNodeEdges(id).then((res) => {
           console.log(res);
           setEdges(res);
@@ -891,7 +893,7 @@ function Map() {
                   onPaneClick={handleNodeBlur}
                   onDragOver={onDragOver}
                   onEdgeUpdate={onEdgeUpdate}
-                  onEdgeUpdateStart={onEdgeUpdateStart}
+                  onEdgeUpdateStart={treeAdmin ? onEdgeUpdateStart : null}
                   onEdgeUpdateEnd={onEdgeUpdateEnd}
                   // panOnScroll
                   // selectionOnDrag

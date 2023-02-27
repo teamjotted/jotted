@@ -200,6 +200,7 @@ export async function getNodeEdges(treeid) {
 export async function createNodeEdge(edge, treeid) {
   try {
     return await axios.post(BASE_URL + "/edges", edge).then((res) => {
+      console.log(res, treeid);
       getNodeEdges(treeid);
     });
   } catch (error) {

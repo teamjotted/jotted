@@ -24,6 +24,8 @@ import AddResourcePopup from "../Popup/AddResourcePopup";
 
 import { toast } from "react-toastify";
 
+import { motion } from "framer-motion";
+
 export default function SubNodeContent({
   attachments,
   setAttachment,
@@ -231,6 +233,7 @@ export default function SubNodeContent({
                 maxHeight: 600,
                 overflowY: "auto",
                 overflowX: "hidden",
+                pb: 10,
                 "&::-webkit-scrollbar": {
                   width: "0.2em",
                 },
@@ -252,136 +255,148 @@ export default function SubNodeContent({
                   index={index}
                 >
                   {(provided) => (
-                    <Box
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      ref={provided.innerRef}
-                      sx={{
-                        flexDirection: "column",
-                        p: 1,
-                        backgroundColor:
-                          resource?.id != res.id ? "#F2F1F6" : "#00A4FF",
-                        borderRadius: 2,
-                        my: 1,
-                        display: "flex",
-                        maxWidth: 470,
-                        overflow: "hidden",
+                    <motion.div
+                      // initial={{ scale: 0 }}
+                      animate={{ y: 0 }}
+                      transition={{
+                        // type: "spring",
+                        duration: 0.2,
+                        stiffness: 150,
                       }}
+                      whileHover={{ y: -1.5 }}
                     >
                       <Box
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        ref={treeAdmin ? provided.innerRef : null}
                         sx={{
+                          flexDirection: "column",
+                          p: 1,
+                          backgroundColor: "white",
+                          borderRadius: 2,
+                          my: 1.1,
+                          mx: 1,
                           display: "flex",
+                          maxWidth: 470,
+                          overflow: "hidden",
+                          boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
+
+                          "&:hover": {
+                            boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
+                          },
                         }}
                       >
                         <Box
-                          component={"img"}
-                          width={75}
-                          height={75}
                           sx={{
-                            borderRadius: 2,
-                            mr: 1,
-                            alignSelf: "center",
-                            backgroundColor: "white",
-                          }}
-                          src={res.preview_url}
-                        />
-                        <Box
-                          onClick={() => {
-                            resouceClickHandler(res);
-                          }}
-                          sx={{
-                            cursor: "pointer",
-                            ml: 2,
-                            "&:hover": {
-                              color: "#00A4FF",
-                            },
-                            color: resource?.id == res.id ? "white" : "",
+                            display: "flex",
                           }}
                         >
-                          <>
-                            <Typography
-                              sx={{
-                                fontSize: 10,
-                                maxWidth: 250,
-                                display: "-webkit-box",
-                                overflow: "hidden",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 1,
-                              }}
-                            >
-                              {res.src}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                fontWeight: 800,
-                                fontSize: 12,
-                                display: "-webkit-box",
-                                overflow: "hidden",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 2,
-                                maxWidth: 250,
-                              }}
-                            >
-                              {res.title}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                maxWidth: 250,
-                                fontSize: 10,
-                                display: "-webkit-box",
-                                overflow: "hidden",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 2,
-                              }}
-                            >
-                              {res.description}
-                            </Typography>
-                          </>
-                        </Box>
-                        {treeAdmin ? (
                           <Box
+                            component={"img"}
+                            width={75}
+                            height={75}
                             sx={{
-                              "&:hover": { opacity: 0.1 },
+                              borderRadius: 2,
+                              mr: 1,
+                              alignSelf: "center",
+                              backgroundColor: "white",
+                            }}
+                            src={res.preview_url}
+                          />
+                          <Box
+                            onClick={() => {
+                              resouceClickHandler(res);
+                            }}
+                            sx={{
                               cursor: "pointer",
-                              display: "flex",
-                              ml: "auto",
-                              justifyContent: "center",
-                              alignContent: "center",
-                              fontWeight: 700,
+                              ml: 2,
+                              color: "#black",
                             }}
                           >
-                            <Tooltip title="Resource Settings">
-                              <MoreVertIcon
-                                onClick={(e) =>
-                                  handleOpenAttachmentDropdown(e, res)
-                                }
+                            <>
+                              <Typography
                                 sx={{
+                                  fontSize: 10,
+                                  maxWidth: 250,
+                                  display: "-webkit-box",
+                                  overflow: "hidden",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 1,
+                                }}
+                              >
+                                {res.src}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontWeight: 800,
+                                  fontSize: 12,
+                                  display: "-webkit-box",
+                                  overflow: "hidden",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 2,
+                                  maxWidth: 250,
+                                }}
+                              >
+                                {res.title}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  maxWidth: 250,
+                                  fontSize: 10,
+                                  display: "-webkit-box",
+                                  overflow: "hidden",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 2,
+                                }}
+                              >
+                                {res.description}
+                              </Typography>
+                            </>
+                          </Box>
+                          {treeAdmin ? (
+                            <Box
+                              sx={{
+                                "&:hover": { opacity: 0.1 },
+                                cursor: "pointer",
+                                display: "flex",
+                                ml: "auto",
+                                justifyContent: "center",
+                                alignContent: "center",
+                                fontWeight: 700,
+                              }}
+                            >
+                              <Tooltip title="Resource Settings">
+                                <MoreVertIcon
+                                  onClick={(e) =>
+                                    handleOpenAttachmentDropdown(e, res)
+                                  }
+                                  sx={{
+                                    ml: "auto",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                  }}
+                                />
+                              </Tooltip>
+                            </Box>
+                          ) : (
+                            <Tooltip
+                              onClick={() => {
+                                window.open(res.src);
+                              }}
+                              title="Go to Link"
+                            >
+                              <InsertLinkIcon
+                                sx={{
+                                  "&:hover": { opacity: 0.1 },
                                   ml: "auto",
-                                  cursor: "pointer",
-                                  textAlign: "center",
+                                  color: "black",
                                 }}
                               />
                             </Tooltip>
-                          </Box>
-                        ) : (
-                          <Tooltip
-                            onClick={() => {
-                              window.open(res.src);
-                            }}
-                            title="Go to Link"
-                          >
-                            <InsertLinkIcon
-                              sx={{
-                                "&:hover": { opacity: 0.1 },
-                                ml: "auto",
-                                color:
-                                  resource?.id == res.id ? "white" : "black",
-                              }}
-                            />
-                          </Tooltip>
-                        )}
+                          )}
+                        </Box>
                       </Box>
-                    </Box>
+                    </motion.div>
                   )}
                 </Draggable>
               ))}

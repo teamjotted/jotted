@@ -253,7 +253,7 @@ export default function Home() {
           mt: 4,
         }}
       >
-        <Box sx={{ width: 300, mt: 0 }}>
+        <Box sx={{ width: 300 }}>
           {/* <Box sx={{ minWidth: 120, ml: "auto" }}>
               <FormControl
                 size="small"
@@ -288,7 +288,7 @@ export default function Home() {
           })} */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1250, mx: 2 }}>
+        <Box sx={{ display: "flex", width: 1250, mx: 2, py: 1 }}>
           {/* <Box sx={{ display: "flex" }}>
               {width > 450 ? (
                 <Box
