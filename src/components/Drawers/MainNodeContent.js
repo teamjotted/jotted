@@ -284,8 +284,8 @@ export default function MainNodeSidebar({
             Start Map
           </Typography>
         </Box>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable-1">
+        <DragDropContext onDragEnd={treeAdmin ? onDragEnd : null}>
+          <Droppable droppableId="droppable-0">
             {(provided) => (
               <Box
                 ref={provided.innerRef}
@@ -331,7 +331,7 @@ export default function MainNodeSidebar({
                               onClick={() => selectNode(res)}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              ref={treeAdmin ? provided.innerRef : null}
+                              ref={provided.innerRef}
                               sx={{
                                 flexDirection: "column",
                                 p: 1,
