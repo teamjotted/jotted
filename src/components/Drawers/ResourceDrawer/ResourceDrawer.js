@@ -212,10 +212,14 @@ export default function ResourceDrawer({
                   }}
                 >
                   <Box sx={{ p: 2 }}>
-                    <Typography sx={{ fontSize: 20, fontWeight: 600 }}>
+                    <Typography
+                      variant="h1"
+                      sx={{ fontSize: 20, fontWeight: 600 }}
+                    >
                       {resource?.title}
                     </Typography>
                     <Typography
+                      variant="body1"
                       sx={{
                         fontSize: 12,
                         display: "-webkit-box",
@@ -228,6 +232,7 @@ export default function ResourceDrawer({
                     </Typography>
                     {resource?.description.length >= 20 ? (
                       <Typography
+                        variant="h1"
                         onClick={() => {
                           setReadMore(!readMore);
                         }}
@@ -359,10 +364,10 @@ export default function ResourceDrawer({
               }}
             >
               <Box sx={{ p: 2 }}>
-                <Typography sx={{ fontWeight: 600 }}>
+                <Typography variant="body1" sx={{ fontWeight: 600 }}>
                   Learning Blocks 🧱{" "}
                 </Typography>
-                <Typography sx={{ fontSize: 12 }}>
+                <Typography variant="body1" sx={{ fontSize: 12 }}>
                   Coming soon, we are thrilled to present our revolutionary
                   Learning Blocks! These powerful building blocks for learning
                   offer customizable discussion questions, video responses, or
@@ -391,7 +396,10 @@ export default function ResourceDrawer({
                       width: 200,
                     }}
                   >
-                    <Typography sx={{ color: "white", fontWeight: 600 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "white", fontWeight: 600 }}
+                    >
                       Learn more
                     </Typography>
                   </Box>
@@ -415,7 +423,10 @@ export default function ResourceDrawer({
                       width: 200,
                     }}
                   >
-                    <Typography sx={{ color: "white", fontWeight: 600 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "white", fontWeight: 600 }}
+                    >
                       Try A Block
                     </Typography>
                   </Box>

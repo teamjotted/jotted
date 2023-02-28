@@ -18,6 +18,7 @@ import mixpanel from "mixpanel-browser";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 export default function MainNodeSidebar({
   nextHandler,
@@ -107,13 +108,14 @@ export default function MainNodeSidebar({
         <Box
           sx={{
             display: "flex",
-            backgroundColor: "#F2F2F2",
+
             borderRadius: 3,
             p: 1,
           }}
         >
           <Box>
             <Typography
+              variant="h1"
               sx={{
                 fontSize: width >= 450 ? 30 : 20,
                 fontWeight: 700,
@@ -123,6 +125,7 @@ export default function MainNodeSidebar({
               {selectedNode?.text}
             </Typography>
             <Typography
+              variant="body1"
               sx={{
                 fontSize: 12,
                 fontWeight: 500,
@@ -170,7 +173,11 @@ export default function MainNodeSidebar({
             horizontal: "right",
           }}
         >
-          {treeAdmin && <MenuItem onClick={handleEditNode}>Edit</MenuItem>}
+          {treeAdmin && (
+            <MenuItem onClick={handleEditNode}>
+              <Typography variant="body1">Edit</Typography>
+            </MenuItem>
+          )}
           <MenuItem
             onClick={() => {
               mixpanel.track("Buy me a coffee", {
@@ -180,19 +187,22 @@ export default function MainNodeSidebar({
               toast.success("Coming soon!");
             }}
           >
-            Buy Me A Coffee
+            <Typography variant="body1">Buy Me a Coffee</Typography>
           </MenuItem>
           <MenuItem disabled onClick={handleClose}>
-            Share
+            <Typography variant="body1">Share</Typography>
           </MenuItem>
           <MenuItem disabled onClick={handleClose}>
-            Report
+            <Typography variant="body1">Report</Typography>
           </MenuItem>
           <Divider />
         </Menu>
         <Box sx={{ m: 1, display: "flex", flexDirection: "column" }}>
           <Box sx={{}}>
-            <Typography sx={{ fontSize: 12, fontWeight: 600, color: "black" }}>
+            <Typography
+              variant="h5"
+              sx={{ fontSize: 12, fontWeight: 600, color: "black" }}
+            >
               Created by {treeDetails?.user.firstname}{" "}
               {treeDetails?.user.lastname}
             </Typography>
@@ -261,7 +271,7 @@ export default function MainNodeSidebar({
             borderRadius: 2,
             display: "flex",
             boxShadow: 0,
-            backgroundColor: "#00A4FF",
+            backgroundColor: "black",
             cursor: "pointer",
             mr: 1,
             justifyContent: "center",
@@ -270,7 +280,7 @@ export default function MainNodeSidebar({
             my: 1,
           }}
         >
-          <Typography sx={{ fontWeight: 500, color: "white" }}>
+          <Typography variant="body1" sx={{ fontWeight: 500, color: "white" }}>
             Start Map
           </Typography>
         </Box>
@@ -307,71 +317,89 @@ export default function MainNodeSidebar({
                         index={index}
                       >
                         {(provided) => (
-                          <Box
-                            onClick={() => selectNode(res)}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                            sx={{
-                              flexDirection: "column",
-                              p: 1,
-                              borderRadius: 2,
-                              my: 2,
-                              display: "flex",
-                              backgroundColor: "#F2F2F2",
-                              maxWidth: 450,
-                              overflow: "hidden",
+                          <motion.div
+                            // initial={{ scale: 0 }}
+                            animate={{ y: 0 }}
+                            transition={{
+                              // type: "spring",
+                              duration: 0.2,
+                              stiffness: 150,
                             }}
+                            whileHover={{ y: -1.5 }}
                           >
                             <Box
+                              onClick={() => selectNode(res)}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={treeAdmin ? provided.innerRef : null}
                               sx={{
+                                flexDirection: "column",
+                                p: 1,
+                                borderRadius: 2,
+                                my: 1.1,
+                                mx: 1,
                                 display: "flex",
+                                backgroundColor: "white",
+                                maxWidth: 470,
+                                overflow: "hidden",
+                                boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
                                 "&:hover": {
-                                  color:
-                                    res.type == "mainNode" ? "" : "#00A4FF",
+                                  boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
                                 },
                               }}
                             >
                               <Box
-                                component={"img"}
-                                width={50}
-                                height={50}
                                 sx={{
-                                  borderRadius: 2,
-                                  mr: 1,
-                                  alignSelf: "center",
+                                  display: "flex",
+                                  "&:hover": {
+                                    color:
+                                      res.type == "mainNode" ? "" : "#00A4FF",
+                                  },
                                 }}
-                                src={res.photo}
-                              />
-                              <Box sx={{ cursor: "pointer", ml: 2 }}>
-                                <>
-                                  <Typography
-                                    sx={{
-                                      fontWeight: 800,
-                                      fontSize: 12,
-                                      display: "-webkit-box",
-                                      overflow: "hidden",
-                                      WebkitBoxOrient: "vertical",
-                                      WebkitLineClamp: 2,
-                                    }}
-                                  >
-                                    {res.index} | {res.data.label}
-                                  </Typography>
-                                  <Typography
-                                    sx={{
-                                      fontSize: 12,
-                                      display: "-webkit-box",
-                                      overflow: "hidden",
-                                      WebkitBoxOrient: "vertical",
-                                      WebkitLineClamp: 2,
-                                    }}
-                                  >
-                                    {res.description}
-                                  </Typography>
-                                </>
+                              >
+                                <Box
+                                  component={"img"}
+                                  width={50}
+                                  height={50}
+                                  sx={{
+                                    borderRadius: 2,
+                                    mr: 1,
+                                    alignSelf: "center",
+                                  }}
+                                  src={res.photo}
+                                />
+                                <Box sx={{ cursor: "pointer", ml: 2 }}>
+                                  <>
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        fontWeight: 800,
+                                        fontSize: 12,
+                                        display: "-webkit-box",
+                                        overflow: "hidden",
+                                        WebkitBoxOrient: "vertical",
+                                        WebkitLineClamp: 2,
+                                      }}
+                                    >
+                                      {res.index} | {res.data.label}
+                                    </Typography>
+                                    <Typography
+                                      variant="body2"
+                                      sx={{
+                                        fontSize: 12,
+                                        display: "-webkit-box",
+                                        overflow: "hidden",
+                                        WebkitBoxOrient: "vertical",
+                                        WebkitLineClamp: 2,
+                                      }}
+                                    >
+                                      {res.description}
+                                    </Typography>
+                                  </>
+                                </Box>
                               </Box>
                             </Box>
-                          </Box>
+                          </motion.div>
                         )}
                       </Draggable>
                     ) : (

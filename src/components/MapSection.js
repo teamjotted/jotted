@@ -68,7 +68,9 @@ export default function MapSection({ trees, handleClick, name, data }) {
                 cursor: "pointer",
               }}
             >
-              <Typography sx={{ color: "#1D2939" }}>See more</Typography>
+              <Typography variant="body1" sx={{ color: "#1D2939" }}>
+                See more
+              </Typography>
             </Box>
           </Box>
         </>

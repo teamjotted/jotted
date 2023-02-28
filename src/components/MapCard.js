@@ -38,9 +38,10 @@ export default function MapCard({ row, handleClick }) {
           }}
         >
           <Typography
+            variant="body1"
             sx={{
-              mx: 1,
-              fontSize: 12,
+              mx: 2,
+              fontSize: 9,
               fontWeight: 600,
             }}
           >
@@ -82,6 +83,7 @@ export default function MapCard({ row, handleClick }) {
             }}
           >
             <Typography
+              variant="h1"
               sx={{
                 display: "-webkit-box",
                 overflow: "hidden",
@@ -97,6 +99,7 @@ export default function MapCard({ row, handleClick }) {
             </Typography>
           </Stack>
           <Typography
+            variant="body1"
             sx={{
               display: "-webkit-box",
               overflow: "hidden",

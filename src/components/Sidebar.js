@@ -35,6 +35,7 @@ export default function Sidebar({ router }) {
         }}
         sx={{
           p: 1,
+          py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == null ? "white" : "",
@@ -54,6 +55,7 @@ export default function Sidebar({ router }) {
           }}
         />
         <Typography
+          variant="h1"
           sx={{ fontSize: 18, color: catalog == null ? "black" : "#7B7B7B" }}
         >
           Home
@@ -67,6 +69,7 @@ export default function Sidebar({ router }) {
         }}
         sx={{
           p: 1,
+          py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "featured" ? "white" : "",
@@ -86,6 +89,7 @@ export default function Sidebar({ router }) {
           }}
         />
         <Typography
+          variant="h1"
           sx={{
             fontSize: 18,
             color: catalog == "featured" ? "black" : "#7B7B7B",
@@ -102,6 +106,7 @@ export default function Sidebar({ router }) {
         }}
         sx={{
           p: 1,
+          py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "free" ? "white" : "",
@@ -121,6 +126,7 @@ export default function Sidebar({ router }) {
           }}
         />
         <Typography
+          variant="h1"
           sx={{ fontSize: 18, color: catalog == "free" ? "black" : "#7B7B7B" }}
         >
           Free
@@ -167,6 +173,7 @@ export default function Sidebar({ router }) {
         }}
         sx={{
           p: 1,
+          py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "recent" ? "white" : "",
@@ -186,6 +193,7 @@ export default function Sidebar({ router }) {
           }}
         />
         <Typography
+          variant="h1"
           sx={{
             fontSize: 18,
             color: catalog == "recent" ? "black" : "#7B7B7B",

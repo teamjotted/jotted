@@ -109,11 +109,11 @@ export default function Search({ data }) {
           alignContent: "center",
           display: "flex",
           mx: 3,
-          mt: 4,
+          mt: 1,
         }}
       >
         {" "}
-        <Box sx={{ width: 300, mt: 8 }}>
+        <Box sx={{ width: 300, mt: 7 }}>
           <Sidebar router={router} />
         </Box>
         <>

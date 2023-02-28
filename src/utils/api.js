@@ -484,6 +484,7 @@ export async function orderNodes(payload) {
     console.log(error);
   }
 }
+
 export async function createNodeAttacments(payload, dispatch) {
   try {
     return await axios.post(BASE_URL + "/resources", payload).then((res) => {

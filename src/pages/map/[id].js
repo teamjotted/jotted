@@ -482,7 +482,7 @@ function Map() {
                     dispatch(setTreeAdmin(true));
                     isLoading(false);
                   } else {
-                    //router.push("/");
+                    router.push("/");
                   }
                 }
               }

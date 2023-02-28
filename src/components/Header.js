@@ -161,6 +161,7 @@ export default function Header({
             <></>
           )}
           <Typography
+            variant="h1"
             sx={{
               fontSize: 20,
               fontWeight: 700,
@@ -253,6 +254,7 @@ export default function Header({
             }}
           >
             <Typography
+              variant="body1"
               sx={{ color: "#151127", fontWeight: 600, fontSize: 14 }}
             >
               New Map
@@ -311,15 +313,19 @@ export default function Header({
           >
             <>
               <MenuItem onClick={shareHandleOpen}>
-                <Typography sx={{ textAlign: "center" }}>
+                <Typography variant="body1" sx={{ textAlign: "center" }}>
                   Share/Publish
                 </Typography>
               </MenuItem>
               <MenuItem onClick={editHandleOpen}>
-                <Typography sx={{ textAlign: "center" }}>Edit</Typography>
+                <Typography variant="body1" sx={{ textAlign: "center" }}>
+                  Edit
+                </Typography>
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleClose}>Close</MenuItem>
+              <MenuItem onClick={handleClose}>
+                <Typography variant="body1">Close</Typography>
+              </MenuItem>
             </>
           </Menu>
         </>

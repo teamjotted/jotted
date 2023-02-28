@@ -71,6 +71,8 @@ export default function SubNodeContent({
 
   // const handleOpenAttachmentDropdown = () => setAttachmentDropdown(true);
   // const handleCloseAttachmentDropdown = () => setAttachmentDropdown(false);
+
+  const [onFocus, setOnFocus] = useState();
   const openAttachmentsDropdown = Boolean(anchorElAttachments);
 
   function onDragEnd(result) {
@@ -150,15 +152,18 @@ export default function SubNodeContent({
         {/* <Box component={'img'} width={40} height={40} sx={{ borderRadius: 100, mr: 1, alignSelf: 'center' }} src={selectedNode?.photo} /> */}
         <Box
           sx={{
-            backgroundColor: "#F2F1F6",
             display: "flex",
             width: "100%",
             borderRadius: 2,
             p: 1,
+            px: 2.1,
             alignItems: "center",
           }}
         >
-          <Typography sx={{ fontSize: 25, fontWeight: 700, color: "black" }}>
+          <Typography
+            variant="h1"
+            sx={{ fontSize: 25, fontWeight: 700, color: "black" }}
+          >
             {selectedNode?.text}
           </Typography>
           <MoreVertIcon
@@ -280,7 +285,6 @@ export default function SubNodeContent({
                           maxWidth: 470,
                           overflow: "hidden",
                           boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
-
                           "&:hover": {
                             boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
                           },
@@ -315,6 +319,7 @@ export default function SubNodeContent({
                           >
                             <>
                               <Typography
+                                variant="body2"
                                 sx={{
                                   fontSize: 10,
                                   maxWidth: 250,
@@ -327,6 +332,7 @@ export default function SubNodeContent({
                                 {res.src}
                               </Typography>
                               <Typography
+                                variant="body2"
                                 sx={{
                                   fontWeight: 800,
                                   fontSize: 12,
@@ -340,6 +346,7 @@ export default function SubNodeContent({
                                 {res.title}
                               </Typography>
                               <Typography
+                                variant="body2"
                                 sx={{
                                   maxWidth: 250,
                                   fontSize: 10,
@@ -379,20 +386,21 @@ export default function SubNodeContent({
                               </Tooltip>
                             </Box>
                           ) : (
-                            <Tooltip
-                              onClick={() => {
-                                window.open(res.src);
-                              }}
-                              title="Go to Link"
-                            >
-                              <InsertLinkIcon
-                                sx={{
-                                  "&:hover": { opacity: 0.1 },
-                                  ml: "auto",
-                                  color: "black",
-                                }}
-                              />
-                            </Tooltip>
+                            <></>
+                            // <Tooltip
+                            //   onClick={() => {
+                            //     window.open(res.src);
+                            //   }}
+                            //   title="Go to Link"
+                            // >
+                            //   <InsertLinkIcon
+                            //     sx={{
+                            //       "&:hover": { opacity: 0.1 },
+                            //       ml: "auto",
+                            //       color: "black",
+                            //     }}
+                            //   />
+                            // </Tooltip>
                           )}
                         </Box>
                       </Box>
@@ -449,17 +457,25 @@ export default function SubNodeContent({
         <>
           {treeAdmin && (
             <MenuItem onClick={handleEditAttachment}>
-              <Typography sx={{ textAlign: "center" }}>Edit</Typography>
+              <Typography variant="body2" sx={{ textAlign: "center" }}>
+                Edit
+              </Typography>
             </MenuItem>
           )}
           <MenuItem onClick={deleteResoueceHandler}>
-            <Typography sx={{ textAlign: "center" }}>Delete</Typography>
+            <Typography variant="body2" sx={{ textAlign: "center" }}>
+              Delete
+            </Typography>
           </MenuItem>
           <MenuItem disabled>
-            <Typography sx={{ textAlign: "center" }}>Report</Typography>
+            <Typography variant="body2" sx={{ textAlign: "center" }}>
+              Report
+            </Typography>
           </MenuItem>
           <Divider />
-          <MenuItem onClick={handleCloseAttachmentDropdown}>Close</MenuItem>
+          <MenuItem onClick={handleCloseAttachmentDropdown}>
+            <Typography variant="body2">Close</Typography>
+          </MenuItem>
         </>
       </Menu>
       <Box>
