@@ -31,6 +31,7 @@ export default function MapCard({ row, handleClick }) {
           sx={{
             backgroundColor: "white",
             m: 1,
+            height: 24,
             borderRadius: 10,
             display: "flex",
             justifyContent: "center",
@@ -41,6 +42,7 @@ export default function MapCard({ row, handleClick }) {
             variant="body1"
             sx={{
               mx: 2,
+              my:.5,
               fontSize: 9,
               fontWeight: 600,
             }}
