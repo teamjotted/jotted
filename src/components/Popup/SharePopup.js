@@ -172,19 +172,29 @@ export default function Sharepopup({
       .then((res) => {
         console.log(res.data);
         setTreeDetails(res.data);
-        setEditedTree({ shared_users: res.data.shared_users });
+        setEditedTree({
+          shared_users: res.data.shared_users,
+          price: res.data.price,
+        });
         toast.success("Saved");
         setOpenShare(false);
+      })
+      .then(() => {
+        if (values) {
+          priceMyTree(tree.id, values.numberformat).then((res) => {
+            console.log(res);
+            if (res) {
+              setEditedTree({
+                price: res.data.tree.price,
+              });
+            }
+          });
+        }
       })
       .catch((e) => {
         console.log(e);
         setOpenShare(false);
       });
-    if (values) {
-      priceMyTree(tree.id, values.numberformat).then((res) => {
-        console.log(res);
-      });
-    }
   };
   // useEffect(() => {
   // 	console.log(users[users.length - 1]);

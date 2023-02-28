@@ -265,8 +265,8 @@ export default function SubNodeContent({
                       animate={{ y: 0 }}
                       transition={{
                         // type: "spring",
-                        duration: 0.2,
-                        stiffness: 150,
+                        duration: 0.1,
+                        stiffness: 125,
                       }}
                       whileHover={{ y: -1.5 }}
                     >
@@ -284,9 +284,12 @@ export default function SubNodeContent({
                           display: "flex",
                           maxWidth: 470,
                           overflow: "hidden",
-                          boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
+                          boxShadow:
+                            resource?.id != res.id
+                              ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
+                              : "1px 10px 13px rgba(0, 0, 0, 0.2)",
                           "&:hover": {
-                            boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
+                            boxShadow: "1px 10px 13px rgba(0, 0, 0, 0.15)",
                           },
                         }}
                       >
@@ -480,7 +483,12 @@ export default function SubNodeContent({
       </Menu>
       <Box>
         {treeAdmin && (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <IconButton
               sx={{ cursor: "pointer" }}
               onClick={() => {
