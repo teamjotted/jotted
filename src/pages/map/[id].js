@@ -455,6 +455,7 @@ function Map() {
                     dispatch(setTreeAdmin(false));
                   }
                 } else {
+                  dispatch(setTreeAdmin(false));
                   paidMapHandler(json);
                 }
               }
