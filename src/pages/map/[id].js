@@ -242,6 +242,7 @@ function Map() {
   const handleOpenLogin = () => setOpenLogin(true);
   const handleCloseLogin = () => setOpenLogin(false);
   const [openEditNode, setOpenEditNode] = useState(false);
+
   const handleEditNodeOpen = () => setOpenEditNode(true);
   const handleEditNodeClose = () => {
     setOpenEditNode(false);
@@ -756,7 +757,7 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - left - 75,
+        x: event.clientX - left,
         y: event.clientY - top,
       });
       const newNode = {
@@ -766,18 +767,29 @@ function Map() {
         position,
         data: {
           position: project({
-            x: event.clientX - left - 75,
+            x: event.clientX - left,
             y: event.clientY - top,
           }),
         },
         index: nodes.length,
       };
       console.log(newNode);
+
       createNode(newNode).then((res) => {
         console.log(res);
         getNodeByTreeId(id).then((res) => {
           setNodes(res);
           console.log(res);
+          handleEditNode();
+        });
+        dispatch(setNodeId(res?.id));
+
+        setSelectedNode({
+          id: res.id,
+          text: res.label,
+          type: res.type,
+          photo: res.photo,
+          index: res.index,
         });
       });
       // setPopUpValues({ currentName: "", newName: "", newNode: newNode });

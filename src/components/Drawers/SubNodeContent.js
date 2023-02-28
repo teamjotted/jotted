@@ -480,15 +480,22 @@ export default function SubNodeContent({
       </Menu>
       <Box>
         {treeAdmin && (
-          <IconButton
-            sx={{ cursor: "pointer" }}
-            onClick={() => {
-              handleOpen();
-              setSelectedResource();
-            }}
-          >
-            <AddIcon />
-          </IconButton>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                handleOpen();
+                setSelectedResource();
+              }}
+            >
+              <Tooltip placement="right" title="Add Resource">
+                <AddIcon />
+              </Tooltip>
+            </IconButton>
+            {/* <Typography variant="subtitle" sx={{ fontWeight: 600 }}>
+              Add Resource
+            </Typography> */}
+          </Box>
         )}
       </Box>
       <AddResourcePopup

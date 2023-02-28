@@ -81,16 +81,16 @@ export default function EditNodePopup({
         console.log(res);
         toast.success("Node Saved");
         handleClose();
+        getNodeByTreeId(treeDetails.id).then((res) => {
+          console.log(res);
+          setNodes(res);
+          //setSelectedNode(res)
+        });
       })
       .catch((error) => {
         toast.error("Cannot save, please try again!");
         handleClose();
       });
-    getNodeByTreeId(treeDetails.id).then((res) => {
-      console.log(res);
-      setNodes(res);
-      //setSelectedNode(res)
-    });
   }
 
   const deleteTopic = () => {
