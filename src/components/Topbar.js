@@ -10,7 +10,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 
-export default function Sidebar({ router }) {
+export default function Topbar({ router }) {
   const [cur, setCur] = useState();
   //const router = useRouter();
   const { catalog } = router.query;
@@ -26,7 +26,7 @@ export default function Sidebar({ router }) {
     }
   }, []);
   return (
-    <>
+    <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
       <Box
         onClick={() => {
           if (catalog != "") {
@@ -34,23 +34,25 @@ export default function Sidebar({ router }) {
           }
         }}
         sx={{
-          p: 1,
+          p: 3,
           py: 1.5,
           my: 1,
-          borderRadius: 1,
+          borderRadius: 2,
           backgroundColor: catalog == null ? "white" : "",
-          display: "flex",
           cursor: "pointer",
           "&:hover": {
             backgroundColor: "white",
           },
           alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <HomeRoundedIcon
           sx={{
-            mr: 2,
             fontSize: 20,
+            my: 1,
             color: catalog == null ? "black" : "#7B7B7B",
           }}
         />
@@ -68,23 +70,25 @@ export default function Sidebar({ router }) {
           }
         }}
         sx={{
-          p: 1,
+          p: 3,
           py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "featured" ? "white" : "",
-          display: "flex",
           cursor: "pointer",
           "&:hover": {
             backgroundColor: "white",
           },
           alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <StarsIcon
           sx={{
-            mr: 2,
             fontSize: 20,
+            my: 1,
             color: catalog == "featured" ? "black" : "#7B7B7B",
           }}
         />
@@ -105,22 +109,24 @@ export default function Sidebar({ router }) {
           }
         }}
         sx={{
-          p: 1,
+          p: 3,
           py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "free" ? "white" : "",
-          display: "flex",
           cursor: "pointer",
           "&:hover": {
             backgroundColor: "white",
           },
           alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <SellRoundedIcon
           sx={{
-            mr: 2,
+            my: 1,
             fontSize: 20,
             color: catalog == "free" ? "black" : "#7B7B7B",
           }}
@@ -132,39 +138,6 @@ export default function Sidebar({ router }) {
           Free
         </Typography>
       </Box>
-      {/* <Box
-        onClick={() => {
-          // if (catalog != "paid") {
-          //   router.push("/paid");
-          // }
-        }}
-        sx={{
-          opacity: 0.3,
-          p: 1,
-          my: 1,
-          borderRadius: 1,
-          backgroundColor: catalog == "paid" ? "white" : "",
-          display: "flex",
-          cursor: "pointer",
-          "&:hover": {
-            backgroundColor: "white",
-          },
-          alignItems: "center",
-        }}
-      >
-        <PaymentsIcon
-          sx={{
-            mr: 2,
-            fontSize: 20,
-            color: catalog == "paid" ? "black" : "#7B7B7B",
-          }}
-        />
-        <Typography
-          sx={{ fontSize: 18, color: catalog == "paid" ? "black" : "#7B7B7B" }}
-        >
-          Paid
-        </Typography>
-      </Box> */}
       <Box
         onClick={() => {
           if (catalog != "recent") {
@@ -172,22 +145,23 @@ export default function Sidebar({ router }) {
           }
         }}
         sx={{
-          p: 1,
+          p: 3,
           py: 1.5,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "recent" ? "white" : "",
-          display: "flex",
           cursor: "pointer",
           "&:hover": {
             backgroundColor: "white",
           },
           alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <LocalFireDepartmentIcon
           sx={{
-            mr: 2,
             fontSize: 20,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}
@@ -195,6 +169,7 @@ export default function Sidebar({ router }) {
         <Typography
           variant="h1"
           sx={{
+            my: 1,
             fontSize: 18,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}
@@ -202,7 +177,6 @@ export default function Sidebar({ router }) {
           Recent
         </Typography>
       </Box>
-      <Divider sx={{ my: 5 }} />
-    </>
+    </Box>
   );
 }

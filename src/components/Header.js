@@ -28,7 +28,7 @@ export default function Header({
   markFavourite,
   search,
   setSearch,
-  scrollRef,
+  query,
   searchHandler,
 }) {
   const { width } = useWindowDimensions();
@@ -68,7 +68,6 @@ export default function Header({
         background: "white",
         padding: "5px",
         boxShadow: "0px -5px 20px rgba(0, 0, 0, 0.25)",
-        mb: 1,
       }}
     >
       <Box
@@ -79,7 +78,7 @@ export default function Header({
       >
         <img width={40} height={40} src="/icon.png" />
       </Box>
-      {search && (
+      {query && (
         <>
           <TextField
             value={search}
@@ -88,33 +87,27 @@ export default function Header({
             }}
             placeholder="search for a map"
             size="small"
-            sx={{ flex: 2, mx: 2, color: "white", maxWidth: 400 }}
+            sx={{ flex: 1, mx: 2, color: "white", maxWidth: 400, mt: 0.5 }}
           />
           <Box
             onClick={() => {
-              // if (scrollRef.current) {
-              //   scrollRef.current.scrollIntoView({
-              //     behavior: "smooth",
-              //     inline: "nearest",
-              //     block: "start",
-              //   });
-              // }
-              searchHandler();
+              router.push(`/search/${search}`);
             }}
             sx={{
               "&:hover": { opacity: 0.7 },
               borderRadius: 2,
               display: "flex",
-              backgroundColor: "#F1F1F1",
+              backgroundColor: "#00A4FF",
               cursor: "pointer",
               ml: 1,
               justifyContent: "center",
               alignItems: "center",
               width: 100,
               height: 40,
+              mt: 0.5,
             }}
           >
-            <Typography sx={{ color: "color", fontWeight: 600 }}>
+            <Typography sx={{ color: "white", fontWeight: 600 }}>
               Search
             </Typography>
           </Box>

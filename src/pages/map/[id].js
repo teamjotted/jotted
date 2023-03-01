@@ -266,17 +266,7 @@ function Map() {
       description: "",
     }
   );
-  const onConnect = useCallback((edge) => {
-    setEdges((eds) => addEdge(edge, eds));
-    let newEdge = {
-      source: edge.source,
-      target: edge.target,
-      tree_id: id,
-      type: "smoothstep",
-    };
-    console.log(newEdge);
-    createNodeEdge(newEdge, id);
-  }, []);
+
   function handleDragStop(e, node, nodeArr) {
     console.log(node);
     newNodeUpdate(node, node.label);
@@ -667,6 +657,23 @@ function Map() {
       }
     }
   }
+  const onConnect = useCallback((edge) => {
+    setEdges((eds) => addEdge(edge, eds));
+    let newEdge = {
+      source: edge.source,
+      target: edge.target,
+      tree_id: id,
+      type: "smoothstep",
+    };
+    console.log(newEdge);
+
+    createNodeEdge(newEdge, id).then((res) => {
+      getNodeEdges(id).then((res) => {
+        setEdges(res);
+      });
+    });
+  }, []);
+
   const onConnectStart = useCallback((_, { nodeId }) => {
     connectingNodeId.current = nodeId;
   }, []);
@@ -676,26 +683,74 @@ function Map() {
 
       if (targetIsPane) {
         const { top, left } = reactFlowWrapper.current.getBoundingClientRect();
+        console.log(top, left);
+        console.log(event);
 
-        const newNode = {
-          position: project({
-            x: event.clientX - left - 75,
-            y: event.clientY - top,
-          }),
-          data: {
-            label: "",
-            position: project({
-              x: event.clientX - left - 75,
-              y: event.clientY - top,
-            }),
-          },
-        };
-        console.log(newNode);
-        setPopUpValues({ currentName: "", newName: "", newNode: newNode });
+        const position = project({
+          x: event.clientX - left - 75,
+          y: event.clientY - top,
+        });
+
+        //console.log(newNode);
+        //setPopUpValues({ currentName: "", newName: "", newNode: newNode });
+
+        handleCreateFromNode(position);
       }
     },
     [project]
   );
+
+  const createNodeOnServer = async (position, data) => {
+    console.log(position);
+    const requestOptions = {
+      photo: media[5].photo,
+      type: "selectorNode",
+      label: "",
+      tree_id: id,
+      position: {
+        x: position.x,
+        y: position.y,
+      },
+      index: nodes.length,
+    };
+    console.log(requestOptions);
+    const json = createNode(requestOptions, dispatch).then((res) => {
+      return res;
+    });
+
+    return json;
+  };
+  const handleCreateFromNode = (position) => {
+    console.log(position);
+
+    const newNode = {
+      photo: media[5].photo,
+      type: "selectorNode",
+      label: "",
+      tree_id: id,
+      position: position,
+      index: nodes.length,
+    };
+    console.log(newNode);
+    createNode(newNode).then((res) => {
+      console.log(res);
+      let newEdge = {
+        source: connectingNodeId.current,
+        target: res.id,
+        tree_id: id,
+        type: "smoothstep",
+      };
+      createNodeEdge(newEdge, id).then((res) => {
+        getNodeByTreeId(id).then((res) => {
+          setNodes(res);
+          getNodeEdges(id).then((res) => {
+            setEdges(res);
+          });
+          console.log(res);
+        });
+      });
+    });
+  };
 
   useEffect(() => {
     console.log(selectedNode);
@@ -766,12 +821,6 @@ function Map() {
         type,
         tree_id: id,
         position,
-        data: {
-          position: project({
-            x: event.clientX - left,
-            y: event.clientY - top,
-          }),
-        },
         index: nodes.length,
       };
       console.log(newNode);
@@ -893,7 +942,7 @@ function Map() {
                   edges={edges}
                   onNodesChange={onNodesChange}
                   onEdgesChange={treeAdmin ? onEdgesChange : onEdgesChange}
-                  onConnect={treeAdmin ? onConnect : onConnect}
+                  onConnect={treeAdmin ? onConnect : null}
                   onInit={onInit}
                   nodesDraggable={treeAdmin ? true : false}
                   onNodeDragStop={treeAdmin ? handleDragStop : handleDragStop}
