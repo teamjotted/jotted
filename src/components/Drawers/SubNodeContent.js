@@ -271,6 +271,9 @@ export default function SubNodeContent({
                       whileHover={{ y: -1.5 }}
                     >
                       <Box
+                        onClick={() => {
+                          resouceClickHandler(res);
+                        }}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         ref={treeAdmin ? provided.innerRef : null}
@@ -311,9 +314,6 @@ export default function SubNodeContent({
                             src={res.preview_url}
                           />
                           <Box
-                            onClick={() => {
-                              resouceClickHandler(res);
-                            }}
                             sx={{
                               cursor: "pointer",
                               ml: 2,

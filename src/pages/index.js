@@ -17,6 +17,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  TextField,
 } from "@mui/material";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { getPublicTrees } from "@/utils/api";
@@ -27,9 +28,10 @@ import SellRoundedIcon from "@mui/icons-material/SellRounded";
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import { motion } from "framer-motion";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/Topbar";
 import Link from "next/link";
 import Carousel from "react-material-ui-carousel";
+import Topbar from "@/components/Topbar";
 const inter = Inter({ subsets: ["latin"] });
 
 const categories = ["Free", "Paid", "Education", "Business"];
@@ -238,6 +240,7 @@ export default function Home() {
         handleSignIn={() => {
           router.push("/login");
         }}
+        query={true}
         search={search}
         setSearch={setSearch}
         searchHandler={searchHandler}
@@ -248,129 +251,39 @@ export default function Home() {
         sx={{
           flex: 1,
           alignContent: "center",
+          justifyContent: "center",
           display: "flex",
           mx: 3,
           mt: 4,
         }}
       >
-        <Box sx={{ width: 300 }}>
+        <Box>
           {/* <Box sx={{ minWidth: 120, ml: "auto" }}>
-              <FormControl
-                size="small"
-                sx={{ backgroundColor: "white", minWidth: 120 }}
+            <FormControl
+              size="small"
+              sx={{ backgroundColor: "white", minWidth: 120 }}
+            >
+              <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={pageState.filter}
+                label="Sort by"
+                onChange={(e) => {
+                  setPageState((prev) => ({
+                    ...prev,
+                    filter: e.target.value,
+                  }));
+                }}
               >
-                <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={pageState.filter}
-                  label="Sort by"
-                  onChange={(e) => {
-                    setPageState((prev) => ({
-                      ...prev,
-                      filter: e.target.value,
-                    }));
-                  }}
-                >
-                  <MenuItem value={"views"}>$ Low to high</MenuItem>
-                  <MenuItem value={"recent"}>$ High to ligh</MenuItem>
-                </Select>
-              </FormControl>
-            </Box> */}
-          <Sidebar router={router} />
-          {/* {categories.map((res) => {
-            return (
-              <Box sx={{ p: 1, backgroundColor: "white", display: "flex" }}>
-                <PublicRoundedIcon sx={{ mr: 1 }} />
-                <Typography sx={{ fontSize: 18 }}>{res}</Typography>
-              </Box>
-            );
-          })} */}
+                <MenuItem value={"views"}>$ Low to high</MenuItem>
+                <MenuItem value={"recent"}>$ High to ligh</MenuItem>
+              </Select>
+            </FormControl>
+          </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1250, mx: 2, py: 1 }}>
-          {/* <Box sx={{ display: "flex" }}>
-              {width > 450 ? (
-                <Box
-                  sx={{
-                    maxWidth: width - 20,
-                    display: "flex",
-                    overflowX: "auto",
-                  }}
-                >
-                  {tags.map((res) => {
-                    return (
-                      <Box
-                        onClick={() => {
-                          console.log(res);
-                          if (selectedTag == res.name) {
-                            setSelectedTag(null);
-                          } else {
-                            setSelectedTag(res.name);
-                          }
-                        }}
-                        sx={{
-                          cursor: "pointer",
-                          p: 1,
-                          border: 1,
-
-                          borderColor: "#00A4FF",
-                          backgroundColor: "white",
-                          backgroundImage:
-                            res.name === selectedTag
-                              ? "linear-gradient(to right bottom, #00A4FF, #7BCCF9)"
-                              : null,
-                          borderRadius: 2,
-                          mr: 2,
-                          my: 2,
-                          "&:hover": {
-                            backgroundImage:
-                              "linear-gradient(to right bottom, #00A4FF, #7BCCF9)",
-                          },
-                        }}
-                      >
-                        <Typography
-                          noWrap
-                          sx={{
-                            fontSize: width > 450 ? 14 : 12,
-                            fontWeight: 600,
-                            color: res.name === selectedTag ? "white" : "black",
-                          }}
-                        >
-                          {res.name} {res.emoji}
-                        </Typography>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              ) : (
-                <></>
-              )}
-              <Box sx={{ minWidth: 120, ml: "auto" }}>
-                <FormControl
-                  size="small"
-                  sx={{ backgroundColor: "white", minWidth: 120 }}
-                >
-                  <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={pageState.filter}
-                    label="Sort by"
-                    onChange={(e) => {
-                      setPageState((prev) => ({
-                        ...prev,
-                        filter: e.target.value,
-                      }));
-                    }}
-                  >
-                    <MenuItem value={"views"}>Most Popular</MenuItem>
-                    <MenuItem value={"recent"}>Most Recent</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </Box> */}
-
+        <Box sx={{ display: "flex", width: 1200, mx: 2, py: 1 }}>
           <Box
             sx={{
               flex: 1,
@@ -441,6 +354,49 @@ export default function Home() {
             ) : (
               <Skeleton variant="rounded" width={"100%"} height={300} />
             )}
+            <>
+              <Box sx={{ display: "flex", my: 2 }}>
+                {" "}
+                <TextField
+                  fullWidth
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                  placeholder="Search for a map"
+                  size="small"
+                  sx={{
+                    flex: 2,
+                    mx: 2,
+                    borderRadius: 1,
+                    backgroundColor: "white",
+                    boxShadow: "0px -5px 9px rgba(0, 0, 0, 0.1)",
+                  }}
+                />
+                <Box
+                  onClick={() => {
+                    router.push(`/search/${search}`);
+                  }}
+                  sx={{
+                    "&:hover": { opacity: 0.7 },
+                    borderRadius: 2,
+                    display: "flex",
+                    boxShadow: 0,
+                    backgroundColor: "#00A4FF",
+                    cursor: "pointer",
+                    mr: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 100,
+                  }}
+                >
+                  <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
+                    Search
+                  </Typography>
+                </Box>
+              </Box>
+              <Topbar router={router} />
+            </>
             <MapSection
               name={"Featured"}
               trees={trees}
