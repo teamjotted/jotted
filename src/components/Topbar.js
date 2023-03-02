@@ -162,6 +162,7 @@ export default function Topbar({ router }) {
       >
         <LocalFireDepartmentIcon
           sx={{
+            my: 1,
             fontSize: 20,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}
@@ -169,7 +170,7 @@ export default function Topbar({ router }) {
         <Typography
           variant="h1"
           sx={{
-            my: 1,
+       
             fontSize: 18,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}

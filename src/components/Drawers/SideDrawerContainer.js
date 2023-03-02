@@ -9,6 +9,7 @@ export default function SideDrawerContainer({
   selectedNode,
   nextHandler,
   nodes,
+  loading,
   treeDetails,
   treeAdmin,
   handleEditNode,
@@ -63,6 +64,7 @@ export default function SideDrawerContainer({
             resource={resource}
             resouceClickHandler={resouceClickHandler}
             tree={treeDetails}
+            loading={loading}
             setAttachment={setAttachment}
           />
         )}

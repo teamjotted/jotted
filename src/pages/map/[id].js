@@ -231,6 +231,7 @@ function Map() {
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
   const [paidState, setPaidSate] = useState();
+  const [nodeLoading, setNodeLoading] = useState(false);
   const handleOpenTree = () => setOpenTree(true);
   const handleCloseTree = () => setOpenTree(false);
   //Share Popup Component
@@ -486,6 +487,7 @@ function Map() {
       });
     }
   }, [id, data]);
+
   const toggleDrawer = (newOpen) => () => {
     console.log(attachments);
     if (newOpen == false) {
@@ -677,6 +679,7 @@ function Map() {
   const onConnectStart = useCallback((_, { nodeId }) => {
     connectingNodeId.current = nodeId;
   }, []);
+
   const onConnectStop = useCallback(
     (event) => {
       const targetIsPane = true;
@@ -693,8 +696,9 @@ function Map() {
 
         //console.log(newNode);
         //setPopUpValues({ currentName: "", newName: "", newNode: newNode });
-
-        handleCreateFromNode(position);
+        //setOpen(true);
+        ///setOpenEditNode(true)
+        //handleCreateFromNode(position);
       }
     },
     [project]
@@ -757,6 +761,7 @@ function Map() {
     setOpenUrl(false);
     setResource();
     setFrame();
+    setNodeLoading(true)
     setAttachment([]);
     console.log(node);
     if (node) {
@@ -765,6 +770,7 @@ function Map() {
       getNodeAttachments(node).then((res) => {
         isLoading(false);
         console.log(res);
+        setNodeLoading(false)
         setAttachment(res?.data);
         if (nextMode) {
           console.log("NEXT MODE");
@@ -813,11 +819,11 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - left,
+        x: event.clientX - left - 75,
         y: event.clientY - top,
       });
       const newNode = {
-        photo: media[Math.floor(Math.random() * 20).photo],
+        photo: media[Math.floor(Math.random() * 8)].photo,
         type,
         tree_id: id,
         position,
@@ -906,6 +912,7 @@ function Map() {
                 treeDetails={treeDetails}
                 treeAdmin={treeAdmin}
                 handleEditNode={handleEditNode}
+                loading={nodeLoading}
                 selectNode={selectNode}
                 attachments={attachments}
                 resource={resource}

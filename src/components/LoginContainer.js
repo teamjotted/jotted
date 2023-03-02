@@ -42,7 +42,7 @@ export default function LoginContainer({
         }}
       >
         <Typography style={{ color: "black", fontSize: 20, fontWeight: 600 }}>
-          sign in to your account
+          Sign in to your account
         </Typography>
         <Box
           sx={{
@@ -105,8 +105,8 @@ export default function LoginContainer({
                 p: 1,
               }}
             >
-              <Typography noWrap sx={{ color: "white", fontWeight: 500 }}>
-                sign in
+              <Typography variant="body1"  noWrap sx={{ color: "white", fontWeight: 500 }}>
+                Sign in
               </Typography>
             </Box>
             <Box
@@ -129,8 +129,12 @@ export default function LoginContainer({
               }}
             >
               <img style={{ marginRight: 10 }} src="/google.png" />
-              <Typography noWrap sx={{ color: "#00A4FF", fontWeight: 500 }}>
-                continue with google
+              <Typography
+                variant="body1"
+                noWrap
+                sx={{ color: "#00A4FF", fontWeight: 500 }}
+              >
+                Continue with Google
               </Typography>
             </Box>
             <Box
