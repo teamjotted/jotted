@@ -36,11 +36,13 @@ export default function Login({ data }) {
       password,
     };
     console.log(user);
-    signIn("credentials", { ...user, redirect: "/" })
+    signIn("credentials", { ...user, redirect: null })
       .then((res) => {
-        if (res.ok) {
+        if (res?.ok) {
           console.log(res);
           router.push("/");
+        } else {
+          toast.error("Incorrect Credentials, Please Try Again!")
         }
       })
       .catch((e) => {
@@ -48,9 +50,11 @@ export default function Login({ data }) {
       });
   };
   const handleSignup = () => {
+
     if ((name, email, password, username)) {
       const user = {
-        name,
+        firstname: name.split(" ")[0],
+        lastname: name.split(" ")[1],
         email,
         password,
         username,
