@@ -444,20 +444,12 @@ export default function MyProfile() {
               <>
                 {shared.length > 0 && (
                   <Box style={{ marginTop: 30 }}>
-                    <Box sx={{ my: 1 }}>
-                      <Typography sx={{ fontSize: 30, fontWeight: 600 }}>
-                        maps shared with you
-                      </Typography>
-                      {/* <Typography sx={{ fontSize: 14, fontWeight: 50 }}>a collection of maps that other users have shared with you!</Typography> */}
-                    </Box>
-
                     <Box sx={{ mx: 2, my: 2 }}>
                       <Grid
                         sx={{ overflow: "hidden" }}
                         container
                         spacing={{ xs: 1, md: 3 }}
                         columns={{ xs: 2, sm: 3, md: 6 }}
-                        
                       >
                         {shared.map((row, index) => {
                           return (
@@ -599,33 +591,6 @@ export default function MyProfile() {
                     })}
                   </Grid>
                 </Box>
-                {shared.length > 0 && (
-                  <Box style={{ marginTop: 30 }}>
-                    <Box sx={{ my: 1 }}>
-                      <Typography sx={{ fontSize: 30, fontWeight: 600 }}>
-                        maps shared with you
-                      </Typography>
-                      {/* <Typography sx={{ fontSize: 14, fontWeight: 50 }}>a collection of maps that other users have shared with you!</Typography> */}
-                    </Box>
-
-                    <Box sx={{ my: 2 }}>
-                      <Grid
-                        sx={{ overflow: "hidden" }}
-                        container
-                        spacing={{ xs: 1, md: 3 }}
-                        columns={{ xs: 2, sm: 3, md: 6 }}
-                      >
-                        {shared.map((row, index) => {
-                          return (
-                            <Grid item xs={1} sm={1} md={2} key={index}>
-                              <MapCard row={row} handleClick={handleClick} />
-                            </Grid>
-                          );
-                        })}
-                      </Grid>
-                    </Box>
-                  </Box>
-                )}
               </>
             )}
           </Box>
