@@ -2,10 +2,13 @@ import { Avatar, Box, Stack, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
 import { useEffect } from "react";
 import { media } from "../mock/TreePhotos";
+import { motion } from "framer-motion";
 
 export default function MapCard({ row, handleClick }) {
   return (
-    <Box
+    <motion.div
+      whileHover={{ opacity: 0.8, boxShadow: "0px 15px 10px -2px rgba(0, 0, 0, .2)", translateY: -4 }}
+    ><Box
       onClick={() => handleClick(row.id)}
       sx={{
         display: "flex",
@@ -22,8 +25,11 @@ export default function MapCard({ row, handleClick }) {
         backgroundPosition: `center`,
         height: 250,
         "&:hover": {
-          opacity: 0.9,
-        },
+          opacity: 0.8,
+          boxShadow: "0px 15px 10px -2px rgba(0, 0, 0, .2)",
+          transform: "translateY(-4px)",
+
+            },
       }}
     >
       <Box sx={{ display: "flex" }}>
@@ -117,5 +123,6 @@ export default function MapCard({ row, handleClick }) {
         </Box>
       </Box>
     </Box>
+    </motion.div>
   );
 }

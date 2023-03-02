@@ -124,27 +124,49 @@ export default function Header({
           {width > 600 ? (
             <>
               {treeadmin && (
-                <Chip
-                  color="error"
-                  size="small"
-                  sx={{ alignSelf: "center", mx: 0.5 }}
-                  label="Admin"
-                />
-              )}
+              <Chip
+                color="error"
+                size="small"
+                sx={{
+                  alignSelf: "center",
+                  mx: 0.5,
+                  backgroundColor: "#FFE0E0", // Set the background color to E0F6FF
+                  borderRadius: "5px", // Set the radius to 20px
+                  color: "#FF1C1C" // Set the text color to white
+            }}     
+                ariant="filled"
+                textColor="red"
+                label="Admin"
+              />
+            )}
               {treeDetails?.isPublic && (
                 <Chip
                   color="success"
                   size="small"
-                  sx={{ alignSelf: "center", mx: 0.5 }}
+                  sx={{
+                    alignSelf: "center",
+                    mx: 0.5,
+                    backgroundColor: "#E0F6FF", // Set the background color to E0F6FF
+                    borderRadius: "5px", // Set the radius to 20px
+                    color: "#0099FF" // Set the text color to white
+              }}                  
                   label="Public"
+                  variant="filled"
                 />
               )}
               {treeDetails?.price == 0 ? (
                 <Chip
                   color="info"
                   size="small"
-                  sx={{ alignSelf: "center", mx: 0.5 }}
+                  sx={{
+                    alignSelf: "center",
+                    mx: 0.5,
+                    backgroundColor: "#F4ECFF", // Set the background color to E0F6FF
+                    borderRadius: "5px", // Set the radius to 20px
+                    color: "#9747FF" // Set the text color to white
+              }}                 
                   label="Free"
+                  variant="filled"
                 />
               ) : (
                 <></>
