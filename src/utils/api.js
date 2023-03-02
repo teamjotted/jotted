@@ -63,18 +63,27 @@ export async function stripeVerifyPurchase(user_id, tree_id) {
 //api
 
 // let authToken = cookie.get('j_ce_u') || '';
-export async function getPreviewUrl(url) {
-  const LINK_PREVIEW_API_KEY = "df1d7f2c658d282a340d6969fce36d54";
+
+export async function createUser(payload) {
   try {
-    return await axios
-      .get(`http://api.linkpreview.net/?key=${LINK_PREVIEW_API_KEY}&q=${url}`)
-      .then((res) => {
-        console.log(res);
-        return res.data;
-      });
+    return await axios.post(BASE_URL + "/auth/signup", payload).then((res) => {
+      console.log(res);
+    });
   } catch (error) {
     console.log(error);
-    return error;
+    throw error;
+  }
+}
+
+export async function verifyNewUser(payload) {
+  try {
+    return await axios.post(BASE_URL + "/verify_otp", payload).then((res) => {
+      console.log(res);
+      return res.data
+    });
+  } catch (error) {
+    toast.error("User already exist, please try again!");
+    console.log(error);
   }
 }
 

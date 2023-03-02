@@ -47,7 +47,7 @@ export default function SignupContainer({
           p: 3,
         }}
       >
-        <Typography style={{ color: "black", fontSize: 20, fontWeight: 600 }}>
+        <Typography variant="h1" style={{ color: "black", fontSize: 20, fontWeight: 600 }}>
           lets get started
         </Typography>
         <Box
@@ -122,8 +122,8 @@ export default function SignupContainer({
                 p: 1,
               }}
             >
-              <Typography noWrap sx={{ color: "white", fontWeight: 500 }}>
-                sign up
+              <Typography variant="body1"  noWrap sx={{ color: "white", fontWeight: 500 }}>
+                Sign up
               </Typography>
             </Box>
             <Box
@@ -146,8 +146,8 @@ export default function SignupContainer({
               }}
             >
               <img style={{ marginRight: 10 }} src="/google.png" />
-              <Typography noWrap sx={{ color: "#00A4FF", fontWeight: 500 }}>
-                continue with google
+              <Typography variant="body1" noWrap sx={{ color: "#00A4FF", fontWeight: 500 }}>
+                Continue with Google
               </Typography>
             </Box>
             <Box

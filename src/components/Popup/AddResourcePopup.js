@@ -1,7 +1,6 @@
 import {
   addNodeAttachments,
   editNodeAttachments,
-  getPreviewUrl,
 } from "@/utils/api";
 import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
