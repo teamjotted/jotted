@@ -22,28 +22,29 @@ export default function AddResourcePopup({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  function newResourceHandler() {
+  async function newResourceHandler() {
     console.log(session);
     if (!url) return false;
-    getPreviewUrl(url).then((res) => {
-      console.log(res);
-      console.log(tree);
-      const payload = {
-        user_id: session.user.id,
-        tree_id: tree.id,
-        node_id: parseInt(node.id),
-        src: url,
-        description: res.description,
-        preview_url: res.image,
-        title: res.title ? res.title : "",
-        index: attachments.length,
-      };
-      console.log(payload);
-      addNodeAttachments(payload).then((res) => {
-        console.log(res.data.resources);
-        setAttachment(res.data.resources);
-        handleClose();
-      });
+    const response = await fetch(`/api/preview`, {
+      method: "POST",
+      body: url,
+    });
+    const data = await response.json();
+    console.log(data);
+    const payload = {
+      user_id: session.user.id,
+      tree_id: tree.id,
+      node_id: parseInt(node.id),
+      src: url,
+      description: data?.description,
+      preview_url: data?.image,
+      title: data.title ? data.title : "",
+      index: attachments.length,
+    };
+    addNodeAttachments(payload).then((res) => {
+      console.log(res.data.resources);
+      setAttachment(res.data.resources);
+      handleClose();
     });
   }
   function saveResourceHandler() {
@@ -72,6 +73,8 @@ export default function AddResourcePopup({
       setDescription("");
     }
   }, [selectedResource]);
+
+  
   return (
     <Modal
       open={open}
