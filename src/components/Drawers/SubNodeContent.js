@@ -6,6 +6,7 @@ import {
   Menu,
   Divider,
   MenuItem,
+  LinearProgress,
 } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import EditIcon from "@mui/icons-material/Edit";
@@ -28,6 +29,7 @@ import { motion } from "framer-motion";
 
 export default function SubNodeContent({
   attachments,
+  loading,
   setAttachment,
   treeAdmin,
   resource,
@@ -228,6 +230,7 @@ export default function SubNodeContent({
           </Menu>
         </Box>
       </Box>
+      {loading && <LinearProgress />}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable-1">
           {(provided) => (

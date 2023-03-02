@@ -231,6 +231,7 @@ function Map() {
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
   const [paidState, setPaidSate] = useState();
+  const [nodeLoading, setNodeLoading] = useState(false);
   const handleOpenTree = () => setOpenTree(true);
   const handleCloseTree = () => setOpenTree(false);
   //Share Popup Component
@@ -760,6 +761,7 @@ function Map() {
     setOpenUrl(false);
     setResource();
     setFrame();
+    setNodeLoading(true)
     setAttachment([]);
     console.log(node);
     if (node) {
@@ -768,6 +770,7 @@ function Map() {
       getNodeAttachments(node).then((res) => {
         isLoading(false);
         console.log(res);
+        setNodeLoading(false)
         setAttachment(res?.data);
         if (nextMode) {
           console.log("NEXT MODE");
@@ -909,6 +912,7 @@ function Map() {
                 treeDetails={treeDetails}
                 treeAdmin={treeAdmin}
                 handleEditNode={handleEditNode}
+                loading={nodeLoading}
                 selectNode={selectNode}
                 attachments={attachments}
                 resource={resource}
