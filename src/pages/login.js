@@ -42,7 +42,7 @@ export default function Login({ data }) {
           console.log(res);
           router.push("/");
         } else {
-          toast.error("Incorrect Credentials, Please Try Again!")
+          toast.error("Incorrect Credentials, Please Try Again!");
         }
       })
       .catch((e) => {
@@ -50,7 +50,6 @@ export default function Login({ data }) {
       });
   };
   const handleSignup = () => {
-
     if ((name, email, password, username)) {
       const user = {
         firstname: name.split(" ")[0],
@@ -215,22 +214,9 @@ export default function Login({ data }) {
           )}
         </>
       )}
-      {width > 600 && (
-        <Box style={{ flex: 1 }}>
-          <CardMedia
-            sx={{
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              pb: 30,
-              px: 5,
-              backgroundColor: "#151127",
-            }}
-            component="box"
-            image="/images/backdrops/loginsplash.svg"
-          ></CardMedia>
-        </Box>
-      )}
+      {/* {width > 600 && (
+        <Box style={{ flex: 1, backgroundColor: "#151127" }}></Box>
+      )} */}
     </Box>
   );
 }
