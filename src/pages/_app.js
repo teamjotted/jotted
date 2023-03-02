@@ -17,7 +17,7 @@ function App({ Component, pageProps: { session, ...pageProps } }) {
         <ToastContainer
           style={{ zIndex: 100000 }}
           position="bottom-left"
-          autoClose={1250}
+          autoClose={1225}
         />
       </SessionProvider>
     </>
