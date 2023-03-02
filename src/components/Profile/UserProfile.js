@@ -237,7 +237,8 @@ export default function MyProfile() {
                     Logout
                   </Typography>
                 </Box>
-                {!user?.stripe && (
+              
+                {/* {!user?.stripe && (
                   <Box
                     onClick={stripeHandler}
                     sx={{
@@ -261,7 +262,7 @@ export default function MyProfile() {
                       Connect Stripe
                     </Typography>
                   </Box>
-                )}
+                )} */}
               </Box>
             </Box>
           </Box>
