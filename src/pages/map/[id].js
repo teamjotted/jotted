@@ -761,7 +761,7 @@ function Map() {
     setOpenUrl(false);
     setResource();
     setFrame();
-    setNodeLoading(true)
+    setNodeLoading(true);
     setAttachment([]);
     console.log(node);
     if (node) {
@@ -770,7 +770,7 @@ function Map() {
       getNodeAttachments(node).then((res) => {
         isLoading(false);
         console.log(res);
-        setNodeLoading(false)
+        setNodeLoading(false);
         setAttachment(res?.data);
         if (nextMode) {
           console.log("NEXT MODE");
@@ -979,8 +979,7 @@ function Map() {
                       treeadmin={treeAdmin}
                     />
                   </Box>
-
-                  <Controls />
+                  <Controls showInteractive={false} />
                   <Background color="#aaa" gap={20} />
                   {treeAdmin && (
                     <Box
