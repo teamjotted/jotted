@@ -486,6 +486,7 @@ function Map() {
       });
     }
   }, [id, data]);
+
   const toggleDrawer = (newOpen) => () => {
     console.log(attachments);
     if (newOpen == false) {
@@ -677,6 +678,7 @@ function Map() {
   const onConnectStart = useCallback((_, { nodeId }) => {
     connectingNodeId.current = nodeId;
   }, []);
+
   const onConnectStop = useCallback(
     (event) => {
       const targetIsPane = true;
@@ -693,8 +695,9 @@ function Map() {
 
         //console.log(newNode);
         //setPopUpValues({ currentName: "", newName: "", newNode: newNode });
-
-        handleCreateFromNode(position);
+        //setOpen(true);
+        ///setOpenEditNode(true)
+        //handleCreateFromNode(position);
       }
     },
     [project]
@@ -813,11 +816,11 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - left,
+        x: event.clientX - left - 75,
         y: event.clientY - top,
       });
       const newNode = {
-        photo: media[Math.floor(Math.random() * 20).photo],
+        photo: media[Math.floor(Math.random() * 8)].photo,
         type,
         tree_id: id,
         position,

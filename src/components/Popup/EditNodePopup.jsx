@@ -128,7 +128,9 @@ export default function EditNodePopup({
             p: 2,
           }}
         >
-          <Typography sx={{ fontWeight: 600 }}>Edit Node</Typography>
+          <Typography sx={{ fontWeight: 600 }}>
+            {selectedNode ? "Edit" : "Add"} Node
+          </Typography>
           <TextField
             onChange={(e) => {
               setSelectedNode((prevState) => ({
