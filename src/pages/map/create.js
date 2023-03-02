@@ -17,16 +17,13 @@ import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { media } from "../../mock/TreePhotos";
 export const DISCIPLINE_DATA_ARRAY = [
-  "Art & Culture",
-  "Geography & places",
-  "Health & fitness",
-  "History & events",
-  "Mathematics & abstractions",
-  "Natural sciences & nature",
-  "Philosophy & thinking",
-  "Religion & spirituality",
-  "Social sciences & society",
-  "Technology & applied sciences",
+  "Search Engine Optimization",
+  "Social Media Marketing",
+  "Content Marketing",
+  "Email Marketing",
+  "Mobile Marketing",
+  "Marketing Analytics",
+  "Affiliate Marketing",
   "Other",
 ];
 
