@@ -409,12 +409,13 @@ export default function MyProfile() {
                       {/* <Typography sx={{ fontSize: 14, fontWeight: 50 }}>a collection of maps that other users have shared with you!</Typography> */}
                     </Box>
 
-                    <Box sx={{ my: 2 }}>
+                    <Box sx={{ mx: 2, my: 2 }}>
                       <Grid
                         sx={{ overflow: "hidden" }}
                         container
                         spacing={{ xs: 1, md: 3 }}
                         columns={{ xs: 2, sm: 3, md: 6 }}
+                        
                       >
                         {shared.map((row, index) => {
                           return (
@@ -455,9 +456,9 @@ export default function MyProfile() {
                           <Box
                             sx={{
                               display: "flex",
-                              "&:hover": {
-                                color: "#00A4FF",
-                              },
+                              // "&:hover": {
+                              //   color: "#00A4FF",
+                              // },
                             }}
                           >
                             <Box
