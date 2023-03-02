@@ -332,7 +332,7 @@ export async function getMySharedTrees() {
         },
       })
       .then((res) => {
-        return res.data;
+        return res;
       });
   } catch (e) {
     console.log(e);

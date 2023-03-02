@@ -7,6 +7,7 @@ import {
   Divider,
   MenuItem,
   LinearProgress,
+  TextField,
 } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import EditIcon from "@mui/icons-material/Edit";
@@ -40,6 +41,7 @@ export default function SubNodeContent({
 }) {
   // Dropdown for Node
   const [anchorEl, setAnchorEl] = useState(null);
+  const [url, setUrl] = useState();
   const handleCloseNodeSettings = () => {
     setAnchorEl(null);
   };
@@ -231,6 +233,15 @@ export default function SubNodeContent({
         </Box>
       </Box>
       {loading && <LinearProgress />}
+      <Box sx={{p:2}}> 
+        {attachments.length == 0 && !loading ? (
+          <>
+            <Typography variant="body1">This node contains no resources.</Typography>
+          </>
+        ) : (
+          <></>
+        )}
+      </Box>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable-1">
           {(provided) => (
@@ -487,25 +498,41 @@ export default function SubNodeContent({
       <Box>
         {treeAdmin && (
           <Box
+            onClick={() => {
+              handleOpen();
+              setSelectedResource();
+            }}
             sx={{
+              "&:hover": {
+                opacity: 0.7,
+              },
+              cursor: "pointer",
               display: "flex",
+              width: 150,
               alignItems: "center",
             }}
           >
-            <IconButton
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                handleOpen();
-                setSelectedResource();
-              }}
-            >
+            <IconButton>
               <Tooltip placement="right" title="Add Resource">
                 <AddIcon />
               </Tooltip>
             </IconButton>
-            {/* <Typography variant="subtitle" sx={{ fontWeight: 600 }}>
+            {/* <TextField
+              sx={{ my: 1 }}
+              placeholder="Paste Url"
+              size="small"
+              fullWidth
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value);
+              }}
+            /> */}
+            <Typography
+              variant="subtitle"
+              sx={{ fontWeight: 600, color: "grey" }}
+            >
               Add Resource
-            </Typography> */}
+            </Typography>
           </Box>
         )}
       </Box>

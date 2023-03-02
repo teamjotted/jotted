@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import {
   getMyPurchasedTrees,
+  getMySharedTrees,
   getMyTrees,
   getUserById,
   getUserResources,
@@ -100,6 +101,14 @@ export default function MyProfile() {
         setTrees(res.data);
       });
     }
+    if (section == "shared") {
+      getMySharedTrees().then((res) => {
+        console.log(res);
+        if (res) {
+          setShared(res.data);
+        }
+      });
+    }
   }, [section]);
 
   function resourceHandler() {
@@ -180,36 +189,41 @@ export default function MyProfile() {
                     color: "#6B7280",
                   }}
                 >
-                  <Typography>@{user?.username}</Typography>
-                  <Typography>{trees.length} maps</Typography>
+                  <Typography noWrap>@{user?.username}</Typography>
+
+                  {width > 450 && (
+                    <Typography noWrap>{trees.length} maps</Typography>
+                  )}
                 </Box>
               </Box>
               <Box sx={{ ml: "auto", display: "flex" }}>
-                <Box
-                  onClick={handleOpen}
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": {
-                      opacity: 0.7,
-                    },
-                    borderRadius: 2,
-                    display: "flex",
-                    boxShadow: 0,
-                    backgroundColor: "white",
-                    height: 40,
-                    mr: 1,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    border: 1,
-                    borderColor: "#D1D5DB",
-                    px: 1,
-                  }}
-                >
-                  <ModeEditRoundedIcon sx={{ mx: 1 }} />
-                  <Typography sx={{ fontWeight: 600, color: "black", mx: 1 }}>
-                    Edit
-                  </Typography>
-                </Box>
+                {width > 450 && (
+                  <Box
+                    onClick={handleOpen}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        opacity: 0.7,
+                      },
+                      borderRadius: 2,
+                      display: "flex",
+                      boxShadow: 0,
+                      backgroundColor: "white",
+                      height: 40,
+                      mr: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      border: 1,
+                      borderColor: "#D1D5DB",
+                      px: 1,
+                    }}
+                  >
+                    <ModeEditRoundedIcon sx={{ mx: 1 }} />
+                    <Typography sx={{ fontWeight: 600, color: "black", mx: 1 }}>
+                      Edit
+                    </Typography>
+                  </Box>
+                )}
                 <Box
                   onClick={() => {
                     signOut();
@@ -237,7 +251,7 @@ export default function MyProfile() {
                     Logout
                   </Typography>
                 </Box>
-              
+
                 {/* {!user?.stripe && (
                   <Box
                     onClick={stripeHandler}
@@ -316,6 +330,7 @@ export default function MyProfile() {
               sx={{
                 my: 2,
                 display: "flex",
+                overflowX: "auto",
               }}
             >
               <Box
@@ -336,6 +351,28 @@ export default function MyProfile() {
               >
                 <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
                   My Maps
+                </Typography>
+              </Box>
+              <Box
+                onClick={() => {
+                  setSection("shared");
+                }}
+                sx={{
+                  border: 1,
+                  borderColor: "#DADADA",
+                  p: 1,
+                  m: 1,
+                  borderRadius: 2,
+                  cursor: "pointer",
+                  backgroundColor: section == "shared" ? "#00A4FF" : "white",
+                  color: section == "shared" ? "white" : "black",
+                  "&:hover": {
+                    opacity: 0.8,
+                  },
+                }}
+              >
+                <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
+                  Shared Map
                 </Typography>
               </Box>
               <Box
@@ -401,6 +438,10 @@ export default function MyProfile() {
                     })}
                   </Grid>
                 </Box>
+              </>
+            )}
+            {section == "shared" && (
+              <>
                 {shared.length > 0 && (
                   <Box style={{ marginTop: 30 }}>
                     <Box sx={{ my: 1 }}>
