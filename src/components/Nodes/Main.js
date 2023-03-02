@@ -76,25 +76,33 @@ export default memo(
             sx={{
               width: "100%",
               height: "100%",
-              background:
-                "linear-gradient(to top,rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 1))",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              position: "relative",
             }}
           >
             <Typography
               sx={{
-                position: "absolute",
                 fontSize: 11,
                 fontWeight: 700,
                 color: "white",
+                textAlign: "center",
                 p: 1,
                 display: "-webkit-box",
                 overflow: "hidden",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 4,
+                opacity: 0,
+                transition: "opacity 0.2s ease",
+                ":hover": {
+                     opacity: 1
+                    }
               }}
             >
               {data.label}
             </Typography>
+
           </Box>
         </Box>
 

@@ -84,7 +84,7 @@ export default memo(
               sx={{
                 fontSize: 10,
                 fontWeight: 700,
-                color: "black",
+                color: "white",
                 textAlign: "center",
                 justifyContent: "center",
                 display: "-webkit-box",
