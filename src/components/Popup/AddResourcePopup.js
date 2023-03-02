@@ -73,6 +73,8 @@ export default function AddResourcePopup({
       setDescription("");
     }
   }, [selectedResource]);
+
+  
   return (
     <Modal
       open={open}
