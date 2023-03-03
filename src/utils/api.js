@@ -1,5 +1,3 @@
-//created by talbert herndon
-
 import axios from "axios";
 import cookie from "cookiejs";
 import { getSession } from "next-auth/react";
@@ -81,7 +79,7 @@ export async function verifyNewUser(payload) {
   try {
     return await axios.post(BASE_URL + "/verify_otp", payload).then((res) => {
       console.log(res);
-      return res.data;
+      return res.data
     });
   } catch (error) {
     toast.error("User already exist, please try again!");
