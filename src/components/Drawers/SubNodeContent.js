@@ -27,6 +27,7 @@ import AddResourcePopup from "../Popup/AddResourcePopup";
 import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
+import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 
 export default function SubNodeContent({
   attachments,
@@ -39,6 +40,7 @@ export default function SubNodeContent({
   tree,
   handleEditNode,
 }) {
+  const { width, height } = useWindowDimensions();
   // Dropdown for Node
   const [anchorEl, setAnchorEl] = useState(null);
   const [url, setUrl] = useState();
@@ -233,10 +235,12 @@ export default function SubNodeContent({
         </Box>
       </Box>
       {loading && <LinearProgress />}
-      <Box sx={{p:2}}> 
+      <Box sx={{ p: 2 }}>
         {attachments.length == 0 && !loading ? (
           <>
-            <Typography variant="body1">This node contains no resources.</Typography>
+            <Typography variant="body1">
+              This node contains no resources.
+            </Typography>
           </>
         ) : (
           <></>
@@ -286,7 +290,11 @@ export default function SubNodeContent({
                     >
                       <Box
                         onClick={() => {
-                          resouceClickHandler(res);
+                          if (width > 450) {
+                            resouceClickHandler(res);
+                          } else {
+                            window.open(res.src);
+                          }
                         }}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
