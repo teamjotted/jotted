@@ -1,3 +1,5 @@
+//created by talbert herndon
+
 const urlMetadata = require("url-metadata");
 
 export default async function handler(req, res) {
