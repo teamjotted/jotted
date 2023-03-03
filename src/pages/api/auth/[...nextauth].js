@@ -1,3 +1,5 @@
+//created by talbert herndon
+
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
