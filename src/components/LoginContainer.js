@@ -105,7 +105,11 @@ export default function LoginContainer({
                 p: 1,
               }}
             >
-              <Typography variant="body1"  noWrap sx={{ color: "white", fontWeight: 500 }}>
+              <Typography
+                variant="body1"
+                noWrap
+                sx={{ color: "white", fontWeight: 500 }}
+              >
                 Sign in
               </Typography>
             </Box>

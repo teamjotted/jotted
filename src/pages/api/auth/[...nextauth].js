@@ -66,7 +66,7 @@ const options = {
     },
     session: async ({ session, token }) => {
       console.log(session);
-
+      // cookie.set("j_ce_u", session.authToken);
       session.user = token.id;
       session.token = token.token;
 
@@ -85,6 +85,13 @@ const options = {
             console.log(e);
             return e;
           });
+
+        // setCookie("j_ce_u", account.access_token, {
+
+        //   maxAge: 60 * 60 * 24,
+        // });
+
+        //cookie.set("j_ce_u", account.access_token);
         return data;
       } else {
         return true;
