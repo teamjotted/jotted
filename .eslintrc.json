@@ -1,3 +1,4 @@
+//Improve developer experience.
 {
   "extends": "next/core-web-vitals"
 }
