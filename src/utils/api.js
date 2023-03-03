@@ -30,7 +30,6 @@ export async function stripePurchase(user_id, tree_id) {
     return await axios
       .post(BASE_URL + "/purchases", { user_id, tree_id }, { headers })
       .then((res) => {
-        console.log(res);
         return res.data;
       });
   } catch (error) {
@@ -79,7 +78,7 @@ export async function verifyNewUser(payload) {
   try {
     return await axios.post(BASE_URL + "/verify_otp", payload).then((res) => {
       console.log(res);
-      return res.data
+      return res.data;
     });
   } catch (error) {
     toast.error("User already exist, please try again!");
