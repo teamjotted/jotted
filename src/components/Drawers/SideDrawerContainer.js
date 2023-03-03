@@ -1,5 +1,5 @@
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
-import { Box, Drawer } from "@mui/material";
+import { Box, Drawer, SwipeableDrawer } from "@mui/material";
 import MainNodeSidebar from "./MainNodeContent";
 import SubNodeContent from "./SubNodeContent";
 
@@ -22,7 +22,7 @@ export default function SideDrawerContainer({
 }) {
   const { width, height } = useWindowDimensions();
   return (
-    <Drawer
+    <SwipeableDrawer
       elevation={10}
       ModalProps={{
         disableScrollLock: true,
@@ -70,6 +70,6 @@ export default function SideDrawerContainer({
         )}
       </Box>
       {children}
-    </Drawer>
+    </SwipeableDrawer>
   );
 }

@@ -60,6 +60,7 @@ export default function Header({
 
   return (
     <Box
+      zIndex={99999}
       sx={{
         height: "auto",
         display: "flex",
@@ -124,21 +125,21 @@ export default function Header({
           {width > 600 ? (
             <>
               {treeadmin && (
-              <Chip
-                color="error"
-                size="small"
-                sx={{
-                  alignSelf: "center",
-                  mx: 0.5,
-                  backgroundColor: "#FFE0E0", // Set the background color to E0F6FF
-                  borderRadius: "5px", // Set the radius to 20px
-                  color: "#FF1C1C" // Set the text color to white
-            }}     
-                ariant="filled"
-                textColor="red"
-                label="Admin"
-              />
-            )}
+                <Chip
+                  color="error"
+                  size="small"
+                  sx={{
+                    alignSelf: "center",
+                    mx: 0.5,
+                    backgroundColor: "#FFE0E0", // Set the background color to E0F6FF
+                    borderRadius: "5px", // Set the radius to 20px
+                    color: "#FF1C1C", // Set the text color to white
+                  }}
+                  ariant="filled"
+                  textColor="red"
+                  label="Admin"
+                />
+              )}
               {treeDetails?.isPublic && (
                 <Chip
                   color="success"
@@ -148,8 +149,8 @@ export default function Header({
                     mx: 0.5,
                     backgroundColor: "#E0F6FF", // Set the background color to E0F6FF
                     borderRadius: "5px", // Set the radius to 20px
-                    color: "#0099FF" // Set the text color to white
-              }}                  
+                    color: "#0099FF", // Set the text color to white
+                  }}
                   label="Public"
                   variant="filled"
                 />
@@ -163,8 +164,8 @@ export default function Header({
                     mx: 0.5,
                     backgroundColor: "#F4ECFF", // Set the background color to E0F6FF
                     borderRadius: "5px", // Set the radius to 20px
-                    color: "#9747FF" // Set the text color to white
-              }}                 
+                    color: "#9747FF", // Set the text color to white
+                  }}
                   label="Free"
                   variant="filled"
                 />
@@ -247,34 +248,36 @@ export default function Header({
           >
             {/* <BackButton onClick={onClick} />{" "} */}
           </Box>
-          <Box
-            onClick={() => {
-              router.push("/map/create");
-            }}
-            sx={{
-              "&:hover": { opacity: 0.7 },
-              borderRadius: 2,
-              display: "flex",
-              backgroundColor: "white",
-              cursor: "pointer",
-              mr: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              width: 100,
-              p: 1,
-              height: 40,
-              alignSelf: "center",
-              border: 1,
-              borderColor: "#DADADA",
-            }}
-          >
-            <Typography
-              variant="body1"
-              sx={{ color: "#151127", fontWeight: 600, fontSize: 14 }}
+          {width > 450 && (
+            <Box
+              onClick={() => {
+                router.push("/map/create");
+              }}
+              sx={{
+                "&:hover": { opacity: 0.7 },
+                borderRadius: 2,
+                display: "flex",
+                backgroundColor: "white",
+                cursor: "pointer",
+                mr: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                width: 100,
+                p: 1,
+                height: 40,
+                alignSelf: "center",
+                border: 1,
+                borderColor: "#DADADA",
+              }}
             >
-              New Map
-            </Typography>
-          </Box>
+              <Typography
+                variant="body1"
+                sx={{ color: "#151127", fontWeight: 600, fontSize: 14 }}
+              >
+                New Map
+              </Typography>
+            </Box>
+          )}
           <Box
             sx={{
               ml: "auto",

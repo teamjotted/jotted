@@ -69,6 +69,7 @@ import { borderRadius } from "@mui/system";
 import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
 import { motion } from "framer-motion";
+import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -209,6 +210,8 @@ function Map() {
   const [loading, isLoading] = useState(false);
   const connectingNodeId = useRef(null);
   const edgeUpdateSuccessful = useRef(true);
+
+  const { width, height } = useWindowDimensions();
 
   //   const [treeadmin, setTreeAdmin] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -919,20 +922,22 @@ function Map() {
                 resouceClickHandler={resouceClickHandler}
                 setAttachment={setAttachment}
               >
-                <ResourceDrawer
-                  likeHandler={likeHandler}
-                  dislikeHandler={dislikeHandler}
-                  frameRefresh={frameRefresh}
-                  setFrameRefresh={setFrameRefresh}
-                  setFrame={setFrame}
-                  frame={frame}
-                  nextHandler={nextHandler}
-                  openUrl={openUrl}
-                  setOpenUrl={setOpenUrl}
-                  resource={resource}
-                  prevHandler={prevHandler}
-                  treeAdmin={treeAdmin}
-                />
+                {width > 450 && (
+                  <ResourceDrawer
+                    likeHandler={likeHandler}
+                    dislikeHandler={dislikeHandler}
+                    frameRefresh={frameRefresh}
+                    setFrameRefresh={setFrameRefresh}
+                    setFrame={setFrame}
+                    frame={frame}
+                    nextHandler={nextHandler}
+                    openUrl={openUrl}
+                    setOpenUrl={setOpenUrl}
+                    resource={resource}
+                    prevHandler={prevHandler}
+                    treeAdmin={treeAdmin}
+                  />
+                )}
               </SideDrawerContainer>
               <div
                 style={{ backgroundColor: "#FBF9FB" }}
