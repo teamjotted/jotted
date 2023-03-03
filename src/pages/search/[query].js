@@ -1,5 +1,3 @@
-//created by talbert herndon
-
 import Header from "@/components/Header";
 import MapCard from "@/components/MapCard";
 import Sidebar from "@/components/Topbar";
