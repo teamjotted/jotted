@@ -1,5 +1,3 @@
-//created by talbert herndon
-
 import axios from "axios";
 import cookie from "cookiejs";
 import { getSession } from "next-auth/react";
