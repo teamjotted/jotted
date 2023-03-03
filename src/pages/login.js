@@ -15,6 +15,8 @@ import SignupContainer from "../components/SignupContainer";
 import { signOut, signIn, useSession, getSession } from "next-auth/react";
 import { createUser, verifyNewUser } from "@/utils/api";
 import { toast } from "react-toastify";
+import cookie from "cookiejs";
+import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
 
 export default function Login({ data }) {
   const { width, height } = useWindowDimenstions();
@@ -40,6 +42,7 @@ export default function Login({ data }) {
       .then((res) => {
         if (res?.ok) {
           console.log(res);
+          cookie.set("j_ce_u", token);
           router.push("/");
         } else {
           toast.error("Incorrect Credentials, Please Try Again!");
@@ -221,10 +224,12 @@ export default function Login({ data }) {
   );
 }
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, res }) {
   const session = await getSession({ req });
+  console.log(session);
 
   if (session) {
+    setCookie("j_ce_u", session.token, { req, res, maxAge: 60 * 6 * 24 });
     return {
       redirect: {
         destination: "/",
