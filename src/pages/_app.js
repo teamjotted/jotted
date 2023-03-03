@@ -1,3 +1,5 @@
+//created by talbert herndon
+
 import { wrapper } from "../store/store";
 import { SessionProvider } from "next-auth/react";
 import mixpanel from "mixpanel-browser";
