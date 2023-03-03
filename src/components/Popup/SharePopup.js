@@ -151,9 +151,9 @@ export default function Sharepopup({
       .then((res) => {
         console.log(res);
         if (res.isPublic) {
-          toast.success("Tree is now public!");
+          toast.success("Map is now public!");
         } else {
-          toast.info("Tree is now private!");
+          toast.info("Map is now private!");
         }
         setTreeDetails(res);
         setEditedTree(res);
@@ -161,7 +161,7 @@ export default function Sharepopup({
       })
       .catch((e) => {
         console.log(e);
-        toast.error("Tree cannot not be changed at this time!");
+        toast.error("Map cannot not be changed at this time!");
       });
   };
 
