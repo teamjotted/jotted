@@ -506,11 +506,11 @@ export async function createNodeAttacments(payload, dispatch) {
 }
 
 export async function orderResource(payload) {
-  console.log(payload);
   try {
     return await axios
       .post(BASE_URL + "/resources_order", {
-        resource: payload,
+        resource: payload.resource,
+        node_id: payload.node_id,
       })
       .then((res) => {
         console.log(res);

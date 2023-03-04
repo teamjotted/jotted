@@ -30,6 +30,7 @@ import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 
 export default function SubNodeContent({
+  setLoading,
   attachments,
   loading,
   setAttachment,
@@ -95,7 +96,7 @@ export default function SubNodeContent({
     }
     const srcI = source.index;
     const desI = destination.index;
-
+    setLoading(true);
     attachments.splice(desI, 0, attachments.splice(srcI, 1)[0]);
     //TODO:
     console.log(result);
@@ -113,11 +114,19 @@ export default function SubNodeContent({
     // }
     // console.log(attachments);
     //console.log(updatedAttachments);
-    orderResource(attachments);
+    orderResource({
+      resource: attachments,
+      node_id: attachments[0].node_id,
+    }).then((res) => {
+      console.log(res);
+      setAttachment(res);
+      setLoading(false);
+    });
 
     //setAttachment(updatedAttachments);
   }
   function deleteResoueceHandler() {
+    setLoading(true);
     console.log(selectedResource);
     deleteNodeAttachments(selectedResource.id).then((res) => {
       console.log(res);
@@ -126,6 +135,7 @@ export default function SubNodeContent({
       getNodeAttachments(selectedResource.node_id).then((res) => {
         console.log(res);
         setAttachment(res?.data);
+        setLoading(false);
       });
     });
   }
@@ -289,13 +299,6 @@ export default function SubNodeContent({
                       whileHover={{ y: -1.5 }}
                     >
                       <Box
-                        onClick={() => {
-                          if (width > 450) {
-                            resouceClickHandler(res);
-                          } else {
-                            window.open(res.src);
-                          }
-                        }}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                         ref={treeAdmin ? provided.innerRef : null}
@@ -336,6 +339,13 @@ export default function SubNodeContent({
                             src={res.preview_url}
                           />
                           <Box
+                            onClick={() => {
+                              if (width > 800) {
+                                resouceClickHandler(res);
+                              } else {
+                                window.open(res.src);
+                              }
+                            }}
                             sx={{
                               cursor: "pointer",
                               ml: 2,
@@ -368,7 +378,7 @@ export default function SubNodeContent({
                                   maxWidth: 250,
                                 }}
                               >
-                                {res.title}
+                                {res.index + 1} | {res.title}
                               </Typography>
                               <Typography
                                 variant="body2"
