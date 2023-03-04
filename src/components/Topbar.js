@@ -14,7 +14,7 @@ export default function Topbar({ router }) {
   const [cur, setCur] = useState();
   //const router = useRouter();
   const { catalog } = router.query;
-  const pages = ["home", "featured", "free", "recent", "media", "seo", "affiliate"];
+  const pages = ["home", "featured", "free", "paid"];
 
   useEffect(() => {
     console.log(catalog);
@@ -26,7 +26,7 @@ export default function Topbar({ router }) {
     }
   }, []);
   return (
-    <Box sx={{ display: "flex", justifyContent: "left" }}>
+    <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
       <Box
         onClick={() => {
           if (catalog != "") {
@@ -170,130 +170,14 @@ export default function Topbar({ router }) {
         <Typography
           variant="h1"
           sx={{
+       
             fontSize: 18,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}
         >
           Recent
         </Typography>
-      </Box>      
-      <Box
-        onClick={() => {
-          if (catalog != "media") {
-            router.push("/media");
-          }
-        }}
-        sx={{
-          p: 3,
-          py: 1.5,
-          my: 1,
-          borderRadius: 1,
-          backgroundColor: catalog == "media" ? "white" : "",
-          cursor: "pointer",
-          "&:hover": {
-            backgroundColor: "white",
-          },
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <LocalFireDepartmentIcon
-          sx={{
-            my: 1,
-            fontSize: 20,
-            color: catalog == "media" ? "black" : "#7B7B7B",
-          }}
-        />
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: 18,
-            color: catalog == "media" ? "black" : "#7B7B7B",
-          }}
-        >
-          Media
-        </Typography>
-      </Box>      
-      <Box
-        onClick={() => {
-          if (catalog != "seo") {
-            router.push("/seo");
-          }
-        }}
-        sx={{
-          p: 3,
-          py: 1.5,
-          my: 1,
-          borderRadius: 1,
-          backgroundColor: catalog == "seo" ? "white" : "",
-          cursor: "pointer",
-          "&:hover": {
-            backgroundColor: "white",
-          },
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <LocalFireDepartmentIcon
-          sx={{
-            my: 1,
-            fontSize: 20,
-            color: catalog == "seo" ? "black" : "#7B7B7B",
-          }}
-        />
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: 18,
-            color: catalog == "seo" ? "black" : "#7B7B7B",
-          }}
-        >
-          SEO
-        </Typography>
-      </Box>      
-      <Box
-        onClick={() => {
-          if (catalog != "affiliate") {
-            router.push("/affiliate");
-          }
-        }}
-        sx={{
-          p: 3,
-          py: 1.5,
-          my: 1,
-          borderRadius: 1,
-          backgroundColor: catalog == "affiliate" ? "white" : "",
-          cursor: "pointer",
-          "&:hover": {
-            backgroundColor: "white",
-          },
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <LocalFireDepartmentIcon
-          sx={{
-            my: 1,
-            fontSize: 20,
-            color: catalog == "affiliate" ? "black" : "#7B7B7B",
-          }}
-        />
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: 18,
-            color: catalog == "affiliate" ? "black" : "#7B7B7B",
-          }}
-        >
-          Affiliate
-        </Typography>
-      </Box>    
+      </Box>
     </Box>
   );
 }
