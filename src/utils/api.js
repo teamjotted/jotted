@@ -153,9 +153,7 @@ export async function getUserById(id) {
 
 export async function getNodeByTreeId(treeid) {
   try {
-    const response = await fetch(
-      `https://xg3n-4mh1-ngd5.n7.xano.io/api:w4ONEGEJ:v2/naufeltree-details/${treeid}`
-    );
+    const response = await fetch(BASE_URL + `/naufeltree-details/${treeid}`);
     const json = await response.json();
     // dispatch(
     //   setNodes(
