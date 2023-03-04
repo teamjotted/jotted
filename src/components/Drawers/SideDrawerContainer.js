@@ -23,7 +23,7 @@ export default function SideDrawerContainer({
 }) {
   const { width, height } = useWindowDimensions();
   return (
-    <SwipeableDrawer
+    <Drawer
       elevation={10}
       ModalProps={{
         disableScrollLock: true,
@@ -33,7 +33,7 @@ export default function SideDrawerContainer({
         ".MuiDrawer-paperAnchorBottom": {
           borderTopLeftRadius: width >= 450 ? 10 : 0,
           borderTopRightRadius: width >= 450 ? 10 : 0,
-          height: width >= 450 ? height - 75 : height - 50,
+          height: width >= 450 ? height - 75 : height - 75,
           mx: width >= 450 ? 2 : 0,
           overflowY: width >= 450 ? "hidden" : "auto",
           overflowX: "hidden",
@@ -72,6 +72,6 @@ export default function SideDrawerContainer({
         )}
       </Box>
       {children}
-    </SwipeableDrawer>
+    </Drawer>
   );
 }
