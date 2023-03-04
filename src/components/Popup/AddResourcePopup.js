@@ -1,7 +1,4 @@
-import {
-  addNodeAttachments,
-  editNodeAttachments,
-} from "@/utils/api";
+import { addNodeAttachments, editNodeAttachments } from "@/utils/api";
 import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -43,6 +40,7 @@ export default function AddResourcePopup({
     addNodeAttachments(payload).then((res) => {
       console.log(res.data.resources);
       setAttachment(res.data.resources);
+      setUrl("");
       handleClose();
     });
   }
@@ -73,7 +71,6 @@ export default function AddResourcePopup({
     }
   }, [selectedResource]);
 
-  
   return (
     <Modal
       open={open}

@@ -916,13 +916,14 @@ function Map() {
                 treeAdmin={treeAdmin}
                 handleEditNode={handleEditNode}
                 loading={nodeLoading}
+                setLoading={setNodeLoading}
                 selectNode={selectNode}
                 attachments={attachments}
                 resource={resource}
                 resouceClickHandler={resouceClickHandler}
                 setAttachment={setAttachment}
               >
-                {width > 450 && (
+                {width > 800 && (
                   <ResourceDrawer
                     likeHandler={likeHandler}
                     dislikeHandler={dislikeHandler}
