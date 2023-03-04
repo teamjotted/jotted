@@ -19,7 +19,6 @@ export default function SideDrawerContainer({
   resource,
   resouceClickHandler,
   children,
-  handleOpenTree,
 }) {
   const { width, height } = useWindowDimensions();
   return (
@@ -53,7 +52,7 @@ export default function SideDrawerContainer({
             selectedNode={selectedNode}
             treeAdmin={treeAdmin}
             nodes={nodes}
-            handleEditNode={handleOpenTree}
+            handleEditNode={handleEditNode}
             selectNode={selectNode}
           />
         ) : (
