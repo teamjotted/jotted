@@ -5,7 +5,7 @@ import axios from "axios";
 
 const { NEXT_PUBLIC_BASE_URL_LIVE } = process.env;
 
-const options = {
+export const options = {
   providers: [
     CredentialsProvider({
       name: "Credentials",

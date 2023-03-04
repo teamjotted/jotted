@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { media } from "../mock/NodePhotos";
-import { motion } from "framer-motion";
+
 export default function Toolbar() {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -11,36 +11,34 @@ export default function Toolbar() {
   return (
     <Box sx={{ display: "flex" }}>
       <Box sx={{ px: 2 }}>
-        <motion.div drag whileDrag={{ scale: 1.2 }}>
-          <Box
-            onDragStart={(event) => onDragStart(event, "selectorNode")}
-            draggable
-            sx={{
-              cursor: "pointer",
-              boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-              backgroundImage: `url(${media[2].photo})`,
-              borderRadius: 2,
-              overflow: "hidden",
-              width: 200 / 3,
-              height: 200 / 3,
-            }}
-          >
-            <Box sx={{ height: "100%", overflow: "hidden" }}>
-              <div animate={{ y: 0, scale: 1 }} whileHover={{ scale: 1.1 }}>
-                <img
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    objectFit: "fill",
-                  }}
-                  src={media[2].photo}
-                />
-              </div>
-            </Box>
+        <Box
+          onDragStart={(event) => onDragStart(event, "selectorNode")}
+          draggable
+          sx={{
+            cursor: "pointer",
+            boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+            backgroundImage: `url(${media[2].photo})`,
+            borderRadius: 2,
+            overflow: "hidden",
+            width: 200 / 3,
+            height: 200 / 3,
+          }}
+        >
+          <Box sx={{ height: "100%", overflow: "hidden" }}>
+            <div animate={{ y: 0, scale: 1 }} whileHover={{ scale: 1.1 }}>
+              <img
+                style={{
+                  display: "block",
+                  width: "100%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  objectFit: "fill",
+                }}
+                src={media[2].photo}
+              />
+            </div>
           </Box>
-        </motion.div>
+        </Box>
         <Typography
           sx={{ fontSize: 12, fontWeight: 600, textAlign: "center", mt: 1 }}
         >

@@ -55,9 +55,9 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import { useDispatch, useSelector } from "react-redux";
 import { setNodeId } from "@/store/Node/node.action";
-import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
+//import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import mixpanel from "mixpanel-browser";
-import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
+//import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
 import SignInPopup from "@/components/Popup/SignInPopup";
 import { setTreeAdmin } from "@/store/newTreeData/newTree.action";
 import EditNodePopup from "@/components/Popup/EditNodePopup";
@@ -70,7 +70,16 @@ import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
+import { getServerSession, unstable_getServerSession } from "next-auth";
+import { options } from "../api/auth/[...nextauth]";
+import dynamic from "next/dynamic";
 
+const SideDrawerContainer = dynamic(() =>
+  import("@/components/Drawers/SideDrawerContainer")
+);
+const ResourceDrawer = dynamic(() =>
+  import("@/components/Drawers/ResourceDrawer/ResourceDrawer")
+);
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -201,11 +210,12 @@ function AlertDialogSlide({
   }
 }
 
-function Map() {
-  const { data } = useSession();
+function Map({ data }) {
+  //const { data } = useSession();
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
+  //const [id, setId] = useState(791);
   const dispatch = useDispatch();
   const [loading, isLoading] = useState(false);
   const connectingNodeId = useRef(null);
@@ -398,6 +408,8 @@ function Map() {
   }
 
   useEffect(() => {
+    console.log(data);
+
     isLoading(true);
     dispatch(setTreeAdmin(false));
     if (id) {
@@ -414,22 +426,6 @@ function Map() {
             console.log(res);
             setEditedTree(json);
             console.log("Tree Data", json);
-
-            // switch (json.isPublic) {
-            //   case true:
-            //     if(session){
-            //     isLoading(publicTreeHandler(json));
-            //     console.log("true");
-            //     } else{
-
-            //     }
-            //     break;
-            //   case false:
-            //     privateTreeHandler(json);
-            //     console.log("false");
-            //     break;
-            //   default:
-            // }
             if (json.isPublic == true) {
               if (json.user_id == data?.user.id && data) {
                 setPaidSate(true);
@@ -489,7 +485,7 @@ function Map() {
         // setEditedTree(json);
       });
     }
-  }, [id, data]);
+  }, [id]);
 
   const toggleDrawer = (newOpen) => () => {
     console.log(attachments);
@@ -822,11 +818,11 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - left - 75,
+        x: event.clientX - left,
         y: event.clientY - top,
       });
       const newNode = {
-        photo: media[Math.floor(Math.random() * 8)].photo,
+        photo: media[Math.floor(Math.random() * 7)].photo,
         type,
         tree_id: id,
         position,
@@ -855,7 +851,7 @@ function Map() {
 
       //setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance]
+    [reactFlowInstance, project]
   );
   const onDragOver = (event) => {
     event.preventDefault();
@@ -1010,11 +1006,7 @@ function Map() {
               </div>
             </>
           ) : (
-            <div
-              style={{ backgroundColor: "#FBF9FB" }}
-              className="wrapper"
-              ref={reactFlowWrapper}
-            >
+            <div style={{ backgroundColor: "#FBF9FB" }} className="wrapper">
               <AlertDialogSlide
                 session={data?.user}
                 open={!paidState}
@@ -1186,18 +1178,18 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-// export async function getServerSideProps({ req }) {
-//   const session = await getSession({ req });
-
-//   // if (!session) {
-//   //   return {
-//   //     redirect: {
-//   //       destination: "/",
-//   //       permanent: false,
-//   //     },
-//   //   };
-//   // }
-//   return {
-//     props: { data: session },
-//   };
-// }
+export async function getServerSideProps(context) {
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  return {
+    props: {
+      data: await getServerSession(context.req, context.res, options),
+    },
+  };
+}

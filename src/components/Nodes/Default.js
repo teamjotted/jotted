@@ -118,7 +118,6 @@ export default memo(
         });
       }
     }, [data, editing, resourcePopup]);
-
     //onClick={() => window.open(obj.src)
     return (
       <>
@@ -164,14 +163,20 @@ export default memo(
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              overflow: "hidden",
             }}
           >
-            <Typography fontSize={6}
-            overflow>
-              12 links
-            </Typography>
-
-
+            {data.resources > 0 ? (
+              <Typography variant="body1" noWrap fontSize={6}>
+                {data.resources > 1
+                  ? data.resources + " links"
+                  : data.resources + " link"}
+              </Typography>
+            ) : (
+              <Typography variant="body1" noWrap fontSize={6}>
+                Add
+              </Typography>
+            )}
           </Box>
           <Box
             sx={{
@@ -189,8 +194,6 @@ export default memo(
                 display: "flex",
               }}
             >
-              
-              
               <Typography
                 sx={{
                   mt: "auto",
