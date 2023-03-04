@@ -19,6 +19,7 @@ export default function SideDrawerContainer({
   resource,
   resouceClickHandler,
   children,
+  setLoading,
 }) {
   const { width, height } = useWindowDimensions();
   return (
@@ -57,6 +58,7 @@ export default function SideDrawerContainer({
           />
         ) : (
           <SubNodeContent
+            setLoading={setLoading}
             handleEditNode={handleEditNode}
             attachments={attachments}
             selectedNode={selectedNode}
