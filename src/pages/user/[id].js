@@ -72,7 +72,6 @@ export default function User({ data }) {
     console.log(id);
     router.push(`/map/${id}`);
   }
-  console.log(data);
   return (
     <Box
       sx={{ backgroundColor: "#F2F1F6", height: "100%", minHeight: "100vh" }}
