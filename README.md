@@ -1,4 +1,4 @@
-![Group_4394](https://user-images.githubusercontent.com/56614622/222710825-8380b2a0-52a4-49fe-b284-dab23a930c20.png)
+![Group 4396 (1)](https://user-images.githubusercontent.com/46513712/222882538-20401b9d-3287-4b7e-ad5d-594e2866a848.png)
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
