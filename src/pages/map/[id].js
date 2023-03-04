@@ -579,6 +579,7 @@ function Map() {
     saveUserTree(editedTree.id, editedTree)
       .then((res) => {
         console.log(res);
+        setTreeDetails(res);
         setEditedTree(res);
         //Tree_Get_By_Id();
 
@@ -912,6 +913,7 @@ function Map() {
                 selectedNode={selectedNode}
                 nextHandler={nextHandler}
                 nodes={nodes}
+                handleOpenTree={handleOpenTree}
                 treeDetails={treeDetails}
                 treeAdmin={treeAdmin}
                 handleEditNode={handleEditNode}
