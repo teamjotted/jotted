@@ -822,11 +822,11 @@ function Map() {
       }
 
       const position = project({
-        x: event.clientX - left - 75,
+        x: event.clientX - left,
         y: event.clientY - top,
       });
       const newNode = {
-        photo: media[Math.floor(Math.random() * 8)].photo,
+        photo: media[Math.floor(Math.random() * 7)].photo,
         type,
         tree_id: id,
         position,
@@ -855,7 +855,7 @@ function Map() {
 
       //setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance]
+    [reactFlowInstance, project]
   );
   const onDragOver = (event) => {
     event.preventDefault();
@@ -1010,11 +1010,7 @@ function Map() {
               </div>
             </>
           ) : (
-            <div
-              style={{ backgroundColor: "#FBF9FB" }}
-              className="wrapper"
-              ref={reactFlowWrapper}
-            >
+            <div style={{ backgroundColor: "#FBF9FB" }} className="wrapper">
               <AlertDialogSlide
                 session={data?.user}
                 open={!paidState}
