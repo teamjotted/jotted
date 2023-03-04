@@ -156,6 +156,25 @@ export default memo(
         >
           <Box
             sx={{
+              backgroundColor: "white",
+              width: 30,
+              m: 1,
+              height: 12,
+              borderRadius: 10,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography fontSize={6}
+            overflow>
+              12 links
+            </Typography>
+
+
+          </Box>
+          <Box
+            sx={{
               width: "100%",
               height: "100%",
               background:
@@ -170,13 +189,15 @@ export default memo(
                 display: "flex",
               }}
             >
+              
+              
               <Typography
                 sx={{
                   mt: "auto",
                   textAlign: "center",
                   fontSize: 7,
                   fontWeight: 600,
-                  mb: 1,
+                  mb: 5,
                   color: "black",
                   display: "-webkit-box",
                   overflow: "hidden",

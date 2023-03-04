@@ -368,7 +368,7 @@ export default function Home() {
                   sx={{
                     flex: 2,
                     mx: 2,
-                    borderRadius: 1,
+                    borderRadius: 2,
                     backgroundColor: "white",
                     boxShadow: "0px -5px 9px rgba(0, 0, 0, 0.1)",
                   }}
