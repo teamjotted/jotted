@@ -9,6 +9,7 @@ import {
   Button,
   IconButton,
   Modal,
+  Avatar,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -23,6 +24,7 @@ import IFrameComponent from "./IFrameComponent";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { useRouter } from "next/router";
 const style = {
   position: "absolute",
   top: "50%",
@@ -49,6 +51,7 @@ export default function ResourceDrawer({
   prevHandler,
   treeAdmin,
 }) {
+  const router = useRouter();
   const { height, width } = useWindowDimensions();
   const [readMore, setReadMore] = useState(false);
   const [error, setError] = useState(false);
@@ -206,7 +209,9 @@ export default function ResourceDrawer({
                 <Box
                   sx={{
                     display: "flex",
-                    backgroundColor: "#F2F1F6",
+                    backgroundColor: "white",
+                    boxShadow: "0px 10px 30px rgba(0, 0, 0, .15)",
+
                     my: 1,
                     borderRadius: 3,
                   }}
@@ -289,6 +294,52 @@ export default function ResourceDrawer({
                 </Box>
               </>
             </Box>
+            {resource?.user && (
+              <Box sx={{ display: "flex", p: 2 }}>
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                >
+                  <Tooltip
+                    title={`${resource.user.firstname} ${resource.user.lastname}`}
+                  >
+                    <Avatar src={resource.user.photo_url} />
+                  </Tooltip>
+                </Box>
+                <Box sx={{ ml: 2, alignSelf: "center" }}>
+                  <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                    {resource.user.firstname} {resource.user.lastname}
+                  </Typography>
+                </Box>
+                <Box
+                  onClick={() => router.push(`/user/${resource.user.id}`)}
+                  sx={{
+                    "&:hover": { opacity: 0.7 },
+                    borderRadius: 2,
+                    display: "flex",
+                    backgroundColor: "white",
+                    cursor: "pointer",
+                    ml: 2,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: 100,
+                    p: 1,
+                    height: 40,
+                    alignSelf: "center",
+                    border: 1,
+                    borderColor: "#DADADA",
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{ color: "#151127", fontWeight: 600, fontSize: 14 }}
+                  >
+                    View Profile
+                  </Typography>
+                </Box>
+              </Box>
+            )}
             <Box sx={{ p: 2 }}>
               {/* <Box
                 sx={{
