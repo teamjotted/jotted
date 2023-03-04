@@ -114,12 +114,12 @@ export async function saveUserTree(id, edit) {
 
   try {
     return await axios.post(BASE_URL + "/tree/" + id, edit).then((res) => {
-      toast.success("Map saved!");
+      toast.success("Tree saved!");
 
       return res.data;
     });
   } catch (error) {
-    toast.error("Unable to save your map.");
+    toast.error("Unable to save your tree.");
     throw error.response;
   }
 }
@@ -136,7 +136,7 @@ export async function saveUserTreePrivacy(id, edit) {
       return res.data;
     });
   } catch (error) {
-    toast.error("Unable to save your map.");
+    toast.error("Unable to save your tree.");
     throw error.response;
   }
 }
