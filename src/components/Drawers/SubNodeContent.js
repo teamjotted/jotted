@@ -336,7 +336,11 @@ export default function SubNodeContent({
                               alignSelf: "center",
                               backgroundColor: "white",
                             }}
-                            src={res.preview_url}
+                            src={
+                              res.preview_url == ""
+                                ? "/favicon.ico"
+                                : res.preview_url
+                            }
                           />
                           <Box
                             onClick={() => {
