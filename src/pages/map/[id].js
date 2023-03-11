@@ -243,7 +243,7 @@ function Map({ data }) {
   const [tag, setTag] = useState([]);
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
-  const [paidState, setPaidSate] = useState();
+  const [paidState, setPaidSate] = useState(false);
   const [nodeLoading, setNodeLoading] = useState(false);
   const handleOpenTree = () => setOpenTree(true);
   const handleCloseTree = () => setOpenTree(false);
@@ -479,6 +479,8 @@ function Map({ data }) {
                 }
               }
             }
+
+            
           });
         });
 
