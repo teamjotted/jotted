@@ -3,6 +3,7 @@ import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import {toast} from "react-toastify";
 
 export default function AddResourcePopup({
   open,
@@ -37,12 +38,17 @@ export default function AddResourcePopup({
       title: data.title ? data.title : "",
       index: attachments.length,
     };
-    addNodeAttachments(payload).then((res) => {
-      console.log(res.data.resources);
-      setAttachment(res.data.resources);
-      setUrl("");
-      handleClose();
-    });
+    addNodeAttachments(payload)
+      .then((res) => {
+        console.log(res.data.resources);
+        setAttachment(res.data.resources);
+        setUrl("");
+        handleClose();
+      })
+      .catch((e) => {
+        console.log(e)
+        toast.error(e.response?.data.message);
+      });
   }
   function saveResourceHandler() {
     const resource = {

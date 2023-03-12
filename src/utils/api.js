@@ -598,14 +598,16 @@ export async function editNodeAttachments(id, attachment) {
   try {
     return await axios.post(BASE_URL + `/resources/${id}`, attachment);
   } catch (error) {
-    console.log("ERROR:", error);
+    //console.log("ERROR:", error);
+    throw error;
   }
 }
 export async function addNodeAttachments(attachment) {
   try {
     return await axios.post(BASE_URL + `/resources`, attachment);
   } catch (error) {
-    console.log("ERROR:", error);
+   // console.log("ERROR:", error);
+    throw (error)
   }
 }
 export async function deleteNodeAttachments(id) {
