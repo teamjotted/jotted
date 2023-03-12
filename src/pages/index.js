@@ -336,6 +336,42 @@ export default function Home() {
               )}
 
               <Box sx={{ flex: 1, ml: width > 600 ? 7 : 0 }}>
+                <Box sx={{ flex: 1, mr: 7 }}>
+                  <Typography
+                    variant="h3"
+                    sx={{ fontWeight: 600, fontFamily: "sans" }}
+                  >
+                    Curating the future of education one link at a time
+                  </Typography>
+                  <Typography variant="body1" sx={{ my: 1 }}>
+                    Join us in mapping the best resources on the internet into
+                    learning pathways
+                  </Typography>
+                  <Box
+                    onClick={() => {
+                      router.push(`/recent`);
+                    }}
+                    sx={{
+                      "&:hover": { opacity: 0.7 },
+                      borderRadius: 2,
+                      display: "flex",
+                      boxShadow: 0,
+                      backgroundColor: "#00A4FF",
+                      cursor: "pointer",
+                      mr: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 200,
+                      mt: 3,
+                    }}
+                  >
+                    <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
+                      Explore pathways
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Box sx={{ flex: 1, ml: 7 }}>
                 {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
