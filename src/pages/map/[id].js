@@ -479,8 +479,6 @@ function Map({ data }) {
                 }
               }
             }
-
-            
           });
         });
 
@@ -976,6 +974,7 @@ function Map({ data }) {
                     sx={{ zIndex: 1000, position: "absolute", width: "100%" }}
                   >
                     <Header
+                      session={data}
                       editHandleOpen={editHandleOpen}
                       shareHandleOpen={shareHandleOpen}
                       handleSignIn={handleSignIn}
@@ -1037,6 +1036,7 @@ function Map({ data }) {
               >
                 <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
                   <Header
+                    session={data}
                     editHandleOpen={editHandleOpen}
                     shareHandleOpen={shareHandleOpen}
                     handleSignIn={handleSignIn}

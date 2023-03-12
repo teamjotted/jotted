@@ -83,6 +83,7 @@ export default function User({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header
+        session={data}
         handleSignIn={() => {
           router.push("/login");
         }}

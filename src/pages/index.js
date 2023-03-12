@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getSession, signOut } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 import {
   Box,
@@ -37,6 +37,7 @@ const inter = Inter({ subsets: ["latin"] });
 const categories = ["Free", "Paid", "Education", "Business"];
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const { width, height } = useWindowDimensions();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -238,6 +239,7 @@ export default function Home() {
       </Head>
       <CssBaseline />
       <Header
+        session={session}
         handleSignIn={() => {
           router.push("/login");
         }}

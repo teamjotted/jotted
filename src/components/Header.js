@@ -30,9 +30,10 @@ export default function Header({
   setSearch,
   query,
   searchHandler,
+  session
 }) {
   const { width } = useWindowDimensions();
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const [toggleE, setToggleE] = useState(false);
   const router = useRouter();
