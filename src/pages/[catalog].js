@@ -104,7 +104,7 @@ export default function Search({ data }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header user={data} />
+      <Header user={data} session={data} />
       <CssBaseline />
       <Box
         sx={{
