@@ -32,6 +32,7 @@ export default function MapCard({ row, handleClick }) {
           }) ,url(${row.photo == "" ? media[4].photo : row.photo})`,
           backgroundRepeat: `no-repeat, no-repeat`,
           backgroundPosition: `center`,
+          backgroundSize: "cover",
           height: 250,
           "&:hover": {
             opacity: 0.99,

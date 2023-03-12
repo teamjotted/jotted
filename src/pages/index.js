@@ -294,6 +294,7 @@ export default function Home() {
               flexDirection: "column",
             }}
           >
+            <Box>
             {paidTrees.length > 0 ? (
               <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                 {paidTrees.map((res) => {
@@ -311,7 +312,7 @@ export default function Home() {
                           minHeight: 300,
                           backgroundImage: `url('${res?.photo}')`,
                           backgroundPosition: "center",
-                          backgroundSize: "cover",
+                          backgroundSize: "fill",
                           display: "flex",
                           borderRadius: 2,
                           overflow: "hidden",
@@ -355,6 +356,7 @@ export default function Home() {
             ) : (
               <Skeleton variant="rounded" width={"100%"} height={300} />
             )}
+            </Box>
             <>
               <Box sx={{ display: "flex", my: 2 }}>
                 {" "}
