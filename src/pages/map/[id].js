@@ -212,8 +212,11 @@ function AlertDialogSlide({
   }
 }
 
-function Map({ data }) {
-  //const { data } = useSession();
+function Map() {
+  const { data } = useSession();
+  useEffect(()=>{
+    console.log(data)
+  },[data])
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
@@ -1183,18 +1186,18 @@ export default function MapProvider(props) {
   );
 }
 
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+// export async function getServerSideProps({ req }) {
+//   const session = await getSession({ req });
 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return {
-    props: { data: session },
-  };
-}
+//   // if (!session) {
+//   //   return {
+//   //     redirect: {
+//   //       destination: "/",
+//   //       permanent: false,
+//   //     },
+//   //   };
+//   // }
+//   return {
+//     props: { data: session },
+//   };
+// }
