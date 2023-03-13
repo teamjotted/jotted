@@ -70,7 +70,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
-import { getServerSession, unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]";
 import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
@@ -1182,7 +1182,10 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-export async function getServerSideProps(context) {
+
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
+
   // if (!session) {
   //   return {
   //     redirect: {
@@ -1192,8 +1195,6 @@ export async function getServerSideProps(context) {
   //   };
   // }
   return {
-    props: {
-      data: await getServerSession(context.req, context.res, options),
-    },
+    props: { data: session },
   };
 }
