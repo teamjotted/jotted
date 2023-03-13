@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getSession, signOut } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 import {
   Box,
@@ -37,6 +37,8 @@ const inter = Inter({ subsets: ["latin"] });
 const categories = ["Free", "Paid", "Education", "Business"];
 
 export default function Home() {
+  const { data: session, status } = useSession();
+
   const { width, height } = useWindowDimensions();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -238,6 +240,7 @@ export default function Home() {
       </Head>
       <CssBaseline />
       <Header
+        session={session}
         handleSignIn={() => {
           router.push("/login");
         }}
@@ -282,7 +285,7 @@ export default function Home() {
           </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1200, mx: 2, py: 1 }}>
+        <Box sx={{ display: "flex", width: 1000, mx: 2, py: 1 }}>
           <Box
             sx={{
               flex: 1,
@@ -292,69 +295,112 @@ export default function Home() {
               flexDirection: "column",
             }}
           >
-            {paidTrees.length > 0 ? (
-              <Carousel autoPlay infiniteLoop swipeable interval={10000}>
-                {paidTrees.map((res) => {
-                  return (
-                    <>
-                      <Box
-                        onClick={() => {
-                          router.push(`/map/${res.id}`);
-                        }}
-                        sx={{
-                          "&:hover": {
-                            opacity: 0.99,
-                          },
-                          cursor: "pointer",
-                          minHeight: 300,
-                          backgroundImage: `url('${res?.photo}')`,
-                          backgroundPosition: "center",
-                          backgroundSize: "cover",
-                          display: "flex",
-                          borderRadius: 2,
-                          overflow: "hidden",
-                        }}
-                        src={res.photo}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            mt: "auto",
-                            width: "100%",
-                            height: 200,
-                            background:
-                              "linear-gradient(to bottom,rgba(255, 255, 255, 0), rgba(0, 0, 0, 1))",
-                          }}
-                        >
-                          <Box sx={{ mt: "auto", p: 1 }}>
-                            <Typography sx={{ color: "white", fontSize: 12 }}>
-                              {res.name}
-                            </Typography>
-                            <Typography
+            <Box sx={{ display: "flex" }}>
+              {width > 700 && (
+                <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
+                  <Typography
+                    variant="h3"
+                    sx={{ fontWeight: 600, fontFamily: "sans" }}
+                  >
+                    Curating the future of education one link at a time
+                  </Typography>
+                  <Typography variant="body1" sx={{ my: 1 }}>
+                    Join us in mapping the best resources on the internet into
+                    learning pathways
+                  </Typography>
+                  <Box
+                    onClick={() => {
+                      router.push(`/recent`);
+                    }}
+                    sx={{
+                      "&:hover": { opacity: 0.7 },
+                      borderRadius: 2,
+                      display: "flex",
+                      boxShadow: 0,
+                      backgroundColor: "#151127",
+                      cursor: "pointer",
+                      mr: 1,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: 200,
+                      mt: 5,
+                    }}
+                  >
+                    <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
+                      Explore pathways
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+              <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}>
+                {paidTrees.length > 0 ? (
+                  <Carousel autoPlay infiniteLoop swipeable interval={10000}>
+                    {paidTrees.map((res) => {
+                      return (
+                        <>
+                          <Box
+                            onClick={() => {
+                              router.push(`/map/${res.id}`);
+                            }}
+                            sx={{
+                              "&:hover": {
+                                opacity: 0.99,
+                              },
+                              cursor: "pointer",
+                              minHeight: 300,
+
+                              backgroundImage: `url('${res?.photo}')`,
+                              backgroundPosition: "center",
+                              backgroundSize: "fill",
+                              display: "flex",
+                              borderRadius: 2,
+                              overflow: "hidden",
+                            }}
+                            src={res.photo}
+                          >
+                            <Box
                               sx={{
-                                color: "white",
-                                fontSize: 16,
-                                fontWeight: 700,
-                                display: "-webkit-box",
-                                overflow: "hidden",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 2,
+                                display: "flex",
+                                mt: "auto",
+                                width: "100%",
+                                height: 200,
+                                background:
+                                  "linear-gradient(to bottom,rgba(255, 255, 255, 0), rgba(0, 0, 0, 1))",
                               }}
                             >
-                              {res.name}
-                            </Typography>
+                              <Box sx={{ mt: "auto", p: 1 }}>
+                                <Typography
+                                  sx={{ color: "white", fontSize: 12 }}
+                                >
+                                  {res.name}
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    color: "white",
+                                    fontSize: 16,
+                                    fontWeight: 700,
+                                    display: "-webkit-box",
+                                    overflow: "hidden",
+                                    WebkitBoxOrient: "vertical",
+                                    WebkitLineClamp: 2,
+                                  }}
+                                >
+                                  {res.name}
+                                </Typography>
+                              </Box>
+                            </Box>
                           </Box>
-                        </Box>
-                      </Box>
-                    </>
-                  );
-                })}
-              </Carousel>
-            ) : (
-              <Skeleton variant="rounded" width={"100%"} height={300} />
-            )}
+                        </>
+                      );
+                    })}
+                  </Carousel>
+                ) : (
+                  <Skeleton variant="rounded" width={"100%"} height={300} />
+                )}
+              </Box>
+            </Box>
             <>
-              <Box sx={{ display: "flex", my: 2 }}>
+              <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
                   fullWidth
@@ -362,11 +408,11 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search for a map"
+                  placeholder="Search for a map..."
                   size="small"
                   sx={{
                     flex: 2,
-                    mx: 2,
+                    mr: 2,
                     borderRadius: 2,
                     backgroundColor: "white",
                     boxShadow: "0px -5px 9px rgba(0, 0, 0, 0.1)",
@@ -381,9 +427,9 @@ export default function Home() {
                     borderRadius: 2,
                     display: "flex",
                     boxShadow: 0,
-                    backgroundColor: "#00A4FF",
+                    backgroundColor: "#151127",
                     cursor: "pointer",
-                    mr: 1,
+
                     justifyContent: "center",
                     alignItems: "center",
                     width: 100,

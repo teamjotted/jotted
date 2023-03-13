@@ -81,7 +81,7 @@ export default function LoginContainer({
                 <Typography
                   sx={{
                     ml: "auto",
-                    color: "#00A4FF",
+                    color: "#151127",
                     fontSize: 12,
                     mt: 1,
                     cursor: "pointer",
@@ -98,7 +98,7 @@ export default function LoginContainer({
                 "&:hover": { opacity: 0.7 },
                 borderRadius: 2,
                 display: "flex",
-                backgroundColor: "#00A4FF",
+                backgroundColor: "#151127",
                 cursor: "pointer",
                 justifyContent: "center",
                 alignItems: "center",
@@ -136,7 +136,7 @@ export default function LoginContainer({
               <Typography
                 variant="body1"
                 noWrap
-                sx={{ color: "#00A4FF", fontWeight: 500 }}
+                sx={{ color: "#151127", fontWeight: 500 }}
               >
                 Continue with Google
               </Typography>
@@ -153,7 +153,7 @@ export default function LoginContainer({
                 sx={{
                   fontSize: 13,
                   ml: 1,
-                  color: "#00A4FF",
+                  color: "#151127",
                   cursor: "pointer",
                 }}
               >

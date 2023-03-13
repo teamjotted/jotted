@@ -353,7 +353,7 @@ export default function MainNodeSidebar({
                                   display: "flex",
                                   "&:hover": {
                                     color:
-                                      res.type == "mainNode" ? "" : "#00A4FF",
+                                      res.type == "mainNode" ? "" : "#151127",
                                   },
                                 }}
                               >

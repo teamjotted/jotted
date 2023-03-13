@@ -203,7 +203,7 @@ export default function EditNodePopup({
                       borderRadius: 2,
                       display: "flex",
                       boxShadow: 0,
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
                       justifyContent: "center",
@@ -300,7 +300,7 @@ export default function EditNodePopup({
                 borderRadius: 2,
                 display: "flex",
 
-                backgroundColor: "#00A4FF",
+                backgroundColor: "#151127",
                 cursor: "pointer",
                 mr: 1,
                 justifyContent: "center",

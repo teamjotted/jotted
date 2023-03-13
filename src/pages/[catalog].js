@@ -104,7 +104,7 @@ export default function Search({ data }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header user={data} />
+      <Header user={data} session={data} />
       <CssBaseline />
       <Box
         sx={{
@@ -121,12 +121,12 @@ export default function Search({ data }) {
           <Box
             sx={{
               display: "flex",
-              width: 1200,
+              width: 1000,
               mx: 2,
               py: 1,
             }}
           >
-            <Box sx={{ maxWidth: 1200 }}>
+            <Box sx={{ maxWidth: 1000 }}>
               <Topbar router={router} />
 
               <Box sx={{ my: 1 }}>
@@ -165,7 +165,7 @@ export default function Search({ data }) {
                   ></Box>
                 </>
               ) : (
-                <Box sx={{ width: 1200 }}>
+                <Box sx={{ width: 1000 }}>
                   <ShortCardSkeleton />
                   <ShortCardSkeleton />
                   <ShortCardSkeleton />

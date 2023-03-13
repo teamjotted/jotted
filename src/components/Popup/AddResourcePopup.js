@@ -3,6 +3,7 @@ import { Box, IconButton, Modal, TextField, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import {toast} from "react-toastify";
 
 export default function AddResourcePopup({
   open,
@@ -37,12 +38,17 @@ export default function AddResourcePopup({
       title: data.title ? data.title : "",
       index: attachments.length,
     };
-    addNodeAttachments(payload).then((res) => {
-      console.log(res.data.resources);
-      setAttachment(res.data.resources);
-      setUrl("");
-      handleClose();
-    });
+    addNodeAttachments(payload)
+      .then((res) => {
+        console.log(res.data.resources);
+        setAttachment(res.data.resources);
+        setUrl("");
+        handleClose();
+      })
+      .catch((e) => {
+        console.log(e)
+        toast.error(e.response?.data.message);
+      });
   }
   function saveResourceHandler() {
     const resource = {
@@ -116,7 +122,7 @@ export default function AddResourcePopup({
                 borderRadius: 2,
                 display: "flex",
                 boxShadow: 0,
-                backgroundColor: "#00A4FF",
+                backgroundColor: "#151127",
 
                 justifyContent: "center",
                 alignItems: "center",
@@ -149,7 +155,7 @@ export default function AddResourcePopup({
                 display: "flex",
                 boxShadow: 0,
                 backgroundColor: "white",
-                color: "#00A4FF",
+                color: "#151127",
                 cursor: "pointer",
 
                 justifyContent: "center",
@@ -211,7 +217,7 @@ export default function AddResourcePopup({
               borderRadius: 2,
               display: "flex",
               boxShadow: 0,
-              backgroundColor: "#00A4FF",
+              backgroundColor: "#151127",
               cursor: "pointer",
               mr: 1,
               justifyContent: "center",
@@ -233,7 +239,7 @@ export default function AddResourcePopup({
               borderRadius: 2,
               display: "flex",
               boxShadow: 0,
-              backgroundColor: "#00A4FF",
+              backgroundColor: "#151127",
               cursor: "pointer",
               mr: 1,
               justifyContent: "center",

@@ -30,9 +30,10 @@ export default function Header({
   setSearch,
   query,
   searchHandler,
+  session
 }) {
   const { width } = useWindowDimensions();
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const [toggleE, setToggleE] = useState(false);
   const router = useRouter();
@@ -98,7 +99,7 @@ export default function Header({
               "&:hover": { opacity: 0.7 },
               borderRadius: 2,
               display: "flex",
-              backgroundColor: "#00A4FF",
+              backgroundColor: "#151127",
               cursor: "pointer",
               ml: 1,
               justifyContent: "center",
@@ -221,7 +222,7 @@ export default function Header({
               borderRadius: 2,
               display: "flex",
               boxShadow: 0,
-              backgroundColor: "#00A4FF",
+              backgroundColor: "#151127",
               cursor: "pointer",
               mr: 1,
               justifyContent: "center",

@@ -15,7 +15,7 @@ import {
   CssBaseline,
 } from "@mui/material";
 import { Inter } from "@next/font/google";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +23,8 @@ import { media } from "../../mock/TreePhotos";
 import Topbar from "@/components/Topbar";
 
 export default function Search({ data }) {
+  const { data: session, status } = useSession();
+
   const scrollRef = useRef(null);
   const { width } = useWindowDimensions();
   const [trees, setTrees] = useState([]);
@@ -104,7 +106,7 @@ export default function Search({ data }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header user={data} />
+      <Header session={session} user={data} />
       <CssBaseline />
       <Box
         sx={{
@@ -121,12 +123,12 @@ export default function Search({ data }) {
           <Box
             sx={{
               display: "flex",
-              width: 1200,
+              width: 1000,
               mx: 2,
               py: 1,
             }}
           >
-            <Box sx={{ maxWidth: 1200 }}>
+            <Box sx={{ maxWidth: 1000 }}>
               <Topbar router={router} />
 
               <Box sx={{ my: 1 }}>
@@ -162,7 +164,7 @@ export default function Search({ data }) {
                   ></Box>
                 </>
               ) : (
-                <Box sx={{ width: 1200 }}>
+                <Box sx={{ width: 1000 }}>
                   <ShortCardSkeleton />
                   <ShortCardSkeleton />
                   <ShortCardSkeleton />
