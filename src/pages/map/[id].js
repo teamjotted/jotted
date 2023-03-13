@@ -72,14 +72,16 @@ import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { getServerSession, unstable_getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]";
-import dynamic from "next/dynamic";
+import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
+import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
+// import dynamic from "next/dynamic";
 
-const SideDrawerContainer = dynamic(() =>
-  import("@/components/Drawers/SideDrawerContainer")
-);
-const ResourceDrawer = dynamic(() =>
-  import("@/components/Drawers/ResourceDrawer/ResourceDrawer")
-);
+// const SideDrawerContainer = dynamic(() =>
+//   import("@/components/Drawers/SideDrawerContainer")
+// );
+// const ResourceDrawer = dynamic(() =>
+//   import("@/components/Drawers/ResourceDrawer/ResourceDrawer")
+// );
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
