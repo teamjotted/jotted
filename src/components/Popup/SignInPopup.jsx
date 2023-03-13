@@ -130,7 +130,7 @@ export default function SignInPopup({
             "&:hover": { opacity: 0.7 },
             borderRadius: 2,
             display: "flex",
-            backgroundColor: "#00A4FF",
+            backgroundColor: "#151127",
             cursor: "pointer",
             justifyContent: "center",
             alignItems: "center",
@@ -162,7 +162,7 @@ export default function SignInPopup({
           }}
         >
           <img style={{ marginRight: 10 }} src="/google.png" />
-          <Typography noWrap sx={{ color: "#00A4FF", fontWeight: 500 }}>
+          <Typography noWrap sx={{ color: "#151127", fontWeight: 500 }}>
             continue with google
           </Typography>
         </Box>
@@ -176,7 +176,7 @@ export default function SignInPopup({
             sx={{
               fontSize: 13,
               ml: 1,
-              color: "#00A4FF",
+              color: "#151127",
               cursor: "pointer",
             }}
           >

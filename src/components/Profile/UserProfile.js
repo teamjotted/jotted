@@ -164,7 +164,7 @@ export default function MyProfile() {
           display: "flex",
         }}
       >
-        <Box sx={{ maxWidth: 1200, mt: 3, width: 1200 }}>
+        <Box sx={{ maxWidth: 1000, mt: 3, width: 1000 }}>
           <Box sx={{ display: "flex", m: 1 }}>
             <Avatar sx={{ width: 100, height: 100 }} src={user?.photo_url} />
             <Box
@@ -342,7 +342,7 @@ export default function MyProfile() {
                   m: 1,
                   borderRadius: 2,
                   cursor: "pointer",
-                  backgroundColor: section == "maps" ? "#00A4FF" : "white",
+                  backgroundColor: section == "maps" ? "#151127" : "white",
                   color: section == "maps" ? "white" : "black",
                   "&:hover": {
                     opacity: 0.8,
@@ -364,7 +364,7 @@ export default function MyProfile() {
                   m: 1,
                   borderRadius: 2,
                   cursor: "pointer",
-                  backgroundColor: section == "shared" ? "#00A4FF" : "white",
+                  backgroundColor: section == "shared" ? "#151127" : "white",
                   color: section == "shared" ? "white" : "black",
                   "&:hover": {
                     opacity: 0.8,
@@ -386,7 +386,7 @@ export default function MyProfile() {
                   m: 1,
                   borderRadius: 2,
                   cursor: "pointer",
-                  backgroundColor: section == "purchases" ? "#00A4FF" : "white",
+                  backgroundColor: section == "purchases" ? "#151127" : "white",
                   color: section == "purchases" ? "white" : "black",
                   "&:hover": {
                     opacity: 0.8,
@@ -408,7 +408,7 @@ export default function MyProfile() {
                   m: 1,
                   borderRadius: 2,
                   cursor: "pointer",
-                  backgroundColor: section == "resources" ? "#00A4FF" : "white",
+                  backgroundColor: section == "resources" ? "#151127" : "white",
                   color: section == "resources" ? "white" : "black",
                   "&:hover": {
                     opacity: 0.8,
@@ -491,7 +491,7 @@ export default function MyProfile() {
                             sx={{
                               display: "flex",
                               // "&:hover": {
-                              //   color: "#00A4FF",
+                              //   color: "#151127",
                               // },
                             }}
                           >

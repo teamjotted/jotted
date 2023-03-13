@@ -100,7 +100,7 @@ export default function User({ data }) {
             display: "flex",
           }}
         >
-          <Box sx={{ maxWidth: 1200, mt: 3, width: 1200 }}>
+          <Box sx={{ maxWidth: 1000, mt: 3, width: 1000 }}>
             <Box sx={{ display: "flex", m: 1 }}>
               <Avatar sx={{ width: 100, height: 100 }} src={user?.photo_url} />
               <Box
@@ -149,7 +149,7 @@ export default function User({ data }) {
                       borderRadius: 2,
                       display: "flex",
                       boxShadow: 0,
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       height: 40,
                       mr: 1,
                       justifyContent: "center",
@@ -181,7 +181,7 @@ export default function User({ data }) {
                   m: 1,
                   borderRadius: 2,
                   cursor: "pointer",
-                  backgroundColor: section == "maps" ? "#00A4FF" : "white",
+                  backgroundColor: section == "maps" ? "#151127" : "white",
                   color: section == "maps" ? "white" : "black",
                   "&:hover": {
                     opacity: 0.8,

@@ -243,7 +243,7 @@ export default function ResourceDrawer({
                         }}
                         display="inline"
                         sx={{
-                          color: "#00A4FF",
+                          color: "#151127",
                           cursor: "pointer",
                           fontSize: 12,
                           fontWeight: 600,
@@ -438,7 +438,7 @@ export default function ResourceDrawer({
                       borderRadius: 2,
                       display: "flex",
                       boxShadow: 0,
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
                       justifyContent: "center",
@@ -465,7 +465,7 @@ export default function ResourceDrawer({
                       borderRadius: 2,
                       display: "flex",
                       boxShadow: 0,
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
                       justifyContent: "center",

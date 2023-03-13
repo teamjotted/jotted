@@ -285,7 +285,7 @@ export default function Home() {
           </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1200, mx: 2, py: 1 }}>
+        <Box sx={{ display: "flex", width: 1000, mx: 2, py: 1 }}>
           <Box
             sx={{
               flex: 1,
@@ -296,7 +296,7 @@ export default function Home() {
             }}
           >
             <Box sx={{ display: "flex" }}>
-              {width > 600 && (
+              {width > 700 && (
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h3"
@@ -317,13 +317,13 @@ export default function Home() {
                       borderRadius: 2,
                       display: "flex",
                       boxShadow: 0,
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
                       justifyContent: "center",
                       alignItems: "center",
                       width: 200,
-                      mt: 3,
+                      mt: 5,
                     }}
                   >
                     <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
@@ -332,7 +332,7 @@ export default function Home() {
                   </Box>
                 </Box>
               )}
-              <Box sx={{ flex: 1, ml: width > 600 ? 7 : 0 }}>
+              <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}>
                 {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
@@ -348,6 +348,7 @@ export default function Home() {
                               },
                               cursor: "pointer",
                               minHeight: 300,
+
                               backgroundImage: `url('${res?.photo}')`,
                               backgroundPosition: "center",
                               backgroundSize: "fill",
@@ -399,7 +400,7 @@ export default function Home() {
               </Box>
             </Box>
             <>
-              <Box sx={{ display: "flex", my: 2 }}>
+              <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
                   fullWidth
@@ -407,11 +408,11 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search for a map"
+                  placeholder="Search for a map..."
                   size="small"
                   sx={{
                     flex: 2,
-                    mx: 2,
+                    mr: 2,
                     borderRadius: 2,
                     backgroundColor: "white",
                     boxShadow: "0px -5px 9px rgba(0, 0, 0, 0.1)",
@@ -426,9 +427,9 @@ export default function Home() {
                     borderRadius: 2,
                     display: "flex",
                     boxShadow: 0,
-                    backgroundColor: "#00A4FF",
+                    backgroundColor: "#151127",
                     cursor: "pointer",
-                    mr: 1,
+
                     justifyContent: "center",
                     alignItems: "center",
                     width: 100,

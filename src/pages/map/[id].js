@@ -166,7 +166,7 @@ function AlertDialogSlide({
                   display: "flex",
                   boxShadow: 0,
                   border: 1,
-                  borderColor: "#00A4FF",
+                  borderColor: "#151127",
                   cursor: "pointer",
                   mr: 1,
                   justifyContent: "center",
@@ -175,7 +175,7 @@ function AlertDialogSlide({
                 }}
               >
                 <Typography
-                  sx={{ color: "#00A4FF", fontWeight: 600, fontSize: 12 }}
+                  sx={{ color: "#151127", fontWeight: 600, fontSize: 12 }}
                 >
                   Save
                 </Typography>
@@ -188,7 +188,7 @@ function AlertDialogSlide({
                   borderRadius: 2,
                   display: "flex",
                   boxShadow: 0,
-                  backgroundColor: "#00A4FF",
+                  backgroundColor: "#151127",
                   cursor: "pointer",
                   mr: 1,
                   justifyContent: "center",

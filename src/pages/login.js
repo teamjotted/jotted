@@ -169,7 +169,7 @@ export default function Login({ data }) {
                       "&:hover": { opacity: 0.7 },
                       borderRadius: 2,
                       display: "flex",
-                      backgroundColor: "#00A4FF",
+                      backgroundColor: "#151127",
                       cursor: "pointer",
                       justifyContent: "center",
                       alignItems: "center",
