@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
+
 import {
   Box,
   CssBaseline,
@@ -230,7 +231,7 @@ export default function Home() {
   }
   return (
     <Box
-      sx={{ backgroundColor: "#D7E8F2", height: "100%", minHeight: "100vh" }}
+      sx={{ backgroundColor: "#FAFAFA", height: "100%", minHeight: "100vh" }}
     >
       <Head>
         <title>Jotted</title>
@@ -285,11 +286,12 @@ export default function Home() {
           </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1050, mx: 2, py: 20 }}>
+        <Box sx={{ display: "flex", width: 1050, mx: 2, py: 10 }}>
           <Box
             sx={{
+              color: 'black',
               flex: 1,
-              justifyContent: "center",
+              justifyContent: "start",
               alignContent: "center",
               display: "flex",
               flexDirection: "column",
@@ -300,18 +302,18 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontWeight: 600, font: "poppins" }}
+                    sx={{ fontSize:"72px", fontWeight: 600, font: "Inter" }}
                   >
                     turning content 
                   </Typography>
                   <Typography
                     // variant="h2"
-                    sx={{ fontSize:"72px", fontWeight: 600, font: "poppins", color: "#00A4FF" }}
+                    sx={{ fontSize:"72px", fontWeight: 600, font: "inter", color: "black" }}
                   >
                     into courses
                   
                   </Typography>
-                  <Typography sx={{ fontSize:"14px", my: 1, font: "poppins" }}>
+                  <Typography sx={{ fontSize:"14px", my: 1, font: "inter" }}>
                   <br/>
                   join over a thousand learners <b>turning the internet into an accessible online university</b> by mapping the best resources on the web into learning pathways!
                   </Typography>
@@ -323,7 +325,7 @@ export default function Home() {
                       "&:hover": { opacity: 0.7 },
                       borderRadius: 2,
                       display: "flex",
-                      boxShadow: 0,
+                      boxShadow: 10,
                       backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
@@ -350,8 +352,10 @@ export default function Home() {
                               router.push(`/map/${res.id}`);
                             }}
                             sx={{
+                              //her eis the change
                               "&:hover": {
-                                opacity: 0.99,
+                                translateY: -2,
+                                opacity: 0.90,
                               },
                               cursor: "pointer",
                               minHeight: 300,
@@ -508,7 +512,7 @@ export default function Home() {
           justifyContent: "center",
           }}>
           <Typography
-              sx={{ fontSize: "60px", fontWeight: 600, font: "poppins"}}
+              sx={{ fontSize: "60px", fontWeight: 600, font: "inter"}}
               >
               meet featured curators!
           </Typography>
