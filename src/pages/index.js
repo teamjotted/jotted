@@ -422,6 +422,8 @@ export default function Home() {
             <br/>
             <br/>
             <br/>
+
+
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -430,7 +432,7 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="search for a map..."
+                  placeholder="search #WebUniversity for jotted a map..."
                   size="small"
                   sx={{
                     flex: 2,
@@ -458,7 +460,7 @@ export default function Home() {
                   }}
                 >
                   <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
-                    Search
+                    search
                   </Typography>
                 </Box>
               </Box>
@@ -498,6 +500,24 @@ export default function Home() {
           </Box>
         </Box>
       </Box>
+        <Box sx={{ 
+          display: "flex",
+          height: "1000px",  
+          background: "#151127", 
+          alignContent: "center",
+          justifyContent: "center",
+          }}>
+          <Typography
+              sx={{ fontSize: "60px", fontWeight: 600, font: "poppins"}}
+              >
+              meet featured curators!
+          </Typography>
+        </Box>
+        
+        <Box sx={{ display: "absolute",  background: "#D7E8F2", width: 20000, mx: 0, py: 30 }}>
+          
+        </Box>
+
     </Box>
   );
 }
