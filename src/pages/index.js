@@ -300,12 +300,14 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h3"
-                    sx={{ fontWeight: 600, fontFamily: "sans" }}
+                    sx={{ fontWeight: 600, fontFamily: "poppins" }}
                   >
-                    Curating the future of education one link at a time
+                    curating the future of education 
+                    <br/>
+                    one link at a time
                   </Typography>
-                  <Typography variant="body1" sx={{ my: 1 }}>
-                    Join us in mapping the best resources on the internet into
+                  <Typography variant="body1" sx={{ my: 1, fontFamily: "poppins" }}>
+                    join us in mapping the best resources on the internet into
                     learning pathways
                   </Typography>
                   <Box
@@ -327,7 +329,7 @@ export default function Home() {
                     }}
                   >
                     <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
-                      Explore pathways
+                      explore pathways
                     </Typography>
                   </Box>
                 </Box>
