@@ -289,7 +289,7 @@ export default function Home() {
         <Box sx={{ display: "flex", width: 1050, mx: 2, py: 10 }}>
           <Box
             sx={{
-              color: 'black',
+              color: "black",
               flex: 1,
               justifyContent: "start",
               alignContent: "center",
@@ -302,20 +302,36 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize:"72px", fontWeight: 600, font: "Inter" }}
+                    sx={{ fontSize: "72px", fontWeight: 600, font: "Inter" }}
                   >
-                    Turning content 
+                    Turning content
+                    <Typography
+                      display="inline"
+                      sx={{
+                        fontSize: "72px",
+                        fontWeight: 600,
+                        font: "inter",
+                        color: "black",
+                      }}
+                    >
+                      {' '}into courses
+                    </Typography>
                   </Typography>
-                  <Typography
+                  {/* <Typography
                     // variant="h2"
                     sx={{ fontSize:"72px", fontWeight: 600, font: "inter", color: "black" }}
                   >
                     into courses
                   
-                  </Typography>
-                  <Typography sx={{ fontSize:"14px", my: 1, font: "inter" }}>
-                  <br/>
-                  Join over a thousand learners <b>turning the internet into an accessible online university</b> by mapping the best resources on the web into learning pathways!
+                  </Typography> */}
+                  <Typography sx={{ fontSize: "14px", my: 1, font: "inter" }}>
+                    <br />
+                    Join over a thousand learners{" "}
+                    <b>
+                      turning the internet into an accessible online university
+                    </b>{" "}
+                    by mapping the best resources on the web into learning
+                    pathways!
                   </Typography>
                   <Box
                     onClick={() => {
@@ -355,7 +371,7 @@ export default function Home() {
                               //her eis the change
                               "&:hover": {
                                 translateY: -2,
-                                opacity: 0.90,
+                                opacity: 0.9,
                               },
                               cursor: "pointer",
                               minHeight: 300,
@@ -411,9 +427,9 @@ export default function Home() {
               </Box>
             </Box>
             <>
-            <br/>
-            <br/>
-            <br/>
+              <br />
+              <br />
+              <br />
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -456,48 +472,52 @@ export default function Home() {
               </Box>
               <Topbar router={router} />
             </>
-            <br/>
-            <br/>
-            <br/>
-            <MapSection
-              name={"Today’s featured maps"}
-              trees={trees}
-              handleClick={handleClick}
-              data={"featured"}
-            />
-            <MapSection
-              name={"Most popular maps"}
-              trees={freeTrees}
-              handleClick={handleClick}
-              data={"free"}
-            />
-            <MapSection
-              name={"Latest and greatest"}
-              trees={recentTrees}
-              handleClick={handleClick}
-              data={"recent"}
-            />
+            <Box sx={{ mt: 10 }}>
+              <MapSection
+                name={"Today’s featured maps"}
+                trees={trees}
+                handleClick={handleClick}
+                data={"featured"}
+              />
+              <MapSection
+                name={"Most popular maps"}
+                trees={freeTrees}
+                handleClick={handleClick}
+                data={"free"}
+              />
+              <MapSection
+                name={"Latest and greatest"}
+                trees={recentTrees}
+                handleClick={handleClick}
+                data={"recent"}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
-        <Box sx={{ 
+      <Box
+        sx={{
           display: "flex",
-          height: "1000px",  
-          background: "#151127", 
+          height: "1000px",
+          background: "#151127",
           alignContent: "center",
           justifyContent: "center",
-          }}>
-          <Typography
-              sx={{ fontSize: "60px", fontWeight: 600, font: "inter"}}
-              >
-              Meet featured curators!
-          </Typography>
-        </Box>
-        
-        <Box sx={{ display: "absolute",  background: "#D7E8F2", width: 20000, mx: 0, py: 30 }}>
-          
-        </Box>
+        }}
+      >
+        <Typography sx={{ fontSize: "60px", fontWeight: 600, font: "inter" }}>
+          Meet featured curators!
+        </Typography>
+      </Box>
 
+      <Box
+        sx={{
+          display: "absolute",
+          background: "#D7E8F2",
+          width: 20000,
+          mx: 0,
+          py: 30,
+        }}
+      ></Box>
     </Box>
   );
 }
