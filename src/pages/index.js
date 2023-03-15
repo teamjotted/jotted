@@ -230,7 +230,7 @@ export default function Home() {
   }
   return (
     <Box
-      sx={{ backgroundColor: "#F1F1F1", height: "100%", minHeight: "100vh" }}
+      sx={{ backgroundColor: "#D7E8F2", height: "100%", minHeight: "100vh" }}
     >
       <Head>
         <title>Jotted</title>
@@ -285,7 +285,7 @@ export default function Home() {
           </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1000, mx: 2, py: 1 }}>
+        <Box sx={{ display: "flex", width: 1050, mx: 2, py: 20 }}>
           <Box
             sx={{
               flex: 1,
@@ -299,16 +299,21 @@ export default function Home() {
               {width > 700 && (
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
-                    variant="h3"
-                    sx={{ fontWeight: 600, fontFamily: "poppins" }}
+                    variant="h2"
+                    sx={{ fontWeight: 600, font: "poppins" }}
                   >
-                    curating the future of education 
-                    <br/>
-                    one link at a time
+                    turning content 
                   </Typography>
-                  <Typography variant="body1" sx={{ my: 1, fontFamily: "poppins" }}>
-                    join us in mapping the best resources on the internet into
-                    learning pathways
+                  <Typography
+                    // variant="h2"
+                    sx={{ fontSize:"72px", fontWeight: 600, font: "poppins", color: "#00A4FF" }}
+                  >
+                    into courses
+                  
+                  </Typography>
+                  <Typography sx={{ fontSize:"14px", my: 1, font: "poppins" }}>
+                  <br/>
+                  join over a thousand learners <b>turning the internet into an accessible online university</b> by mapping the best resources on the web into learning pathways!
                   </Typography>
                   <Box
                     onClick={() => {
@@ -402,6 +407,21 @@ export default function Home() {
               </Box>
             </Box>
             <>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -410,7 +430,7 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search for a map..."
+                  placeholder="search for a map..."
                   size="small"
                   sx={{
                     flex: 2,
@@ -444,20 +464,33 @@ export default function Home() {
               </Box>
               <Topbar router={router} />
             </>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             <MapSection
-              name={"Featured"}
+              name={"today’s featured maps"}
               trees={trees}
               handleClick={handleClick}
               data={"featured"}
             />
             <MapSection
-              name={"Top Free"}
+              name={"most popular maps"}
               trees={freeTrees}
               handleClick={handleClick}
               data={"free"}
             />
             <MapSection
-              name={"Recent"}
+              name={"latest and greatest"}
               trees={recentTrees}
               handleClick={handleClick}
               data={"recent"}

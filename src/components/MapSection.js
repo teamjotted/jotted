@@ -1,6 +1,6 @@
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { Avatar, Box, Grid, Stack, Tooltip, Typography } from "@mui/material";
-import { Inter } from "@next/font/google";
+import { Inter, Poppins } from "@next/font/google";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import MapCard from "./MapCard";
@@ -22,7 +22,7 @@ export default function MapSection({ trees, handleClick, name, data }) {
   return (
     <Box sx={{ overflow: "hidden" }}>
       <Box sx={{ m: 1 }}>
-        <Typography sx={{ fontSize: 30, fontWeight: 700, fontFamily: inter }}>
+        <Typography sx={{ fontSize: 50, fontWeight: 700, font: "Poppins" }}>
           {name}
         </Typography>
       </Box>
