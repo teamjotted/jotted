@@ -302,19 +302,20 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize: "72px", fontWeight: 600, font: "Inter" }}
+                    sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
                   >
-                    Turning content
+                    From content
                     <Typography
                       display="inline"
                       sx={{
-                        fontSize: "72px",
+                        fontSize: "60px",
                         fontWeight: 600,
                         font: "inter",
                         color: "black",
                       }}
                     >
-                      {' '}into courses
+                      <br/>
+                      {' '}to courses
                     </Typography>
                   </Typography>
                   {/* <Typography
@@ -498,26 +499,13 @@ export default function Home() {
       <Box
         sx={{
           display: "flex",
-          height: "1000px",
+          height: "200px",
           background: "#151127",
           alignContent: "center",
           justifyContent: "center",
         }}
       >
-        <Typography sx={{ fontSize: "60px", fontWeight: 600, font: "inter" }}>
-          Meet featured curators!
-        </Typography>
       </Box>
-
-      <Box
-        sx={{
-          display: "absolute",
-          background: "#D7E8F2",
-          width: 20000,
-          mx: 0,
-          py: 30,
-        }}
-      ></Box>
     </Box>
   );
 }
