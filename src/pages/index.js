@@ -315,8 +315,12 @@ export default function Home() {
                         color: "black",
                       }}
                     >
+<<<<<<< HEAD
                       <br/>
                       {' '}into courses
+=======
+                    {' '}to courses
+>>>>>>> c46ad44f350a5f5a8400d0ed4144816c8ed7f254
                     </Typography>
                   </Typography>
                   {/* <Typography
