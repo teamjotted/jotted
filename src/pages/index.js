@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 
+
 import {
   Box,
   CssBaseline,
@@ -304,7 +305,7 @@ export default function Home() {
                     variant="h2"
                     sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
                   >
-                    From content
+                    turning content
                     <Typography
                       display="inline"
                       sx={{
@@ -315,7 +316,7 @@ export default function Home() {
                       }}
                     >
                       <br/>
-                      {' '}to courses
+                      {' '}into courses
                     </Typography>
                   </Typography>
                   {/* <Typography
