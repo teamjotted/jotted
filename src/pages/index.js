@@ -314,8 +314,7 @@ export default function Home() {
                         color: "black",
                       }}
                     >
-                      <br/>
-                      {' '}to courses
+                    {' '}to courses
                     </Typography>
                   </Typography>
                   {/* <Typography
