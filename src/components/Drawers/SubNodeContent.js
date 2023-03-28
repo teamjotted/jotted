@@ -15,6 +15,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
+  addNodeAttachments,
+  autoAddResource,
   deleteNodeAttachments,
   getNodeAttachments,
   orderResource,
@@ -28,6 +30,7 @@ import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
+import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 
 export default function SubNodeContent({
   setLoading,
@@ -144,7 +147,33 @@ export default function SubNodeContent({
     //setSelectedResource(res);
     setOpen(true);
   }
-
+  function handleAutoAdd() {
+    console.log(selectedNode);
+    autoAddResource(selectedNode.id).then((res) => {
+      console.log(res);
+      res.map((map) => {
+        const payload = {
+          user_id: tree.user_id,
+          tree_id: tree.id,
+          node_id: parseInt(selectedNode.id),
+          src: map.res,
+          description: map?.description,
+          preview_url: map?.preview_url,
+          title: map.title ? map.title : "",
+          index: 0,
+        };
+        addNodeAttachments(payload)
+          .then((res) => {
+            console.log(res.data.resources);
+            setAttachment(res.data.resources);
+          })
+          .catch((e) => {
+            console.log(e);
+            toast.error(e.response?.data.message);
+          });
+      });
+    });
+  }
   useEffect(() => {
     console.log(open);
     console.log(anchorElAttachments);
@@ -182,9 +211,22 @@ export default function SubNodeContent({
           >
             {selectedNode?.text}
           </Typography>
+          {treeAdmin && (
+            <Tooltip title="Auto-Add Resouces">
+              <AutoFixHighIcon
+                onClick={handleAutoAdd}
+                sx={{
+                  ml: "auto",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  mr: 2,
+                }}
+              />
+            </Tooltip>
+          )}
           <MoreVertIcon
             onClick={handleOpenNodeSettings}
-            sx={{ ml: "auto", cursor: "pointer", textAlign: "center" }}
+            sx={{ cursor: "pointer", textAlign: "center" }}
           />
           <Menu
             anchorEl={anchorEl}
