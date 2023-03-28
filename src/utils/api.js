@@ -372,6 +372,7 @@ export async function getMySharedTrees() {
     console.log(e);
   }
 }
+
 export async function shareMyTree(invited, tree_id) {
   const { token } = await getSession();
   const headers = {
@@ -466,6 +467,7 @@ export async function getUserResources(user_id, page, per_page, offset) {
     throw error;
   }
 }
+
 export async function deleteNode(id, treeid) {
   const { token } = await getSession();
 
@@ -485,6 +487,7 @@ export async function deleteNode(id, treeid) {
     console.log(e);
   }
 }
+
 export async function createNode(node) {
   const { token } = await getSession();
 
@@ -503,6 +506,7 @@ export async function createNode(node) {
     console.log(error);
   }
 }
+
 export async function editUser(id, payload) {
   const { token } = await getSession();
 
@@ -606,8 +610,8 @@ export async function addNodeAttachments(attachment) {
   try {
     return await axios.post(BASE_URL + `/resources`, attachment);
   } catch (error) {
-   // console.log("ERROR:", error);
-    throw (error)
+    // console.log("ERROR:", error);
+    throw error;
   }
 }
 export async function deleteNodeAttachments(id) {
@@ -750,6 +754,19 @@ export async function createReaction(user_id, resource_id, type) {
       resource_id,
       type,
     });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function autoAddResource(node_id) {
+  try {
+    return await axios
+      .get(BASE_URL + `/get_suggested_resources?node_id=${node_id}`)
+      .then((res) => {
+        return res.data;
+      });
   } catch (error) {
     console.log(error);
     throw error;
