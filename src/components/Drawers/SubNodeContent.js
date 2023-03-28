@@ -211,12 +211,19 @@ export default function SubNodeContent({
           >
             {selectedNode?.text}
           </Typography>
-          <Tooltip title="Auto-Add Resouces">
-            <AutoFixHighIcon
-              onClick={handleAutoAdd}
-              sx={{ ml: "auto", cursor: "pointer", textAlign: "center", mr: 2 }}
-            />
-          </Tooltip>
+          {treeAdmin && (
+            <Tooltip title="Auto-Add Resouces">
+              <AutoFixHighIcon
+                onClick={handleAutoAdd}
+                sx={{
+                  ml: "auto",
+                  cursor: "pointer",
+                  textAlign: "center",
+                  mr: 2,
+                }}
+              />
+            </Tooltip>
+          )}
           <MoreVertIcon
             onClick={handleOpenNodeSettings}
             sx={{ cursor: "pointer", textAlign: "center" }}
