@@ -34,6 +34,7 @@ export default function MainNodeSidebar({
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [totalResources, setTotalResources] = useState();
+  const [total,setTotal] = useState()
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,11 +46,14 @@ export default function MainNodeSidebar({
   const { width, height } = useWindowDimensions();
   useEffect(() => {
     getTreeAttachments(treeDetails.id).then((res) => {
+      if(res){
+        setTotal(res.length)
       setTotalResources(((progress.length * 100) / res.length).toFixed(0));
+      }
     });
     console.log(selectedNode);
     console.log(nodes);
-  }, [open]);
+  }, [progress,treeDetails]);
 
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
@@ -168,6 +172,7 @@ export default function MainNodeSidebar({
                 variant="determinate"
                 value={totalResources}
               />
+              <Typography>{progress.length}/{total}</Typography>
             </Box>
             <Typography variant="body1" sx={{ fontSize: 14, fontWeight: 700 }}>
               Overview
