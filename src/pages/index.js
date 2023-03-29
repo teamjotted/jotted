@@ -305,7 +305,7 @@ export default function Home() {
                     variant="h2"
                     sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
                   >
-                    turning content
+                    Turning content
                     <Typography
                       display="inline"
                       sx={{
