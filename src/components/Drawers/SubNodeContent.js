@@ -31,6 +31,7 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import { useSession } from "next-auth/react";
 
 export default function SubNodeContent({
   setLoading,
@@ -43,7 +44,10 @@ export default function SubNodeContent({
   selectedNode,
   tree,
   handleEditNode,
+  progress,
 }) {
+  const { data: session } = useSession();
+
   const { width, height } = useWindowDimensions();
   // Dropdown for Node
   const [anchorEl, setAnchorEl] = useState(null);
@@ -81,7 +85,6 @@ export default function SubNodeContent({
 
   // const handleOpenAttachmentDropdown = () => setAttachmentDropdown(true);
   // const handleCloseAttachmentDropdown = () => setAttachmentDropdown(false);
-
   const [onFocus, setOnFocus] = useState();
   const openAttachmentsDropdown = Boolean(anchorElAttachments);
 
@@ -148,6 +151,7 @@ export default function SubNodeContent({
     setOpen(true);
   }
   function handleAutoAdd() {
+    setLoading(true);
     console.log(selectedNode);
     autoAddResource(selectedNode.id).then((res) => {
       console.log(res);
@@ -160,8 +164,10 @@ export default function SubNodeContent({
           description: map?.description,
           preview_url: map?.preview_url,
           title: map.title ? map.title : "",
-          index: 0,
+          index: attachments.length,
         };
+        setLoading(false);
+
         addNodeAttachments(payload)
           .then((res) => {
             console.log(res.data.resources);
@@ -173,6 +179,44 @@ export default function SubNodeContent({
           });
       });
     });
+  }
+  async function newResourceHandler() {
+    console.log(url);
+    if (!url) {
+      toast.error("Invalid Ur");
+      return false;
+    }
+    const response = await fetch(`/api/preview`, {
+      method: "POST",
+      body: url,
+    });
+    const data = await response.json();
+    console.log(data);
+    if (data) {
+      const payload = {
+        user_id: session.user.id,
+        tree_id: tree.id,
+        node_id: parseInt(selectedNode.id),
+        src: url,
+        description: data?.description,
+        preview_url: data?.image,
+        title: data.title ? data.title : "",
+        index: attachments.length,
+      };
+      addNodeAttachments(payload)
+        .then((res) => {
+          console.log(res.data.resources);
+          setAttachment(res.data.resources);
+          setUrl("");
+          handleClose();
+        })
+        .catch((e) => {
+          console.log(e);
+          toast.error(e.response?.data.message);
+        });
+    } else {
+      toast.error("Invalid Url");
+    }
   }
   useEffect(() => {
     console.log(open);
@@ -211,23 +255,26 @@ export default function SubNodeContent({
           >
             {selectedNode?.text}
           </Typography>
-          {treeAdmin && (
-            <Tooltip title="Auto-Add Resouces">
-              <AutoFixHighIcon
-                onClick={handleAutoAdd}
-                sx={{
-                  ml: "auto",
-                  cursor: "pointer",
-                  textAlign: "center",
-                  mr: 2,
-                }}
-              />
-            </Tooltip>
-          )}
-          <MoreVertIcon
-            onClick={handleOpenNodeSettings}
-            sx={{ cursor: "pointer", textAlign: "center" }}
-          />
+          <Box sx={{ ml: "auto" }}>
+            {treeAdmin && !loading ? (
+              <Tooltip title="Auto-Add Resouces">
+                <AutoFixHighIcon
+                  onClick={handleAutoAdd}
+                  sx={{
+                    cursor: "pointer",
+                    textAlign: "center",
+                    mr: 2,
+                  }}
+                />
+              </Tooltip>
+            ) : (
+              <></>
+            )}
+            <MoreVertIcon
+              onClick={handleOpenNodeSettings}
+              sx={{ cursor: "pointer", textAlign: "center" }}
+            />
+          </Box>
           <Menu
             anchorEl={anchorEl}
             id="account-menu"
@@ -323,172 +370,172 @@ export default function SubNodeContent({
                 },
               }}
             >
-              {attachments.map((res, index) => (
-                <Draggable
-                  key={res.id}
-                  draggableId={"draggable-" + res.id}
-                  index={index}
-                >
-                  {(provided) => (
-                    <motion.div
-                      // initial={{ scale: 0 }}
-                      animate={{ y: 0 }}
-                      transition={{
-                        // type: "spring",
-                        duration: 0.1,
-                        stiffness: 125,
-                      }}
-                      whileHover={{ y: -1.5 }}
-                    >
-                      <Box
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={treeAdmin ? provided.innerRef : null}
-                        sx={{
-                          flexDirection: "column",
-                          p: 1,
-                          backgroundColor: "white",
-                          borderRadius: 2,
-                          my: 1.1,
-                          mx: 1,
-                          display: "flex",
-                          maxWidth: 470,
-                          overflow: "hidden",
-                          boxShadow:
-                            resource?.id != res.id
-                              ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
-                              : "1px 10px 13px rgba(0, 0, 0, 0.2)",
-                          "&:hover": {
-                            boxShadow: "1px 10px 13px rgba(0, 0, 0, 0.15)",
-                          },
+              {attachments.map((res, index) => {
+                const viewed = progress.includes(res.id);
+                return (
+                  <Draggable
+                    key={res.id}
+                    draggableId={"draggable-" + res.id}
+                    index={index}
+                  >
+                    {(provided) => (
+                      <motion.div
+                        // initial={{ scale: 0 }}
+                        animate={{ y: 0 }}
+                        transition={{
+                          // type: "spring",
+                          duration: 0.1,
+                          stiffness: 125,
                         }}
+                        whileHover={{ y: -1.5 }}
                       >
                         <Box
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={treeAdmin ? provided.innerRef : null}
                           sx={{
+                            flexDirection: "column",
+                            p: 1,
+                            backgroundColor: "white",
+                            borderRadius: 2,
+                            my: 1.1,
+                            mx: 1,
                             display: "flex",
+                            maxWidth: 470,
+                            overflow: "hidden",
+                            boxShadow:
+                              resource?.id != res.id
+                                ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
+                                : "1px 10px 13px rgba(0, 0, 0, 0.2)",
+                            "&:hover": {
+                              boxShadow: "1px 10px 13px rgba(0, 0, 0, 0.15)",
+                            },
                           }}
                         >
                           <Box
-                            component={"img"}
-                            width={75}
-                            height={75}
                             sx={{
-                              borderRadius: 2,
-                              mr: 1,
-                              alignSelf: "center",
-                              backgroundColor: "white",
-                            }}
-                            src={
-                              res.preview_url == ""
-                                ? "/favicon.ico"
-                                : res.preview_url
-                            }
-                          />
-                          <Box
-                            onClick={() => {
-                              if (width > 800) {
-                                resouceClickHandler(res);
-                              } else {
-                                window.open(res.src);
-                              }
-                            }}
-                            sx={{
-                              cursor: "pointer",
-                              ml: 2,
-                              color: "#black",
+                              display: "flex",
                             }}
                           >
-                            <>
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  fontSize: 10,
-                                  maxWidth: 250,
-                                  display: "-webkit-box",
-                                  overflow: "hidden",
-                                  WebkitBoxOrient: "vertical",
-                                  WebkitLineClamp: 1,
-                                }}
-                              >
-                                {res.src}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  fontWeight: 800,
-                                  fontSize: 12,
-                                  display: "-webkit-box",
-                                  overflow: "hidden",
-                                  WebkitBoxOrient: "vertical",
-                                  WebkitLineClamp: 2,
-                                  maxWidth: 250,
-                                }}
-                              >
-                                {res.index + 1} | {res.title}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                sx={{
-                                  maxWidth: 250,
-                                  fontSize: 10,
-                                  display: "-webkit-box",
-                                  overflow: "hidden",
-                                  WebkitBoxOrient: "vertical",
-                                  WebkitLineClamp: 2,
-                                }}
-                              >
-                                {res.description}
-                              </Typography>
-                            </>
-                          </Box>
-                          {treeAdmin ? (
                             <Box
+                              component={"img"}
+                              width={75}
+                              height={75}
                               sx={{
-                                "&:hover": { opacity: 0.1 },
+                                borderRadius: 2,
+                                mr: 1,
+                                alignSelf: "center",
+                                backgroundColor: "white",
+                              }}
+                              src={
+                                res.preview_url == ""
+                                  ? "/favicon.ico"
+                                  : res.preview_url
+                              }
+                            />
+                            <Box
+                              onClick={() => {
+                                resouceClickHandler(res);
+                              }}
+                              sx={{
                                 cursor: "pointer",
-                                display: "flex",
-                                ml: "auto",
-                                justifyContent: "center",
-                                alignContent: "center",
-                                fontWeight: 700,
+                                ml: 2,
+                                color: "#black",
+                                opacity: viewed ? 0.4 : 1,
                               }}
                             >
-                              <Tooltip title="Resource Settings">
-                                <MoreVertIcon
-                                  onClick={(e) =>
-                                    handleOpenAttachmentDropdown(e, res)
-                                  }
+                              <>
+                                <Typography
+                                  variant="body2"
                                   sx={{
-                                    ml: "auto",
-                                    cursor: "pointer",
-                                    textAlign: "center",
+                                    fontSize: 10,
+                                    maxWidth: 250,
+                                    display: "-webkit-box",
+                                    overflow: "hidden",
+                                    WebkitBoxOrient: "vertical",
+                                    WebkitLineClamp: 1,
                                   }}
-                                />
-                              </Tooltip>
+                                >
+                                  {res.src}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    fontWeight: 800,
+                                    fontSize: 12,
+                                    display: "-webkit-box",
+                                    overflow: "hidden",
+                                    WebkitBoxOrient: "vertical",
+                                    WebkitLineClamp: 2,
+                                    maxWidth: 250,
+                                  }}
+                                >
+                                  {res.index + 1} | {res.title}
+                                </Typography>
+                                <Typography
+                                  variant="body2"
+                                  sx={{
+                                    maxWidth: 250,
+                                    fontSize: 10,
+                                    display: "-webkit-box",
+                                    overflow: "hidden",
+                                    WebkitBoxOrient: "vertical",
+                                    WebkitLineClamp: 2,
+                                  }}
+                                >
+                                  {res.description}
+                                </Typography>
+                              </>
                             </Box>
-                          ) : (
-                            <></>
-                            // <Tooltip
-                            //   onClick={() => {
-                            //     window.open(res.src);
-                            //   }}
-                            //   title="Go to Link"
-                            // >
-                            //   <InsertLinkIcon
-                            //     sx={{
-                            //       "&:hover": { opacity: 0.1 },
-                            //       ml: "auto",
-                            //       color: "black",
-                            //     }}
-                            //   />
-                            // </Tooltip>
-                          )}
+                            {treeAdmin ? (
+                              <Box
+                                sx={{
+                                  "&:hover": { opacity: 0.1 },
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  ml: "auto",
+                                  justifyContent: "center",
+                                  alignContent: "center",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                <Tooltip title="Resource Settings">
+                                  <MoreVertIcon
+                                    onClick={(e) =>
+                                      handleOpenAttachmentDropdown(e, res)
+                                    }
+                                    sx={{
+                                      ml: "auto",
+                                      cursor: "pointer",
+                                      textAlign: "center",
+                                    }}
+                                  />
+                                </Tooltip>
+                              </Box>
+                            ) : (
+                              <></>
+                              // <Tooltip
+                              //   onClick={() => {
+                              //     window.open(res.src);
+                              //   }}
+                              //   title="Go to Link"
+                              // >
+                              //   <InsertLinkIcon
+                              //     sx={{
+                              //       "&:hover": { opacity: 0.1 },
+                              //       ml: "auto",
+                              //       color: "black",
+                              //     }}
+                              //   />
+                              // </Tooltip>
+                            )}
+                          </Box>
                         </Box>
-                      </Box>
-                    </motion.div>
-                  )}
-                </Draggable>
-              ))}
+                      </motion.div>
+                    )}
+                  </Draggable>
+                );
+              })}
               {provided.placeholder}
             </Box>
           )}
@@ -561,43 +608,43 @@ export default function SubNodeContent({
       </Menu>
       <Box>
         {treeAdmin && (
-          <Box
-            onClick={() => {
-              handleOpen();
-              setSelectedResource();
-            }}
-            sx={{
-              "&:hover": {
-                opacity: 0.7,
-              },
-              cursor: "pointer",
-              display: "flex",
-              width: 150,
-              alignItems: "center",
-            }}
-          >
-            <IconButton>
-              <Tooltip placement="right" title="Add Resource">
-                <AddIcon />
-              </Tooltip>
-            </IconButton>
-            {/* <TextField
-              sx={{ my: 1 }}
-              placeholder="Paste Url"
-              size="small"
-              fullWidth
-              value={url}
-              onChange={(e) => {
-                setUrl(e.target.value);
-              }}
-            /> */}
-            <Typography
-              variant="subtitle"
-              sx={{ fontWeight: 600, color: "grey" }}
-            >
-              Add Resource
-            </Typography>
-          </Box>
+          <>
+            <Box sx={{ display: "flex", mx: 1 }}>
+              <TextField
+                sx={{ my: 1, flex: 2 }}
+                placeholder="Paste Url"
+                size="small"
+                fullWidth
+                value={url}
+                onChange={(e) => {
+                  setUrl(e.target.value);
+                }}
+              />
+              <Box
+                onClick={newResourceHandler}
+                sx={{
+                  flex: 1,
+                  "&:hover": { opacity: 0.7 },
+                  borderRadius: 2,
+                  display: "flex",
+                  boxShadow: 0,
+                  backgroundColor: "#00A4FF",
+                  cursor: "pointer",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  my: 1,
+                  ml: 1,
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{ fontWeight: 500, color: "white" }}
+                >
+                  Add
+                </Typography>
+              </Box>
+            </Box>
+          </>
         )}
       </Box>
       <AddResourcePopup

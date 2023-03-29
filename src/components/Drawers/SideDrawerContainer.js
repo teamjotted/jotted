@@ -20,6 +20,7 @@ export default function SideDrawerContainer({
   resouceClickHandler,
   children,
   setLoading,
+  progress,
 }) {
   const { width, height } = useWindowDimensions();
   return (
@@ -48,6 +49,7 @@ export default function SideDrawerContainer({
       <Box>
         {selectedNode?.type == "mainNode" ? (
           <MainNodeSidebar
+            progress={progress}
             nextHandler={nextHandler}
             treeDetails={treeDetails}
             selectedNode={selectedNode}
@@ -58,6 +60,7 @@ export default function SideDrawerContainer({
           />
         ) : (
           <SubNodeContent
+            progress={progress}
             setLoading={setLoading}
             handleEditNode={handleEditNode}
             attachments={attachments}
