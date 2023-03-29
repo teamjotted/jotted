@@ -8,11 +8,12 @@ import {
   Menu,
   MenuItem,
   Divider,
+  LinearProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { orderNodes } from "../../utils/api";
+import { getTreeAttachments, orderNodes } from "../../utils/api";
 import { toast } from "react-toastify";
 import mixpanel from "mixpanel-browser";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
@@ -28,10 +29,11 @@ export default function MainNodeSidebar({
   nodes,
   handleEditNode,
   selectNode,
+  progress,
 }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [totalResources, setTotalResources] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,9 +44,12 @@ export default function MainNodeSidebar({
 
   const { width, height } = useWindowDimensions();
   useEffect(() => {
+    getTreeAttachments(treeDetails.id).then((res) => {
+      setTotalResources(((progress.length * 100) / res.length).toFixed(0));
+    });
     console.log(selectedNode);
     console.log(nodes);
-  }, [selectedNode]);
+  }, [open]);
 
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
@@ -108,12 +113,11 @@ export default function MainNodeSidebar({
         <Box
           sx={{
             display: "flex",
-
             borderRadius: 3,
             p: 1,
           }}
         >
-          <Box>
+          <Box sx={{ width: "100%" }}>
             <Typography
               variant="h1"
               sx={{
@@ -123,6 +127,50 @@ export default function MainNodeSidebar({
               }}
             >
               {selectedNode?.text}
+            </Typography>
+            <Box sx={{ my: 1 }}>
+              {totalResources == 0 && (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Track your Progress!
+                </Typography>
+              )}
+              {totalResources > 0 && totalResources < 10 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Just Starting...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources >= 10 && totalResources < 50 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Keep Going...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources >= 50 && totalResources < 99 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Almost Done...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources == 100 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Complete
+                </Typography>
+              ) : (
+                <></>
+              )}
+
+              <LinearProgress
+                color={totalResources == 100 ? "success" : "info"}
+                variant="determinate"
+                value={totalResources}
+              />
+            </Box>
+            <Typography variant="body1" sx={{ fontSize: 14, fontWeight: 700 }}>
+              Overview
             </Typography>
             <Typography
               variant="body1"
@@ -271,13 +319,13 @@ export default function MainNodeSidebar({
             borderRadius: 2,
             display: "flex",
             boxShadow: 0,
-            backgroundColor: "black",
+            backgroundColor: "#151127",
             cursor: "pointer",
-            mr: 1,
+            mx: 1,
             justifyContent: "center",
             alignItems: "center",
             p: 1,
-            my: 1,
+            my: 2,
           }}
         >
           <Typography variant="body1" sx={{ fontWeight: 500, color: "white" }}>
