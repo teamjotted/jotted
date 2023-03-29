@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
+
+
 import {
   Box,
   CssBaseline,
@@ -230,7 +232,7 @@ export default function Home() {
   }
   return (
     <Box
-      sx={{ backgroundColor: "#F1F1F1", height: "100%", minHeight: "100vh" }}
+      sx={{ backgroundColor: "#FAFAFA", height: "100%", minHeight: "100vh" }}
     >
       <Head>
         <title>Jotted</title>
@@ -285,11 +287,12 @@ export default function Home() {
           </Box> */}
         </Box>
 
-        <Box sx={{ display: "flex", width: 1000, mx: 2, py: 1 }}>
+        <Box sx={{ display: "flex", width: 1050, mx: 2, py: 10 }}>
           <Box
             sx={{
+              color: "black",
               flex: 1,
-              justifyContent: "center",
+              justifyContent: "start",
               alignContent: "center",
               display: "flex",
               flexDirection: "column",
@@ -299,14 +302,38 @@ export default function Home() {
               {width > 700 && (
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
-                    variant="h3"
-                    sx={{ fontWeight: 600, fontFamily: "sans" }}
+                    variant="h2"
+                    sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
                   >
-                    Curating the future of education one link at a time
+                    turning content
+                    <Typography
+                      display="inline"
+                      sx={{
+                        fontSize: "60px",
+                        fontWeight: 600,
+                        font: "inter",
+                        color: "black",
+                      }}
+                    >
+                      <br/>
+                      {' '}into courses
+                    </Typography>
                   </Typography>
-                  <Typography variant="body1" sx={{ my: 1 }}>
-                    Join us in mapping the best resources on the internet into
-                    learning pathways
+                  {/* <Typography
+                    // variant="h2"
+                    sx={{ fontSize:"72px", fontWeight: 600, font: "inter", color: "black" }}
+                  >
+                    into courses
+                  
+                  </Typography> */}
+                  <Typography sx={{ fontSize: "14px", my: 1, font: "inter" }}>
+                    <br />
+                    Join over a thousand learners{" "}
+                    <b>
+                      turning the internet into an accessible online university
+                    </b>{" "}
+                    by mapping the best resources on the web into learning
+                    pathways!
                   </Typography>
                   <Box
                     onClick={() => {
@@ -316,18 +343,18 @@ export default function Home() {
                       "&:hover": { opacity: 0.7 },
                       borderRadius: 2,
                       display: "flex",
-                      boxShadow: 0,
+                      boxShadow: 10,
                       backgroundColor: "#151127",
                       cursor: "pointer",
                       mr: 1,
                       justifyContent: "center",
                       alignItems: "center",
-                      width: 200,
+                      width: 150,
                       mt: 5,
                     }}
                   >
-                    <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
-                      Explore pathways
+                    <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
+                      Explore
                     </Typography>
                   </Box>
                 </Box>
@@ -343,8 +370,10 @@ export default function Home() {
                               router.push(`/map/${res.id}`);
                             }}
                             sx={{
+                              //her eis the change
                               "&:hover": {
-                                opacity: 0.99,
+                                translateY: -2,
+                                opacity: 0.9,
                               },
                               cursor: "pointer",
                               minHeight: 300,
@@ -378,7 +407,7 @@ export default function Home() {
                                   sx={{
                                     color: "white",
                                     fontSize: 16,
-                                    fontWeight: 700,
+                                    fontWeight: 500,
                                     display: "-webkit-box",
                                     overflow: "hidden",
                                     WebkitBoxOrient: "vertical",
@@ -400,6 +429,9 @@ export default function Home() {
               </Box>
             </Box>
             <>
+              <br />
+              <br />
+              <br />
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -408,14 +440,14 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search for a map..."
+                  placeholder="Search #WebUniversity for jotted a map..."
                   size="small"
                   sx={{
                     flex: 2,
                     mr: 2,
                     borderRadius: 2,
                     backgroundColor: "white",
-                    boxShadow: "0px -5px 9px rgba(0, 0, 0, 0.1)",
+                    boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.1)",
                   }}
                 />
                 <Box
@@ -426,42 +458,54 @@ export default function Home() {
                     "&:hover": { opacity: 0.7 },
                     borderRadius: 2,
                     display: "flex",
-                    boxShadow: 0,
+                    boxShadow: 10,
                     backgroundColor: "#151127",
                     cursor: "pointer",
 
                     justifyContent: "center",
                     alignItems: "center",
-                    width: 100,
+                    width: 150,
                   }}
                 >
-                  <Typography sx={{ color: "white", fontWeight: 600, py: 1 }}>
+                  <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
                     Search
                   </Typography>
                 </Box>
               </Box>
               <Topbar router={router} />
             </>
-            <MapSection
-              name={"Featured"}
-              trees={trees}
-              handleClick={handleClick}
-              data={"featured"}
-            />
-            <MapSection
-              name={"Top Free"}
-              trees={freeTrees}
-              handleClick={handleClick}
-              data={"free"}
-            />
-            <MapSection
-              name={"Recent"}
-              trees={recentTrees}
-              handleClick={handleClick}
-              data={"recent"}
-            />
+            <Box sx={{ mt: 10 }}>
+              <MapSection
+                name={"Today’s featured maps"}
+                trees={trees}
+                handleClick={handleClick}
+                data={"featured"}
+              />
+              <MapSection
+                name={"Most popular maps"}
+                trees={freeTrees}
+                handleClick={handleClick}
+                data={"free"}
+              />
+              <MapSection
+                name={"Latest and greatest"}
+                trees={recentTrees}
+                handleClick={handleClick}
+                data={"recent"}
+              />
+            </Box>
           </Box>
         </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          height: "200px",
+          background: "#151127",
+          alignContent: "center",
+          justifyContent: "center",
+        }}
+      >
       </Box>
     </Box>
   );
