@@ -34,7 +34,7 @@ export default function MainNodeSidebar({
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [totalResources, setTotalResources] = useState();
-  const [total,setTotal] = useState()
+  const [total, setTotal] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -46,14 +46,15 @@ export default function MainNodeSidebar({
   const { width, height } = useWindowDimensions();
   useEffect(() => {
     getTreeAttachments(treeDetails.id).then((res) => {
-      if(res){
-        setTotal(res.length)
-      setTotalResources(((progress.length * 100) / res.length).toFixed(0));
+      if (res) {
+        setTotal(res.length);
+        setTotalResources(((progress.length * 100) / res.length).toFixed(0));
       }
     });
     console.log(selectedNode);
     console.log(nodes);
-  }, [progress,treeDetails]);
+    console.log(progress);
+  }, [progress, treeDetails]);
 
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
@@ -172,7 +173,9 @@ export default function MainNodeSidebar({
                 variant="determinate"
                 value={totalResources}
               />
-              <Typography>{progress.length}/{total}</Typography>
+              <Typography>
+                {progress.length}/{total}
+              </Typography>
             </Box>
             <Typography variant="body1" sx={{ fontSize: 14, fontWeight: 700 }}>
               Overview
@@ -361,105 +364,125 @@ export default function MainNodeSidebar({
                   },
                 }}
               >
-                {nodes.map((res, index) => (
-                  <>
-                    {res.type != "mainNode" ? (
-                      <Draggable
-                        key={res.id}
-                        draggableId={"draggable-" + res.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <motion.div
-                            // initial={{ scale: 0 }}
-                            animate={{ y: 0 }}
-                            transition={{
-                              // type: "spring",
-                              duration: 0.2,
-                              stiffness: 150,
-                            }}
-                            whileHover={{ y: -1.5 }}
-                          >
-                            <Box
-                              onClick={() => selectNode(res)}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              ref={provided.innerRef}
-                              sx={{
-                                flexDirection: "column",
-                                p: 1,
-                                borderRadius: 2,
-                                my: 1.1,
-                                mx: 1,
-                                display: "flex",
-                                backgroundColor: "white",
-                                maxWidth: 470,
-                                overflow: "hidden",
-                                boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
-                                "&:hover": {
-                                  boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
-                                },
+                {nodes.map((res, index) => {
+                  console.log("-------------");
+
+                  const node_id = parseInt(res.id);
+                  const viewed = progress.map((res) => {
+                    return res.naufeltree_id == node_id;
+                  });
+                  const viewedAmount = viewed.filter(
+                    (res) => res == true
+                  ).length;
+
+                  const totalAmount = res.data.resources;
+
+                  const progressAmount = (
+                    (viewedAmount / totalAmount) *
+                    100
+                  ).toFixed(0);
+                  console.log(progressAmount);
+                  console.log("-------------");
+                  return (
+                    <>
+                      {res.type != "mainNode" ? (
+                        <Draggable
+                          key={res.id}
+                          draggableId={"draggable-" + res.id}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <motion.div
+                              // initial={{ scale: 0 }}
+                              animate={{ y: 0 }}
+                              transition={{
+                                // type: "spring",
+                                duration: 0.2,
+                                stiffness: 150,
                               }}
+                              whileHover={{ y: -1.5 }}
                             >
                               <Box
+                                onClick={() => selectNode(res)}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
                                 sx={{
+                                  flexDirection: "column",
+
+                                  borderRadius: 2,
+                                  my: 1.1,
+                                  mx: 1,
                                   display: "flex",
+                                  backgroundColor: "white",
+                                  maxWidth: 470,
+                                  overflow: "hidden",
+                                  boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
                                   "&:hover": {
-                                    color:
-                                      res.type == "mainNode" ? "" : "#151127",
+                                    boxShadow:
+                                      "0px 1px 9px rgba(0, 0, 0, 0.16)",
                                   },
                                 }}
                               >
                                 <Box
-                                  component={"img"}
-                                  width={50}
-                                  height={50}
                                   sx={{
-                                    borderRadius: 2,
-                                    mr: 1,
-                                    alignSelf: "center",
+                                    p: 1,
+                                    display: "flex",
+                                    "&:hover": {
+                                      color:
+                                        res.type == "mainNode" ? "" : "#151127",
+                                    },
                                   }}
-                                  src={res.photo}
-                                />
-                                <Box sx={{ cursor: "pointer", ml: 2 }}>
-                                  <>
-                                    <Typography
-                                      variant="body2"
-                                      sx={{
-                                        fontWeight: 800,
-                                        fontSize: 12,
-                                        display: "-webkit-box",
-                                        overflow: "hidden",
-                                        WebkitBoxOrient: "vertical",
-                                        WebkitLineClamp: 2,
-                                      }}
-                                    >
-                                      {res.index} | {res.data.label}
-                                    </Typography>
-                                    <Typography
-                                      variant="body2"
-                                      sx={{
-                                        fontSize: 12,
-                                        display: "-webkit-box",
-                                        overflow: "hidden",
-                                        WebkitBoxOrient: "vertical",
-                                        WebkitLineClamp: 2,
-                                      }}
-                                    >
-                                      {res.description}
-                                    </Typography>
-                                  </>
+                                >
+                                  <Box
+                                    component={"img"}
+                                    width={50}
+                                    height={50}
+                                    sx={{
+                                      borderRadius: 2,
+                                      mr: 1,
+                                      alignSelf: "center",
+                                    }}
+                                    src={res.photo}
+                                  />
+                                  <Box sx={{ cursor: "pointer", ml: 2 }}>
+                                    <>
+                                      <Typography
+                                        variant="body2"
+                                        sx={{
+                                          fontWeight: 800,
+                                          fontSize: 12,
+                                          display: "-webkit-box",
+                                          overflow: "hidden",
+                                          WebkitBoxOrient: "vertical",
+                                          WebkitLineClamp: 2,
+                                        }}
+                                      >
+                                        {res.index} | {res.data.label}
+                                      </Typography>
+                                    </>
+                                  </Box>
+                                  <Typography variant="body2" sx={{ ml: "auto", p: 0.2,fontWeight: 800, }}>
+                                    {viewedAmount}/{totalAmount}
+                                  </Typography>
                                 </Box>
+                                <LinearProgress
+                                  // color={
+                                  //   totalResources == 100 ? "success" : "info"
+                                  // }
+                                  variant="determinate"
+                                  value={progressAmount}
+                                />
                               </Box>
-                            </Box>
-                          </motion.div>
-                        )}
-                      </Draggable>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ))}
+                            </motion.div>
+                          )}
+                        </Draggable>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })}
                 {provided.placeholder}{" "}
               </Box>
             )}

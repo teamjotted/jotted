@@ -760,9 +760,13 @@ function Map() {
           treeDetails.id
         ).then((res) => {
           setProgress([]);
-          res.map((map) => {
-            setProgress((prev) => [...prev, map.resources_id]);
-          });
+          if (selectedNode.type === "mainNode") {
+            setProgress(res);
+          } else {
+            res.map((map) => {
+              setProgress((prev) => [...prev, map.resources_id]);
+            });
+          }
         });
       }
       console.log("OPEN LEFT");
