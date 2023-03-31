@@ -3,6 +3,7 @@ import Default from "@/components/Nodes/Default";
 import Main from "@/components/Nodes/Main";
 import Title from "@/components/Nodes/Title";
 import {
+  addProgress,
   addTreeTags,
   createNode,
   createNodeEdge,
@@ -12,9 +13,11 @@ import {
   getNodeAttachments,
   getNodeByTreeId,
   getNodeEdges,
+  getProgress,
   getTreeById,
   getUserPurchases,
   saveUserTree,
+  setProgress,
   stripePurchase,
   stripeVerifyPurchase,
 } from "@/utils/api";
@@ -214,9 +217,7 @@ function AlertDialogSlide({
 
 function Map() {
   const { data } = useSession();
-  useEffect(()=>{
-    console.log(data)
-  },[data])
+  useEffect(() => {}, [data]);
   //const [data, setData] = useState();
   const router = useRouter();
   const { id } = router.query;
@@ -232,9 +233,7 @@ function Map() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedNode, setSelectedNode] = useState([]);
-  const [popUpValues, setPopUpValues] = useState(null);
-  const [popUpValueName, setPopUpValueName] = useState(null);
-  const [filterValues, setFilterValues] = useState({ nodeId: "" });
+
   const [openUrl, setOpenUrl] = useState(false);
   const [resource, setResource] = useState();
   const [frame, setFrame] = useState("");
@@ -246,6 +245,8 @@ function Map() {
   const [openLogin, setOpenLogin] = useState(false);
   const [unLinked, setUnLinked] = useState(false);
   const [tag, setTag] = useState([]);
+  const [progress, setProgress] = useState([]);
+
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
   const [paidState, setPaidSate] = useState(false);
@@ -287,11 +288,9 @@ function Map() {
   );
 
   function handleDragStop(e, node, nodeArr) {
-    console.log(node);
     newNodeUpdate(node, node.label);
   }
   const newNodeUpdate = (node, label) => {
-    //console.log('NODE DRAGGED');
     let payload = {
       type: node.type,
       label: label || node.label || node.data.label,
@@ -301,7 +300,6 @@ function Map() {
     editNode(node.id, payload, id, dispatch)
       .then((res) => {
         setPopUpValues(null);
-        console.log(nodes);
       })
       .catch((error) => {
         console.log(error);
@@ -313,7 +311,6 @@ function Map() {
     //to make sure
     nodes.map((res) => {
       if (res.type == "mainNode") {
-        console.log(res);
         dispatch(setNodeId(res?.id));
         setSelectedNode({
           id: res?.id,
@@ -327,8 +324,6 @@ function Map() {
   }, []);
 
   const handleNodeClick = (e, node) => {
-    console.log("NODE", node);
-
     setSelectedNode({
       id: node.id,
       text: node.label,
@@ -342,18 +337,15 @@ function Map() {
 
   const handleNodeBlur = () => {
     setSelectedNode(null);
-    setFilterValues({ nodeId: "" });
   };
   function purchaseHandler() {
     stripePurchase(data.user.id, id).then((res) => {
-      console.log(res);
       window.open(res.response.result.url);
       //need to check on success purchase
     });
   }
 
   async function checkPayStatus() {
-    console.log(treeDetails);
     //if (!session) return false;
 
     return await stripeVerifyPurchase(data.user.id, id).then((res) => {
@@ -393,7 +385,6 @@ function Map() {
     if (data) {
       const status = await checkPayStatus();
 
-      console.log(status);
       if (status) {
         setPaidSate(true);
         isLoading(false);
@@ -493,7 +484,6 @@ function Map() {
   }, [id]);
 
   const toggleDrawer = (newOpen) => () => {
-    console.log(attachments);
     if (newOpen == false) {
       setOpenNode(newOpen);
       dispatch(setNodeId(null));
@@ -503,12 +493,9 @@ function Map() {
     }
   };
   function likeHandler(resource) {
-    console.log("like", resource);
     // toast.success("Liked")
     createReaction(data.user.id, resource.id, "like").then(() => {
-      console.log(resource.tree_id);
       getNodeAttachments(resource.node_id).then((res) => {
-        console.log(res);
         setAttachment(res.data);
         setResource(res.data[resource.index]);
       });
@@ -517,9 +504,8 @@ function Map() {
 
   function dislikeHandler(resource) {
     // toast.error("Disliked")
-    console.log("dislike", resource);
+
     createReaction(user.id, resource.id, "dislike").then(() => {
-      console.log(resource.tree_id);
       getNodeAttachments(resource.node_id).then((res) => {
         console.log(res);
         setAttachment(res.data);
@@ -529,16 +515,10 @@ function Map() {
   }
   function nextHandler() {
     setNextMode(true);
-    console.log(resource);
-    console.log(attachments);
-    console.log(selectedNode);
+
     if (resource?.index < attachments.length - 1) {
-      console.log(resource.index, "and", attachments.length - 1);
       resouceClickHandler(attachments[resource.index + 1]);
     } else {
-      console.log("NEXT NODE");
-      console.log("SLECTED NODE", selectedNode);
-      console.log("LIST OF NODES", nodes);
       // console.log('NEXT NODE', nodes[selectedNode.index + 1]);
       if (nodes[selectedNode.index + 1]?.id) {
         dispatch(setNodeId(nodes[selectedNode.index + 1]?.id));
@@ -568,18 +548,15 @@ function Map() {
   }
 
   const saveTree = () => {
-    console.log("SAVED TREE", editedTree);
-    console.log(tag);
     if (tag.length > 0) {
       addTreeTags(tag, editedTree.id).then((res) => {
         //console.log(res);
       });
     }
     // setEditedTree({ tags: tag });
-    console.log(editedTree);
+
     saveUserTree(editedTree.id, editedTree)
       .then((res) => {
-        console.log(res);
         setEditedTree(res);
         //Tree_Get_By_Id();
 
@@ -590,22 +567,15 @@ function Map() {
       });
   };
   function handleEditNode() {
-    console.log(selectedNode, node);
     handleEditNodeOpen();
   }
   function prevHandler() {
     setNextMode(true);
-    console.log(resource);
-    console.log(attachments);
-    console.log(selectedNode);
+
     if (resource?.index < attachments.length) {
       console.log(resource.index, "and", attachments.length - 1);
       resouceClickHandler(attachments[resource.index]);
     } else {
-      console.log("NEXT NODE");
-      console.log(selectedNode);
-      console.log(nodes);
-      console.log(nodes[selectedNode.index]?.id);
       dispatch(setNodeId(nodes[selectedNode.index].id));
       setSelectedNode({
         id: nodes[selectedNode.index].id,
@@ -635,32 +605,47 @@ function Map() {
 
   function resouceClickHandler(res) {
     setFrameRefresh(false);
-    console.log("CLICKED", res);
-    if (res) {
-      //   mixpanel.track("View Resource", {
-      //     tree_id: treeDetails?.id,
-      //     resource_id: res.id,
-      //     node_id: res.node_id,
-      //     url: res.src,
-      //   });
-
-      const photo = res?.src;
-      setResource(res);
-      const url = photo
-        .replace(
-          "https://www.youtube.com/watch?v=",
-          "https://www.youtube.com/embed/"
-        )
-        .split("&")[0];
-      setOpenUrl(true);
-      console.log(url);
-      if (frame == url) {
-        setFrame(null);
-        setResource(null);
-        setOpenUrl(false);
-      } else {
-        setFrame(url);
+    if (width > 800) {
+      if (res) {
+        const photo = res?.src;
+        setResource(res);
+        const url = photo
+          .replace(
+            "https://www.youtube.com/watch?v=",
+            "https://www.youtube.com/embed/"
+          )
+          .split("&")[0];
+        setOpenUrl(true);
+        if (frame == url) {
+          setFrame(null);
+          setResource(null);
+          setOpenUrl(false);
+        } else {
+          setFrame(url);
+        }
       }
+    } else {
+      window.open(res.src);
+    }
+
+    mixpanel.track("View Resource", {
+      tree_id: treeDetails?.id,
+      resource_id: res.id,
+      node_id: res.node_id,
+      url: res.src,
+    });
+    console.log(res);
+    if (data) {
+      addProgress(data.user.id, res.node_id, res.id, res.tree_id).then(
+        (res) => {
+          console.log(res);
+          setProgress([]);
+          res.map((map) => {
+            console.log(map);
+            setProgress([...progress, map.resources_id]);
+          });
+        }
+      );
     }
   }
   const onConnect = useCallback((edge) => {
@@ -671,7 +656,6 @@ function Map() {
       tree_id: id,
       type: "smoothstep",
     };
-    console.log(newEdge);
 
     createNodeEdge(newEdge, id).then((res) => {
       getNodeEdges(id).then((res) => {
@@ -769,6 +753,22 @@ function Map() {
     setAttachment([]);
     console.log(node);
     if (node) {
+      if (data && treeDetails) {
+        getProgress(
+          data?.user.id,
+          selectedNode.type === "mainNode" ? false : parseInt(selectedNode.id),
+          treeDetails.id
+        ).then((res) => {
+          setProgress([]);
+          if (selectedNode.type === "mainNode") {
+            setProgress(res);
+          } else {
+            res.map((map) => {
+              setProgress((prev) => [...prev, map.resources_id]);
+            });
+          }
+        });
+      }
       console.log("OPEN LEFT");
       //isLoading(true);
       getNodeAttachments(node).then((res) => {
@@ -908,6 +908,7 @@ function Map() {
           {paidState ? (
             <>
               <SideDrawerContainer
+                progress={progress}
                 openNode={openNode}
                 toggleDrawer={toggleDrawer}
                 selectedNode={selectedNode}

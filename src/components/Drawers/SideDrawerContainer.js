@@ -1,5 +1,7 @@
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { Box, Drawer, SwipeableDrawer } from "@mui/material";
+import { useState } from "react";
+import CommentNodeContent from "./CommentNodeContent";
 import MainNodeSidebar from "./MainNodeContent";
 import SubNodeContent from "./SubNodeContent";
 
@@ -20,7 +22,9 @@ export default function SideDrawerContainer({
   resouceClickHandler,
   children,
   setLoading,
+  progress,
 }) {
+  const [tab, setTab] = useState(1);
   const { width, height } = useWindowDimensions();
   return (
     <Drawer
@@ -45,19 +49,46 @@ export default function SideDrawerContainer({
       onOpen={toggleDrawer(true)}
       onClose={toggleDrawer(false)}
     >
-      <Box>
-        {selectedNode?.type == "mainNode" ? (
-          <MainNodeSidebar
-            nextHandler={nextHandler}
-            treeDetails={treeDetails}
-            selectedNode={selectedNode}
-            treeAdmin={treeAdmin}
-            nodes={nodes}
-            handleEditNode={handleEditNode}
-            selectNode={selectNode}
-          />
-        ) : (
-          <SubNodeContent
+      {tab == 1 ? (
+        <Box>
+          {selectedNode?.type == "mainNode" ? (
+            <MainNodeSidebar
+              progress={progress}
+              nextHandler={nextHandler}
+              treeDetails={treeDetails}
+              selectedNode={selectedNode}
+              treeAdmin={treeAdmin}
+              nodes={nodes}
+              handleEditNode={handleEditNode}
+              selectNode={selectNode}
+            />
+          ) : (
+            <SubNodeContent
+              tab={tab}
+              setTab={setTab}
+              progress={progress}
+              setLoading={setLoading}
+              handleEditNode={handleEditNode}
+              attachments={attachments}
+              selectedNode={selectedNode}
+              treeAdmin={treeAdmin}
+              resource={resource}
+              resouceClickHandler={resouceClickHandler}
+              tree={treeDetails}
+              loading={loading}
+              setAttachment={setAttachment}
+            />
+          )}
+        </Box>
+      ) : (
+        <></>
+      )}
+      {tab == 2 ? (
+        <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
+          <CommentNodeContent
+            tab={tab}
+            setTab={setTab}
+            progress={progress}
             setLoading={setLoading}
             handleEditNode={handleEditNode}
             attachments={attachments}
@@ -69,8 +100,11 @@ export default function SideDrawerContainer({
             loading={loading}
             setAttachment={setAttachment}
           />
-        )}
-      </Box>
+        </Box>
+      ) : (
+        <></>
+      )}
+
       {children}
     </Drawer>
   );

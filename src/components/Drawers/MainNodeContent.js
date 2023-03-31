@@ -8,11 +8,12 @@ import {
   Menu,
   MenuItem,
   Divider,
+  LinearProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { orderNodes } from "../../utils/api";
+import { getTreeAttachments, orderNodes } from "../../utils/api";
 import { toast } from "react-toastify";
 import mixpanel from "mixpanel-browser";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
@@ -28,10 +29,12 @@ export default function MainNodeSidebar({
   nodes,
   handleEditNode,
   selectNode,
+  progress,
 }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [totalResources, setTotalResources] = useState();
+  const [total, setTotal] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,9 +45,13 @@ export default function MainNodeSidebar({
 
   const { width, height } = useWindowDimensions();
   useEffect(() => {
-    console.log(selectedNode);
-    console.log(nodes);
-  }, [selectedNode]);
+    getTreeAttachments(treeDetails.id).then((res) => {
+      if (res) {
+        setTotal(res.length);
+        setTotalResources(((progress.length * 100) / res.length).toFixed(0));
+      }
+    });
+  }, [progress, treeDetails]);
 
   function onDragEnd(result) {
     const { destination, source, draggableId } = result;
@@ -108,12 +115,11 @@ export default function MainNodeSidebar({
         <Box
           sx={{
             display: "flex",
-
             borderRadius: 3,
             p: 1,
           }}
         >
-          <Box>
+          <Box sx={{ width: "100%" }}>
             <Typography
               variant="h1"
               sx={{
@@ -123,6 +129,54 @@ export default function MainNodeSidebar({
               }}
             >
               {selectedNode?.text}
+            </Typography>
+            <Box sx={{ my: 1 }}>
+              {totalResources == 0 && (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Track your Progress!
+                </Typography>
+              )}
+              {totalResources > 0 && totalResources < 10 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Just Starting...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources >= 10 && totalResources < 50 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Keep Going...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources >= 50 && totalResources < 99 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Almost Done...
+                </Typography>
+              ) : (
+                <></>
+              )}
+              {totalResources == 100 ? (
+                <Typography variant="body1" sx={{ fontSize: 14 }}>
+                  Complete
+                </Typography>
+              ) : (
+                <></>
+              )}
+
+              <LinearProgress
+                sx={{ height: 10, borderRadius: 5 }}
+                color={totalResources == 100 ? "success" : "inherit"}
+                variant="determinate"
+                value={totalResources}
+              />
+              <Typography>
+                {progress.length}/{total}
+              </Typography>
+            </Box>
+            <Typography variant="body1" sx={{ fontSize: 14, fontWeight: 700 }}>
+              Overview
             </Typography>
             <Typography
               variant="body1"
@@ -271,13 +325,13 @@ export default function MainNodeSidebar({
             borderRadius: 2,
             display: "flex",
             boxShadow: 0,
-            backgroundColor: "black",
+            backgroundColor: "#151127",
             cursor: "pointer",
-            mr: 1,
+            mx: 1,
             justifyContent: "center",
             alignItems: "center",
             p: 1,
-            my: 1,
+            my: 2,
           }}
         >
           <Typography variant="body1" sx={{ fontWeight: 500, color: "white" }}>
@@ -308,105 +362,130 @@ export default function MainNodeSidebar({
                   },
                 }}
               >
-                {nodes.map((res, index) => (
-                  <>
-                    {res.type != "mainNode" ? (
-                      <Draggable
-                        key={res.id}
-                        draggableId={"draggable-" + res.id}
-                        index={index}
-                      >
-                        {(provided) => (
-                          <motion.div
-                            // initial={{ scale: 0 }}
-                            animate={{ y: 0 }}
-                            transition={{
-                              // type: "spring",
-                              duration: 0.2,
-                              stiffness: 150,
-                            }}
-                            whileHover={{ y: -1.5 }}
-                          >
-                            <Box
-                              onClick={() => selectNode(res)}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              ref={provided.innerRef}
-                              sx={{
-                                flexDirection: "column",
-                                p: 1,
-                                borderRadius: 2,
-                                my: 1.1,
-                                mx: 1,
-                                display: "flex",
-                                backgroundColor: "white",
-                                maxWidth: 470,
-                                overflow: "hidden",
-                                boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
-                                "&:hover": {
-                                  boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.16)",
-                                },
+                {nodes.map((res, index) => {
+                  console.log("-------------");
+
+                  const node_id = parseInt(res.id);
+                  const viewed = progress.map((res) => {
+                    return res.naufeltree_id == node_id;
+                  });
+                  const viewedAmount = viewed.filter(
+                    (res) => res == true
+                  ).length;
+
+                  const totalAmount = res.data.resources;
+
+                  const progressAmount = (
+                    (viewedAmount / totalAmount) *
+                    100
+                  ).toFixed(0);
+                  console.log(progressAmount);
+                  console.log("-------------");
+                  return (
+                    <>
+                      {res.type != "mainNode" ? (
+                        <Draggable
+                          key={res.id}
+                          draggableId={"draggable-" + res.id}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <motion.div
+                              // initial={{ scale: 0 }}
+                              animate={{ y: 0 }}
+                              transition={{
+                                // type: "spring",
+                                duration: 0.2,
+                                stiffness: 150,
                               }}
+                              whileHover={{ y: -1.5 }}
                             >
                               <Box
+                                onClick={() => selectNode(res)}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                ref={provided.innerRef}
                                 sx={{
+                                  flexDirection: "column",
+
+                                  borderRadius: 2,
+                                  my: 1.1,
+                                  mx: 1,
                                   display: "flex",
+                                  backgroundColor: "white",
+                                  maxWidth: 470,
+                                  overflow: "hidden",
+                                  boxShadow: "0px 1px 9px rgba(0, 0, 0, 0.09)",
                                   "&:hover": {
-                                    color:
-                                      res.type == "mainNode" ? "" : "#151127",
+                                    boxShadow:
+                                      "0px 1px 9px rgba(0, 0, 0, 0.16)",
                                   },
                                 }}
                               >
                                 <Box
-                                  component={"img"}
-                                  width={50}
-                                  height={50}
                                   sx={{
-                                    borderRadius: 2,
-                                    mr: 1,
-                                    alignSelf: "center",
+                                    p: 1,
+                                    display: "flex",
+                                    "&:hover": {
+                                      color:
+                                        res.type == "mainNode" ? "" : "#151127",
+                                    },
                                   }}
-                                  src={res.photo}
-                                />
-                                <Box sx={{ cursor: "pointer", ml: 2 }}>
-                                  <>
-                                    <Typography
-                                      variant="body2"
-                                      sx={{
-                                        fontWeight: 800,
-                                        fontSize: 12,
-                                        display: "-webkit-box",
-                                        overflow: "hidden",
-                                        WebkitBoxOrient: "vertical",
-                                        WebkitLineClamp: 2,
-                                      }}
-                                    >
-                                      {res.index} | {res.data.label}
-                                    </Typography>
-                                    <Typography
-                                      variant="body2"
-                                      sx={{
-                                        fontSize: 12,
-                                        display: "-webkit-box",
-                                        overflow: "hidden",
-                                        WebkitBoxOrient: "vertical",
-                                        WebkitLineClamp: 2,
-                                      }}
-                                    >
-                                      {res.description}
-                                    </Typography>
-                                  </>
+                                >
+                                  <Box
+                                    component={"img"}
+                                    width={50}
+                                    height={50}
+                                    sx={{
+                                      borderRadius: 2,
+                                      mr: 1,
+                                      alignSelf: "center",
+                                    }}
+                                    src={res.photo}
+                                  />
+                                  <Box sx={{ cursor: "pointer", ml: 2 }}>
+                                    <>
+                                      <Typography
+                                        variant="body2"
+                                        sx={{
+                                          fontWeight: 800,
+                                          fontSize: 12,
+                                          display: "-webkit-box",
+                                          overflow: "hidden",
+                                          WebkitBoxOrient: "vertical",
+                                          WebkitLineClamp: 2,
+                                        }}
+                                      >
+                                        {res.index} | {res.data.label}
+                                      </Typography>
+                                    </>
+                                  </Box>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ ml: "auto", p: 0.2, fontWeight: 800 }}
+                                  >
+                                    {viewedAmount}/{totalAmount}
+                                  </Typography>
                                 </Box>
+                                <LinearProgress
+                                  // color={
+                                  //   totalResources == 100 ? "success" : "info"
+                                  // }
+                                  sx={{ height: 2 }}
+                                  color={"inherit"}
+                                  variant="determinate"
+                                  value={progressAmount}
+                                />
                               </Box>
-                            </Box>
-                          </motion.div>
-                        )}
-                      </Draggable>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ))}
+                            </motion.div>
+                          )}
+                        </Draggable>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  );
+                })}
                 {provided.placeholder}{" "}
               </Box>
             )}

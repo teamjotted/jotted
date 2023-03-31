@@ -26,7 +26,7 @@ export default function Topbar({ router }) {
     }
   }, []);
   return (
-    <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+    <Box sx={{ display: "flex",  }}>
       <Box
         onClick={() => {
           if (catalog != "") {
@@ -37,6 +37,7 @@ export default function Topbar({ router }) {
           p: 3,
           py: 1.5,
           my: 1,
+          mr:10,
           borderRadius: 2,
           backgroundColor: catalog == null ? "white" : "",
           cursor: "pointer",
@@ -44,7 +45,6 @@ export default function Topbar({ router }) {
             backgroundColor: "white",
           },
           alignItems: "center",
-          justifyContent: "center",
           display: "flex",
           flexDirection: "column",
         }}
@@ -73,6 +73,7 @@ export default function Topbar({ router }) {
           p: 3,
           py: 1.5,
           my: 1,
+          mr:10,
           borderRadius: 1,
           backgroundColor: catalog == "featured" ? "white" : "",
           cursor: "pointer",
@@ -111,6 +112,7 @@ export default function Topbar({ router }) {
         sx={{
           p: 3,
           py: 1.5,
+          mr:10,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "free" ? "white" : "",
