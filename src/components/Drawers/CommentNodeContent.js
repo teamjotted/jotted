@@ -149,6 +149,7 @@ export default function CommentNodeContent({
         {comments.map((res, index) => {
           return (
             <motion.div
+              key={index}
               // initial={{ scale: 0 }}
               animate={{ y: 0 }}
               transition={{
