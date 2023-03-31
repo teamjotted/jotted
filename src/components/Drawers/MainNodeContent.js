@@ -51,9 +51,6 @@ export default function MainNodeSidebar({
         setTotalResources(((progress.length * 100) / res.length).toFixed(0));
       }
     });
-    console.log(selectedNode);
-    console.log(nodes);
-    console.log(progress);
   }, [progress, treeDetails]);
 
   function onDragEnd(result) {
@@ -169,7 +166,8 @@ export default function MainNodeSidebar({
               )}
 
               <LinearProgress
-                color={totalResources == 100 ? "success" : "info"}
+                sx={{ height: 10, borderRadius: 5 }}
+                color={totalResources == 100 ? "success" : "inherit"}
                 variant="determinate"
                 value={totalResources}
               />
@@ -462,7 +460,10 @@ export default function MainNodeSidebar({
                                       </Typography>
                                     </>
                                   </Box>
-                                  <Typography variant="body2" sx={{ ml: "auto", p: 0.2,fontWeight: 800, }}>
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ ml: "auto", p: 0.2, fontWeight: 800 }}
+                                  >
                                     {viewedAmount}/{totalAmount}
                                   </Typography>
                                 </Box>
@@ -470,6 +471,8 @@ export default function MainNodeSidebar({
                                   // color={
                                   //   totalResources == 100 ? "success" : "info"
                                   // }
+                                  sx={{ height: 2 }}
+                                  color={"inherit"}
                                   variant="determinate"
                                   value={progressAmount}
                                 />

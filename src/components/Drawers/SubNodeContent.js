@@ -32,6 +32,7 @@ import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { useSession } from "next-auth/react";
+import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
 
 export default function SubNodeContent({
   setLoading,
@@ -45,6 +46,8 @@ export default function SubNodeContent({
   tree,
   handleEditNode,
   progress,
+  tab,
+  setTab,
 }) {
   const { data: session } = useSession();
 
@@ -606,7 +609,7 @@ export default function SubNodeContent({
           </MenuItem>
         </>
       </Menu>
-      <Box>
+      <Box sx={{ position: "fixed", bottom: 20, width: 430 }}>
         {treeAdmin && (
           <>
             <Box sx={{ display: "flex", mx: 1 }}>
@@ -646,6 +649,81 @@ export default function SubNodeContent({
             </Box>
           </>
         )}
+        <Box sx={{ display: "flex", mx: 1 }}>
+          <Box
+            onClick={() => {
+              setTab(1);
+            }}
+            sx={{
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              backgroundColor: tab == 2 ? "white" : "grey",
+              cursor: "pointer",
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+              mr: 1,
+              p: 1,
+              height: 40,
+              alignSelf: "center",
+              border: 1,
+              borderColor: "#DADADA",
+            }}
+          >
+            <InsertLinkIcon
+              sx={{
+                fontSize: 20,
+                mx: 1,
+                color: tab == 2 ? "#151127" : "white",
+              }}
+            />
+            <Typography
+              variant="body1"
+              sx={{
+                color: tab == 2 ? "#151127" : "white",
+                fontWeight: 600,
+                fontSize: 14,
+              }}
+            >
+              Resources
+            </Typography>
+          </Box>
+          <Box
+            onClick={() => {
+              setTab(2);
+            }}
+            sx={{
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              backgroundColor: "white",
+              cursor: "pointer",
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+              ml: 1,
+              p: 1,
+              height: 40,
+              alignSelf: "center",
+              border: 1,
+              borderColor: "#DADADA",
+            }}
+          >
+            <ChatBubbleRoundedIcon sx={{ fontSize: 20, mx: 1 }} />
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#151127",
+                fontWeight: 600,
+                fontSize: 14,
+                alignItems: "center",
+              }}
+            >
+              Community
+            </Typography>
+          </Box>
+        </Box>
       </Box>
       <AddResourcePopup
         selectedResource={selectedResource}

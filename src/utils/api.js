@@ -823,3 +823,37 @@ export async function addProgress(
     throw error;
   }
 }
+export async function getComments(tree_id) {
+  try {
+    return await axios
+      .get(BASE_URL + `/comments?tree_id=${tree_id}`)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function addComment(payload) {
+  try {
+    return await axios.post(BASE_URL + `/comments`, payload).then((res) => {
+      return res.data;
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function deleteComment(comment_id) {
+  try {
+    return await axios
+      .delete(BASE_URL + `/comments/` + comment_id)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
