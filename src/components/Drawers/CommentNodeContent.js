@@ -171,9 +171,6 @@ export default function CommentNodeContent({
                     resource?.id != res.id
                       ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
                       : "1px 10px 13px rgba(0, 0, 0, 0.2)",
-                  //   "&:hover": {
-                  //     boxShadow: "1px 10px 13px rgba(0, 0, 0, 0.04)",
-                  //   },
                 }}
               >
                 {" "}
@@ -199,7 +196,6 @@ export default function CommentNodeContent({
                   />
                   <Box
                     sx={{
-                      cursor: "pointer",
                       ml: 2,
                       color: "#black",
                     }}
@@ -209,7 +205,7 @@ export default function CommentNodeContent({
                         variant="h1"
                         sx={{
                           fontWeight: 700,
-                          fontSize: 14,
+                          fontSize: 16,
                           maxWidth: 250,
                           display: "-webkit-box",
                           overflow: "hidden",
@@ -244,11 +240,10 @@ export default function CommentNodeContent({
                     sx={{
                       fontWeight: 500,
                       fontSize: 14,
-
                       display: "-webkit-box",
                       overflow: "hidden",
                       WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
+                      WebkitLineClamp: 6,
                     }}
                   >
                     {res.comment}
