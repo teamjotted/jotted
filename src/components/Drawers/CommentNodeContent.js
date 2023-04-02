@@ -337,6 +337,7 @@ export default function CommentNodeContent({
                       </Typography>
                     </>
                   )}
+                  <Typography>Posted at: </Typography>
                 </Box>
               </motion.div>
               {res.reply.map((reply) => {
@@ -399,7 +400,7 @@ export default function CommentNodeContent({
                               }}
                             >
                               {reply.user.username
-                                ? `@${reply.user.username}`
+                                ? `${reply.user.username}`
                                 : `${reply.user.firstname} ${reply.user.lastname}`}
                             </Typography>
                           </>
