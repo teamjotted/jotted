@@ -57,8 +57,6 @@ export default function CommentNodeContent({
   const [message, setMessage] = useState();
   const [replying, setReplying] = useState();
   function addCommentHandler() {
-    setComments([]);
-
     if (data && message) {
       const payload = {
         tree_id: tree.id,
@@ -70,7 +68,11 @@ export default function CommentNodeContent({
       addComment(payload)
         .then((res) => {
           console.log(res);
-          setComments(res);
+          //setComments(res);
+          getComments(tree.id).then((res) => {
+            console.log(res);
+            setComments(res);
+          });
           setMessage("");
         })
         .catch((e) => {
@@ -80,18 +82,18 @@ export default function CommentNodeContent({
   }
 
   function deleteCommentHandler(id) {
-    setComments([]);
-
     deleteComment(id).then((res) => {
       console.log(res);
-      setComments(res);
+      getComments(tree.id).then((res) => {
+        console.log(res);
+        setComments(res);
+      });
     });
   }
   function replyingHandler(comment) {
     setReplying(comment);
   }
   function addReplyHandler() {
-    setComments([]);
     if (data && message && replying) {
       const payload = {
         tree_id: tree.id,
@@ -104,7 +106,10 @@ export default function CommentNodeContent({
       addComment(payload)
         .then((res) => {
           console.log(res);
-          setComments(res);
+          getComments(tree.id).then((res) => {
+            console.log(res);
+            setComments(res);
+          });
           setMessage("");
         })
         .catch((e) => {
@@ -153,7 +158,7 @@ export default function CommentNodeContent({
       </Box>
       {loading && <LinearProgress />}
       <Box sx={{ px: 2.1 }}>
-        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Comments</Typography>
+        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Discussion</Typography>
       </Box>
       <Box
         sx={{
@@ -246,9 +251,14 @@ export default function CommentNodeContent({
                           }}
                         >
                           {res.user.username
-                            ? `@${res.user.username}`
+                            ? `${res.user.username}`
                             : `${res.user.firstname} ${res.user.lastname}`}
                         </Typography>
+                        {res.user.id === tree.user_id && (
+                          <>
+                            <Typography sx={{fontSize:12}}>Map Creator</Typography>
+                          </>
+                        )}
                       </>
                     </Box>
 
@@ -272,7 +282,7 @@ export default function CommentNodeContent({
                     <Typography
                       variant="h1"
                       sx={{
-                        fontWeight: 500,
+                        fontWeight: 400,
                         fontSize: 14,
                         display: "-webkit-box",
                         overflow: "hidden",
@@ -395,7 +405,19 @@ export default function CommentNodeContent({
                           </>
                         </Box>
                       </Box>
-                      <Typography> {reply.comment}</Typography>
+                      <Typography
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: 14,
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 3,
+                        }}
+                      >
+                        {" "}
+                        {reply.comment}
+                      </Typography>
                       {reply.user_id === data.user.id && (
                         <Typography
                           onClick={() => deleteCommentHandler(reply.id)}
