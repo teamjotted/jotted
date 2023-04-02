@@ -55,7 +55,7 @@ export default function CommentNodeContent({
   const { data } = useSession();
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState();
-
+  const [replying, setReplying] = useState();
   function addCommentHandler() {
     if (data && message) {
       const payload = {
@@ -68,7 +68,11 @@ export default function CommentNodeContent({
       addComment(payload)
         .then((res) => {
           console.log(res);
-          setComments(res);
+          //setComments(res);
+          getComments(tree.id).then((res) => {
+            console.log(res);
+            setComments(res);
+          });
           setMessage("");
         })
         .catch((e) => {
@@ -80,8 +84,38 @@ export default function CommentNodeContent({
   function deleteCommentHandler(id) {
     deleteComment(id).then((res) => {
       console.log(res);
-      setComments(res);
+      getComments(tree.id).then((res) => {
+        console.log(res);
+        setComments(res);
+      });
     });
+  }
+  function replyingHandler(comment) {
+    setReplying(comment);
+  }
+  function addReplyHandler() {
+    if (data && message && replying) {
+      const payload = {
+        tree_id: tree.id,
+        user_id: data.user.id,
+        comment: message,
+        naufeltree_id: parseInt(selectedNode.id),
+        comments_id: replying.id,
+      };
+      console.log(payload);
+      addComment(payload)
+        .then((res) => {
+          console.log(res);
+          getComments(tree.id).then((res) => {
+            console.log(res);
+            setComments(res);
+          });
+          setMessage("");
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
   }
 
   useEffect(() => {
@@ -124,7 +158,7 @@ export default function CommentNodeContent({
       </Box>
       {loading && <LinearProgress />}
       <Box sx={{ px: 2.1 }}>
-        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Comments</Typography>
+        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Discussion</Typography>
       </Box>
       <Box
         sx={{
@@ -148,65 +182,189 @@ export default function CommentNodeContent({
       >
         {comments.map((res, index) => {
           return (
-            <motion.div
-              key={index}
-              // initial={{ scale: 0 }}
-              animate={{ y: 0 }}
-              transition={{
-                // type: "spring",
-                duration: 0.1,
-                stiffness: 125,
-              }}
-            >
-              <Box
-                sx={{
-                  flexDirection: "column",
-                  p: 1,
-                  backgroundColor: "white",
-                  borderRadius: 2,
-                  my: 1.1,
-                  mx: 1,
-                  width: 420,
-                  overflow: "hidden",
-                  boxShadow:
-                    resource?.id != res.id
-                      ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
-                      : "1px 10px 13px rgba(0, 0, 0, 0.2)",
+            <>
+              <motion.div
+                key={index}
+                // initial={{ scale: 0 }}
+                animate={{ y: 0 }}
+                transition={{
+                  // type: "spring",
+                  duration: 0.1,
+                  stiffness: 125,
                 }}
               >
-                {" "}
-                <Typography
-                  variant="h1"
+                <Box
                   sx={{
-                    opacity: 0.7,
-                    fontWeight: 500,
-                    fontSize: 10,
-                    maxWidth: 250,
-                    display: "-webkit-box",
+                    flexDirection: "column",
+                    p: 1,
+                    backgroundColor:
+                      replying?.user.id == res.user.id ? "#F1F1F1" : "white",
+                    borderRadius: 2,
+                    my: 1.1,
+                    mx: 1,
+                    width: 420,
                     overflow: "hidden",
-                    WebkitBoxOrient: "vertical",
-                    WebkitLineClamp: 1,
+                    boxShadow:
+                      resource?.id != res.id
+                        ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
+                        : "1px 10px 13px rgba(0, 0, 0, 0.2)",
                   }}
                 >
-                  {tree.name} | {res.node.label}
-                </Typography>
-                <Box sx={{ my: 1, display: "flex" }}>
-                  <Avatar
-                    sx={{ width: 30, height: 30 }}
-                    src={res.user.photo_url}
-                  />
-                  <Box
+                  {" "}
+                  <Typography
+                    variant="h1"
                     sx={{
-                      ml: 2,
-                      color: "#black",
+                      opacity: 0.7,
+                      fontWeight: 500,
+                      fontSize: 10,
+                      maxWidth: 250,
+                      display: "-webkit-box",
+                      overflow: "hidden",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 1,
                     }}
                   >
+                    {tree.name} | {res.node.label}
+                  </Typography>
+                  <Box sx={{ my: 1, display: "flex" }}>
+                    <Avatar
+                      sx={{ width: 30, height: 30 }}
+                      src={res.user.photo_url}
+                    />
+                    <Box
+                      sx={{
+                        ml: 2,
+                        color: "#black",
+                      }}
+                    >
+                      <>
+                        <Typography
+                          variant="h1"
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: 16,
+                            maxWidth: 250,
+                            display: "-webkit-box",
+                            overflow: "hidden",
+                            WebkitBoxOrient: "vertical",
+                            WebkitLineClamp: 1,
+                          }}
+                        >
+                          {res.user.username
+                            ? `${res.user.username}`
+                            : `${res.user.firstname} ${res.user.lastname}`}
+                        </Typography>
+                        {res.user.id === tree.user_id && (
+                          <>
+                            <Typography sx={{fontSize:12}}>Map Creator</Typography>
+                          </>
+                        )}
+                      </>
+                    </Box>
+
+                    {treeAdmin ? (
+                      <Box
+                        sx={{
+                          "&:hover": { opacity: 0.1 },
+                          cursor: "pointer",
+                          display: "flex",
+                          ml: "auto",
+                          justifyContent: "center",
+                          alignContent: "center",
+                          fontWeight: 700,
+                        }}
+                      ></Box>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
+                  <Box sx={{ my: 1 }}>
+                    <Typography
+                      variant="h1"
+                      sx={{
+                        fontWeight: 400,
+                        fontSize: 14,
+                        display: "-webkit-box",
+                        overflow: "hidden",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 6,
+                      }}
+                    >
+                      {res.comment}
+                    </Typography>
+                  </Box>
+                  {res.user_id === data.user.id && (
+                    <Typography
+                      onClick={() => deleteCommentHandler(res.id)}
+                      sx={{
+                        fontSize: 12,
+                        cursor: "pointer",
+                        "&:hover": { opacity: 0.8 },
+                      }}
+                    >
+                      Delete
+                    </Typography>
+                  )}
+                  {replying ? (
                     <>
+                      {replying.user.id == res.user.id ? (
+                        <Typography
+                          onClick={() => setReplying()}
+                          sx={{
+                            fontSize: 12,
+                            cursor: "pointer",
+                            "&:hover": { opacity: 0.8 },
+                          }}
+                        >
+                          Cancel
+                        </Typography>
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <Typography
+                        onClick={() => replyingHandler(res)}
+                        sx={{
+                          fontSize: 12,
+                          cursor: "pointer",
+                          "&:hover": { opacity: 0.8 },
+                        }}
+                      >
+                        Reply
+                      </Typography>
+                    </>
+                  )}
+                </Box>
+              </motion.div>
+              {res.reply.map((reply) => {
+                return (
+                  <>
+                    <Box
+                      sx={{
+                        flexDirection: "column",
+                        p: 1,
+                        backgroundColor: "white",
+                        borderRadius: 2,
+                        my: 1.1,
+                        mx: 1,
+                        ml: 4,
+                        width: 395,
+                        overflow: "hidden",
+                        boxShadow:
+                          resource?.id != res.id
+                            ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
+                            : "1px 10px 13px rgba(0, 0, 0, 0.2)",
+                      }}
+                    >
                       <Typography
                         variant="h1"
                         sx={{
-                          fontWeight: 700,
-                          fontSize: 16,
+                          opacity: 0.7,
+                          fontWeight: 500,
+                          fontSize: 10,
                           maxWidth: 250,
                           display: "-webkit-box",
                           overflow: "hidden",
@@ -214,56 +372,69 @@ export default function CommentNodeContent({
                           WebkitLineClamp: 1,
                         }}
                       >
-                        {res.user.firstname} {res.user.lastname}
+                        {tree.name} replying to @{res.user.username}
                       </Typography>
-                    </>
-                  </Box>
-
-                  {treeAdmin ? (
-                    <Box
-                      sx={{
-                        "&:hover": { opacity: 0.1 },
-                        cursor: "pointer",
-                        display: "flex",
-                        ml: "auto",
-                        justifyContent: "center",
-                        alignContent: "center",
-                        fontWeight: 700,
-                      }}
-                    ></Box>
-                  ) : (
-                    <></>
-                  )}
-                </Box>
-                <Box sx={{ my: 1 }}>
-                  <Typography
-                    variant="h1"
-                    sx={{
-                      fontWeight: 500,
-                      fontSize: 14,
-                      display: "-webkit-box",
-                      overflow: "hidden",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 6,
-                    }}
-                  >
-                    {res.comment}
-                  </Typography>
-                </Box>
-                {res.user_id === data.user.id && (
-                  <Typography
-                    onClick={() => deleteCommentHandler(res.id)}
-                    sx={{
-                      fontSize: 12,
-                      cursor: "pointer",
-                      "&:hover": { opacity: 0.8 },
-                    }}
-                  >
-                    Delete
-                  </Typography>
-                )}
-              </Box>
-            </motion.div>
+                      <Box sx={{ my: 1, display: "flex" }}>
+                        <Avatar
+                          sx={{ width: 30, height: 30 }}
+                          src={reply.user.photo_url}
+                        />
+                        <Box
+                          sx={{
+                            ml: 2,
+                            color: "#black",
+                          }}
+                        >
+                          <>
+                            <Typography
+                              variant="h1"
+                              sx={{
+                                fontWeight: 700,
+                                fontSize: 16,
+                                maxWidth: 250,
+                                display: "-webkit-box",
+                                overflow: "hidden",
+                                WebkitBoxOrient: "vertical",
+                                WebkitLineClamp: 1,
+                              }}
+                            >
+                              {reply.user.username
+                                ? `@${reply.user.username}`
+                                : `${reply.user.firstname} ${reply.user.lastname}`}
+                            </Typography>
+                          </>
+                        </Box>
+                      </Box>
+                      <Typography
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: 14,
+                          display: "-webkit-box",
+                          overflow: "hidden",
+                          WebkitBoxOrient: "vertical",
+                          WebkitLineClamp: 3,
+                        }}
+                      >
+                        {" "}
+                        {reply.comment}
+                      </Typography>
+                      {reply.user_id === data.user.id && (
+                        <Typography
+                          onClick={() => deleteCommentHandler(reply.id)}
+                          sx={{
+                            fontSize: 12,
+                            cursor: "pointer",
+                            "&:hover": { opacity: 0.8 },
+                          }}
+                        >
+                          Delete
+                        </Typography>
+                      )}
+                    </Box>
+                  </>
+                );
+              })}
+            </>
           );
         })}
       </Box>
@@ -278,30 +449,61 @@ export default function CommentNodeContent({
             onChange={(e) => {
               setMessage(e.target.value);
             }}
+            helperText={
+              replying ? `Replying to... @${replying.user.username}` : null
+            }
           />
-          <Box
-            onClick={addCommentHandler}
-            sx={{
-              flex: 1,
-              "&:hover": { opacity: 0.7 },
-              borderRadius: 2,
-              display: "flex",
-              boxShadow: 0,
-              backgroundColor: "#00A4FF",
-              cursor: "pointer",
-              justifyContent: "center",
-              alignItems: "center",
-              my: 1,
-              ml: 1,
-            }}
-          >
-            <Typography
-              variant="body1"
-              sx={{ fontWeight: 500, color: "white" }}
+          {!replying ? (
+            <Box
+              onClick={addCommentHandler}
+              sx={{
+                flex: 1,
+                "&:hover": { opacity: 0.7 },
+                borderRadius: 2,
+                display: "flex",
+                boxShadow: 0,
+                backgroundColor: "#00A4FF",
+                cursor: "pointer",
+                justifyContent: "center",
+                alignItems: "center",
+                my: 1,
+                ml: 1,
+                height: 40,
+              }}
             >
-              Post
-            </Typography>
-          </Box>
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: 500, color: "white" }}
+              >
+                Post
+              </Typography>
+            </Box>
+          ) : (
+            <Box
+              onClick={addReplyHandler}
+              sx={{
+                flex: 1,
+                "&:hover": { opacity: 0.7 },
+                borderRadius: 2,
+                display: "flex",
+                boxShadow: 0,
+                backgroundColor: "#00A4FF",
+                cursor: "pointer",
+                justifyContent: "center",
+                alignItems: "center",
+                my: 1,
+                ml: 1,
+                height: 40,
+              }}
+            >
+              <Typography
+                variant="body1"
+                sx={{ fontWeight: 500, color: "white" }}
+              >
+                Reply
+              </Typography>
+            </Box>
+          )}
         </Box>{" "}
         <Box sx={{ display: "flex" }}>
           <Box
