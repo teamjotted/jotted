@@ -459,7 +459,7 @@ export default function CommentNodeContent({
                                       }}
                                     >
                                       {reply.user.username
-                                        ? `@${reply.user.username}`
+                                        ? `${reply.user.username}`
                                         : `${reply.user.firstname} ${reply.user.lastname}`}
                                     </Typography>
                                   </>
