@@ -29,7 +29,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import AddResourcePopup from "../Popup/AddResourcePopup";
-
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { toast } from "react-toastify";
 
 import { motion } from "framer-motion";
@@ -49,6 +50,7 @@ export default function CommentNodeContent({
   tree,
   handleEditNode,
   progress,
+  handleOpenLogin,
   tab,
   setTab,
 }) {
@@ -56,32 +58,38 @@ export default function CommentNodeContent({
   const [comments, setComments] = useState([]);
   const [message, setMessage] = useState();
   const [replying, setReplying] = useState();
+  const [replyOpen, setReplyOpen] = useState();
   function addCommentHandler() {
-    if (data && message) {
-      const payload = {
-        tree_id: tree.id,
-        user_id: data.user.id,
-        comment: message,
-        naufeltree_id: parseInt(selectedNode.id),
-      };
-      console.log(payload);
-      addComment(payload)
-        .then((res) => {
-          console.log(res);
-          //setComments(res);
-          getComments(tree.id).then((res) => {
+    if (data) {
+      if (message) {
+        const payload = {
+          tree_id: tree.id,
+          user_id: data.user.id,
+          comment: message,
+          naufeltree_id: parseInt(selectedNode.id),
+        };
+
+        console.log(payload);
+        addComment(payload)
+          .then((res) => {
             console.log(res);
-            setComments(res);
+            getComments(tree.id).then((res) => {
+              console.log(res);
+              setComments(res);
+            });
+            setMessage("");
+          })
+          .catch((e) => {
+            console.log(e);
           });
-          setMessage("");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      }
+    } else {
+      handleOpenLogin();
     }
   }
 
   function deleteCommentHandler(id) {
+    setComments([]);
     deleteComment(id).then((res) => {
       console.log(res);
       getComments(tree.id).then((res) => {
@@ -91,30 +99,36 @@ export default function CommentNodeContent({
     });
   }
   function replyingHandler(comment) {
+    console.log(data);
     setReplying(comment);
   }
   function addReplyHandler() {
-    if (data && message && replying) {
-      const payload = {
-        tree_id: tree.id,
-        user_id: data.user.id,
-        comment: message,
-        naufeltree_id: parseInt(selectedNode.id),
-        comments_id: replying.id,
-      };
-      console.log(payload);
-      addComment(payload)
-        .then((res) => {
-          console.log(res);
-          getComments(tree.id).then((res) => {
+    if (data) {
+      if (message && replying) {
+        const payload = {
+          tree_id: tree.id,
+          user_id: data.user.id,
+          comment: message,
+          naufeltree_id: parseInt(selectedNode.id),
+          comments_id: replying.id,
+        };
+        setComments([]);
+        console.log(payload);
+        addComment(payload)
+          .then((res) => {
             console.log(res);
-            setComments(res);
+            getComments(tree.id).then((res) => {
+              console.log(res);
+              setComments(res);
+            });
+            setMessage("");
+          })
+          .catch((e) => {
+            console.log(e);
           });
-          setMessage("");
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      }
+    } else {
+      handleOpenLogin();
     }
   }
 
@@ -158,7 +172,9 @@ export default function CommentNodeContent({
       </Box>
       {loading && <LinearProgress />}
       <Box sx={{ px: 2.1 }}>
-        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>Discussion</Typography>
+        <Typography sx={{ fontSize: 12, fontWeight: 700 }}>
+          Discussion
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -256,7 +272,9 @@ export default function CommentNodeContent({
                         </Typography>
                         {res.user.id === tree.user_id && (
                           <>
-                            <Typography sx={{fontSize:12}}>Map Creator</Typography>
+                            <Typography sx={{ fontSize: 12 }}>
+                              Map Creator
+                            </Typography>
                           </>
                         )}
                       </>
@@ -293,148 +311,193 @@ export default function CommentNodeContent({
                       {res.comment}
                     </Typography>
                   </Box>
-                  {res.user_id === data.user.id && (
-                    <Typography
-                      onClick={() => deleteCommentHandler(res.id)}
-                      sx={{
-                        fontSize: 12,
-                        cursor: "pointer",
-                        "&:hover": { opacity: 0.8 },
-                      }}
-                    >
-                      Delete
-                    </Typography>
-                  )}
-                  {replying ? (
-                    <>
-                      {replying.user.id == res.user.id ? (
+                  <Box sx={{ display: "flex" }}>
+                    {res.reply.length > 0 && (
+                      <Box
+                        onClick={() => {
+                          if (replyOpen == res.id) {
+                            setReplyOpen();
+                          } else {
+                            setReplyOpen(res.id);
+                          }
+                        }}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          "&:hover": { opacity: 0.8 },
+                          cursor: "pointer",
+                        }}
+                      >
+                        {" "}
+                        {replyOpen ? (
+                          <ArrowDropDownIcon
+                            sx={{
+                              color: "#00A4FF",
+                            }}
+                          />
+                        ) : (
+                          <ArrowRightIcon
+                            sx={{
+                              color: "#00A4FF",
+                            }}
+                          />
+                        )}
                         <Typography
-                          onClick={() => setReplying()}
                           sx={{
+                            color: "#00A4FF",
                             fontSize: 12,
-                            cursor: "pointer",
-                            "&:hover": { opacity: 0.8 },
+
+                            mr: 2,
                           }}
                         >
-                          Cancel
+                          {res.reply.length} Replies
                         </Typography>
-                      ) : (
-                        <></>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {" "}
+                      </Box>
+                    )}
+                    {res.user_id === data?.user.id && (
                       <Typography
-                        onClick={() => replyingHandler(res)}
+                        onClick={() => deleteCommentHandler(res.id)}
                         sx={{
                           fontSize: 12,
                           cursor: "pointer",
                           "&:hover": { opacity: 0.8 },
+                          mr: 2,
+                          alignSelf: "center",
                         }}
                       >
-                        Reply
+                        Delete
                       </Typography>
-                    </>
-                  )}
-                  <Typography>Posted at: </Typography>
-                </Box>
-              </motion.div>
-              {res.reply.map((reply) => {
-                return (
-                  <>
-                    <Box
-                      sx={{
-                        flexDirection: "column",
-                        p: 1,
-                        backgroundColor: "white",
-                        borderRadius: 2,
-                        my: 1.1,
-                        mx: 1,
-                        ml: 4,
-                        width: 395,
-                        overflow: "hidden",
-                        boxShadow:
-                          resource?.id != res.id
-                            ? "0px 1px 9px rgba(0, 0, 0, 0.09)"
-                            : "1px 10px 13px rgba(0, 0, 0, 0.2)",
-                      }}
-                    >
-                      <Typography
-                        variant="h1"
-                        sx={{
-                          opacity: 0.7,
-                          fontWeight: 500,
-                          fontSize: 10,
-                          maxWidth: 250,
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 1,
-                        }}
-                      >
-                        {tree.name} replying to @{res.user.username}
-                      </Typography>
-                      <Box sx={{ my: 1, display: "flex" }}>
-                        <Avatar
-                          sx={{ width: 30, height: 30 }}
-                          src={reply.user.photo_url}
-                        />
-                        <Box
-                          sx={{
-                            ml: 2,
-                            color: "#black",
-                          }}
-                        >
-                          <>
-                            <Typography
-                              variant="h1"
-                              sx={{
-                                fontWeight: 700,
-                                fontSize: 16,
-                                maxWidth: 250,
-                                display: "-webkit-box",
-                                overflow: "hidden",
-                                WebkitBoxOrient: "vertical",
-                                WebkitLineClamp: 1,
-                              }}
-                            >
-                              {reply.user.username
-                                ? `${reply.user.username}`
-                                : `${reply.user.firstname} ${reply.user.lastname}`}
-                            </Typography>
-                          </>
-                        </Box>
-                      </Box>
-                      <Typography
-                        sx={{
-                          fontWeight: 400,
-                          fontSize: 14,
-                          display: "-webkit-box",
-                          overflow: "hidden",
-                          WebkitBoxOrient: "vertical",
-                          WebkitLineClamp: 3,
-                        }}
-                      >
+                    )}
+                    {replying ? (
+                      <>
+                        {replying.user.id == res.user.id ? (
+                          <Typography
+                            onClick={() => setReplying()}
+                            sx={{
+                              fontSize: 12,
+                              cursor: "pointer",
+                              "&:hover": { opacity: 0.8 },
+                              alignSelf: "center",
+                            }}
+                          >
+                            Cancel
+                          </Typography>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    ) : (
+                      <>
                         {" "}
-                        {reply.comment}
-                      </Typography>
-                      {reply.user_id === data.user.id && (
                         <Typography
-                          onClick={() => deleteCommentHandler(reply.id)}
+                          onClick={() => replyingHandler(res)}
                           sx={{
                             fontSize: 12,
                             cursor: "pointer",
                             "&:hover": { opacity: 0.8 },
+                            alignSelf: "center",
                           }}
                         >
-                          Delete
+                          Reply
                         </Typography>
-                      )}
-                    </Box>
-                  </>
-                );
-              })}
+                      </>
+                    )}
+                  </Box>
+                  {replyOpen == res.id && (
+                    <>
+                      {res.reply.map((reply) => {
+                        return (
+                          <>
+                            <Box
+                              sx={{
+                                flexDirection: "column",
+                                p: 1,
+                                my: 1.1,
+                                mx: 1,
+                                ml: 4,
+                                width: 380,
+                                overflow: "hidden",
+                              }}
+                            >
+                              <Typography
+                                variant="h1"
+                                sx={{
+                                  opacity: 0.7,
+                                  fontWeight: 500,
+                                  fontSize: 10,
+                                  maxWidth: 250,
+                                  display: "-webkit-box",
+                                  overflow: "hidden",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 1,
+                                }}
+                              >
+                                {tree.name} | replying to @{res.user.username}
+                              </Typography>
+                              <Box sx={{ my: 1, display: "flex" }}>
+                                <Avatar
+                                  sx={{ width: 30, height: 30 }}
+                                  src={reply.user.photo_url}
+                                />
+                                <Box
+                                  sx={{
+                                    ml: 2,
+                                    color: "#black",
+                                  }}
+                                >
+                                  <>
+                                    <Typography
+                                      variant="h1"
+                                      sx={{
+                                        fontWeight: 700,
+                                        fontSize: 16,
+                                        maxWidth: 250,
+                                        display: "-webkit-box",
+                                        overflow: "hidden",
+                                        WebkitBoxOrient: "vertical",
+                                        WebkitLineClamp: 1,
+                                      }}
+                                    >
+                                      {reply.user.username
+                                        ? `@${reply.user.username}`
+                                        : `${reply.user.firstname} ${reply.user.lastname}`}
+                                    </Typography>
+                                  </>
+                                </Box>
+                              </Box>
+                              <Typography
+                                sx={{
+                                  fontWeight: 400,
+                                  fontSize: 14,
+                                  display: "-webkit-box",
+                                  overflow: "hidden",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 3,
+                                }}
+                              >
+                                {" "}
+                                {reply.comment}
+                              </Typography>
+                              {reply.user_id === data?.user.id && (
+                                <Typography
+                                  onClick={() => deleteCommentHandler(reply.id)}
+                                  sx={{
+                                    fontSize: 12,
+                                    cursor: "pointer",
+                                    "&:hover": { opacity: 0.8 },
+                                  }}
+                                >
+                                  Delete
+                                </Typography>
+                              )}
+                            </Box>
+                          </>
+                        );
+                      })}
+                    </>
+                  )}
+                </Box>
+              </motion.div>
             </>
           );
         })}

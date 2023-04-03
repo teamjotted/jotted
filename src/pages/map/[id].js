@@ -908,6 +908,7 @@ function Map() {
           {paidState ? (
             <>
               <SideDrawerContainer
+                handleOpenLogin={handleOpenLogin}
                 progress={progress}
                 openNode={openNode}
                 toggleDrawer={toggleDrawer}
