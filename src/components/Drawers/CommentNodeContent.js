@@ -249,8 +249,10 @@ export default function CommentNodeContent({
                     />
                     <Box
                       sx={{
+                        display: "flex",
                         ml: 2,
                         color: "#black",
+                        alignItems: "center",
                       }}
                     >
                       <>
@@ -305,7 +307,7 @@ export default function CommentNodeContent({
                         display: "-webkit-box",
                         overflow: "hidden",
                         WebkitBoxOrient: "vertical",
-                        WebkitLineClamp: 6,
+                        WebkitLineClamp: 10,
                       }}
                     >
                       {res.comment}
@@ -441,8 +443,10 @@ export default function CommentNodeContent({
                                 />
                                 <Box
                                   sx={{
+                                    display: "flex",
                                     ml: 2,
                                     color: "#black",
+                                    alignItems: "center",
                                   }}
                                 >
                                   <>
@@ -466,13 +470,15 @@ export default function CommentNodeContent({
                                 </Box>
                               </Box>
                               <Typography
+                                variant="h1"
                                 sx={{
+                                  mb: 1,
                                   fontWeight: 400,
                                   fontSize: 14,
                                   display: "-webkit-box",
                                   overflow: "hidden",
                                   WebkitBoxOrient: "vertical",
-                                  WebkitLineClamp: 3,
+                                  WebkitLineClamp: 10,
                                 }}
                               >
                                 {" "}
