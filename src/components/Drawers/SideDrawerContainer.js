@@ -23,6 +23,7 @@ export default function SideDrawerContainer({
   children,
   setLoading,
   progress,
+  handleOpenLogin,
 }) {
   const [tab, setTab] = useState(1);
   const { width, height } = useWindowDimensions();
@@ -86,6 +87,7 @@ export default function SideDrawerContainer({
       {tab == 2 ? (
         <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
           <CommentNodeContent
+            handleOpenLogin={handleOpenLogin}
             tab={tab}
             setTab={setTab}
             progress={progress}
