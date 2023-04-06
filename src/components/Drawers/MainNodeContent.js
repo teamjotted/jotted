@@ -363,8 +363,6 @@ export default function MainNodeSidebar({
                 }}
               >
                 {nodes.map((res, index) => {
-                  console.log("-------------");
-
                   const node_id = parseInt(res.id);
                   const viewed = progress.map((res) => {
                     return res.naufeltree_id == node_id;
@@ -379,8 +377,6 @@ export default function MainNodeSidebar({
                     (viewedAmount / totalAmount) *
                     100
                   ).toFixed(0);
-                  console.log(progressAmount);
-                  console.log("-------------");
                   return (
                     <>
                       {res.type != "mainNode" ? (

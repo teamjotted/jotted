@@ -857,3 +857,64 @@ export async function deleteComment(comment_id) {
     throw error;
   }
 }
+
+export async function accessMap(payload) {
+  try {
+    return await axios.post(BASE_URL + `/access`, payload).then((res) => {
+      return res.data;
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function changeAccessMap(payload) {
+  try {
+    return await axios
+      .post(BASE_URL + `/access/${payload.access_id}`, payload)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+export async function getAccessMap(tree_id, user_id) {
+  try {
+    return await axios
+      .get(BASE_URL + `/get_access?tree_id=${tree_id}&user_id=${user_id}`)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function getAllAccessMap(tree_id) {
+  try {
+    return await axios
+      .get(BASE_URL + `/access?tree_id=${tree_id}`)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+export async function deleteAccessMap(id, tree_id) {
+  try {
+    return await axios
+      .delete(BASE_URL + `/access/${id}?tree_id=${tree_id}`)
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}

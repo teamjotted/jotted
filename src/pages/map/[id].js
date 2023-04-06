@@ -3,6 +3,8 @@ import Default from "@/components/Nodes/Default";
 import Main from "@/components/Nodes/Main";
 import Title from "@/components/Nodes/Title";
 import {
+  access,
+  accessMap,
   addProgress,
   addTreeTags,
   createNode,
@@ -10,6 +12,7 @@ import {
   createReaction,
   deleteNodeEdge,
   editNode,
+  getAccessMap,
   getNodeAttachments,
   getNodeByTreeId,
   getNodeEdges,
@@ -77,6 +80,7 @@ import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]";
 import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
+import { toast } from "react-toastify";
 // import dynamic from "next/dynamic";
 
 // const SideDrawerContainer = dynamic(() =>
@@ -117,7 +121,7 @@ function AlertDialogSlide({
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", minWidth: 300 }}>
             <DialogTitle>{tree.name}</DialogTitle>
             <IconButton
               onClick={() => {
@@ -204,7 +208,7 @@ function AlertDialogSlide({
                 <Typography
                   sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
                 >
-                  Buy Now
+                  {tree.price == 0 ? "Join" : "Buy"} Now
                 </Typography>
               </Box>
             </Box>
@@ -249,6 +253,7 @@ function Map() {
 
   //Tree Popup Component
   const [openTree, setOpenTree] = useState(false);
+  const [cover, setCover] = useState(true);
   const [paidState, setPaidSate] = useState(false);
   const [nodeLoading, setNodeLoading] = useState(false);
   const handleOpenTree = () => setOpenTree(true);
@@ -339,10 +344,32 @@ function Map() {
     setSelectedNode(null);
   };
   function purchaseHandler() {
-    stripePurchase(data.user.id, id).then((res) => {
-      window.open(res.response.result.url);
-      //need to check on success purchase
-    });
+    if (treeDetails.isPublic == true) {
+      if (treeDetails.price == 0) {
+        const payload = {
+          user_id: data.user.id,
+          tree_id: treeDetails.id,
+          isAdmin: false,
+          isEditing: false,
+          isViewing: true,
+        };
+
+        accessMap(payload).then((res) => {
+          console.log(res);
+          setCover(false);
+        });
+      } else {
+        isLoading(true);
+        stripePurchase(data.user.id, id).then((res) => {
+          console.log(res.response.result);
+          window.open(res.response.result.url);
+          //need to check on success purchase
+          //check if purchase and then set loading to false
+        });
+      }
+    } else {
+      toast.info("This Map Is Private");
+    }
   }
 
   async function checkPayStatus() {
@@ -384,8 +411,10 @@ function Map() {
   async function paidMapHandler(json) {
     if (data) {
       const status = await checkPayStatus();
+      console.log(status);
 
       if (status) {
+        setCover(false);
         setPaidSate(true);
         isLoading(false);
         return;
@@ -394,9 +423,6 @@ function Map() {
         isLoading(false);
         return;
       }
-    } else {
-      setPaidSate(false);
-      isLoading(false);
     }
   }
   function privateTreeHandler(json) {
@@ -405,10 +431,9 @@ function Map() {
 
   useEffect(() => {
     console.log(data);
-
     isLoading(true);
     dispatch(setTreeAdmin(false));
-    if (id) {
+    if (id && data) {
       //isLoading(true);
       console.log(id);
       getTreeById(id).then((res) => {
@@ -422,66 +447,67 @@ function Map() {
             console.log(res);
             setEditedTree(json);
             console.log("Tree Data", json);
-            if (json.isPublic == true) {
-              if (json.user_id == data?.user.id && data) {
-                setPaidSate(true);
-                console.log("This is a Tree Admin");
-                dispatch(setTreeAdmin(true));
+            getAccessMap(id, data?.user.id ? data.user.id : 0).then((res) => {
+              console.log(res);
+              if (res) {
                 isLoading(false);
-              } else {
-                if (json.price == 0) {
-                  setPaidSate(true);
-                  isLoading(false);
-                  if (data?.user.role == 777) {
-                    console.log(" This is a Master Admin");
-                    dispatch(setTreeAdmin(true));
-                  } else {
-                    console.log(data);
-                    console.log("This is not a Tree Admin");
-                    dispatch(setTreeAdmin(false));
-                  }
-                } else {
-                  dispatch(setTreeAdmin(false));
-                  paidMapHandler(json);
+                if (res.isAdmin) {
+                  dispatch(setTreeAdmin(true));
                 }
+                if (res.isEditing) {
+                  dispatch(setTreeAdmin(true));
+                }
+                if (res.isViewing) {
+                  setCover(false);
+                }
+              } else {
+                paidMapHandler(json);
               }
+            });
+
+            if (json.user_id == data?.user.id && data) {
+              dispatch(setTreeAdmin(true));
+              setCover(false);
             } else {
-              setPaidSate(true);
-              if (json.user_id == data?.user.id) {
+              if (data?.user.role == 777) {
+                console.log(" This is a Master Admin");
                 dispatch(setTreeAdmin(true));
-                isLoading(false);
-              } else {
-                const shared = json.shared_users.find(
-                  (res) => res.user_id === data?.user.id
-                );
-                if (shared) {
-                  if (shared.role == "viewer") {
-                    dispatch(setTreeAdmin(false));
-                    isLoading(false);
-                  }
-                  if (shared.role == "editor") {
-                    dispatch(setTreeAdmin(true));
-                    isLoading(false);
-                  }
-                  // console.log(shared);
-                } else {
-                  if (data?.user.id === 456) {
-                    console.log("Session is an Admin");
-                    dispatch(setTreeAdmin(true));
-                    isLoading(false);
-                  } else {
-                    router.push("/");
-                  }
-                }
               }
             }
           });
         });
-
-        // setEditedTree(json);
       });
+    } else {
+      if (id) {
+        console.log(id);
+        getTreeById(id).then((res) => {
+          const json = res.data;
+          setTreeDetails(res.data);
+          getNodeByTreeId(id).then((res) => {
+            setNodes(res);
+            console.log(res);
+            getNodeEdges(id).then((res) => {
+              setEdges(res);
+              console.log(res);
+              setEditedTree(json);
+              console.log("Tree Data", json);
+              isLoading(false);
+              if (json.user_id == data?.user.id && data) {
+                dispatch(setTreeAdmin(true));
+                setCover(false);
+              } else {
+                if (data?.user.role == 777) {
+                  console.log(" This is a Master Admin");
+                  dispatch(setTreeAdmin(true));
+                }
+              }
+            });
+          });
+        });
+      }
     }
-  }, [id]);
+    console.log(data);
+  }, [id, data?.user.id]);
 
   const toggleDrawer = (newOpen) => () => {
     if (newOpen == false) {
@@ -905,7 +931,7 @@ function Map() {
 
         <>
           <CssBaseline />
-          {paidState ? (
+          {!cover ? (
             <>
               <SideDrawerContainer
                 handleOpenLogin={handleOpenLogin}
@@ -1017,7 +1043,7 @@ function Map() {
             <div style={{ backgroundColor: "#FBF9FB" }} className="wrapper">
               <AlertDialogSlide
                 session={data?.user}
-                open={!paidState}
+                open={cover}
                 tree={treeDetails}
                 router={router}
                 purchaseHandler={purchaseHandler}
@@ -1076,7 +1102,7 @@ function Map() {
               </ReactFlow>
             </div>
           )}
-          {paidState == null && (
+          {cover == null && (
             <Box
               sx={{
                 background: "#00000017",
