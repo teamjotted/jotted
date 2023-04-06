@@ -121,7 +121,7 @@ function AlertDialogSlide({
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", minWidth: 300 }}>
             <DialogTitle>{tree.name}</DialogTitle>
             <IconButton
               onClick={() => {
@@ -433,7 +433,7 @@ function Map() {
     console.log(data);
     isLoading(true);
     dispatch(setTreeAdmin(false));
-    if (id) {
+    if (id && data) {
       //isLoading(true);
       console.log(id);
       getTreeById(id).then((res) => {
@@ -461,7 +461,6 @@ function Map() {
                   setCover(false);
                 }
               } else {
-                isLoading(false);
                 paidMapHandler(json);
               }
             });
@@ -475,73 +474,40 @@ function Map() {
                 dispatch(setTreeAdmin(true));
               }
             }
-
-            // if (json.price == 0) {
-            //   setPaidSate(true);
-            // } else {
-            //   paidMapHandler(json);
-            // }
-
-            // if (json.isPublic == true) {
-            //   if (json.user_id == data?.user.id && data) {
-            //     setPaidSate(true);
-            //     console.log("This is a Tree Admin");
-            //     dispatch(setTreeAdmin(true));
-            //     isLoading(false);
-            //   } else {
-            //     if (json.price == 0) {
-            //       setPaidSate(true);
-            //       isLoading(false);
-            //       if (data?.user.role == 777) {
-            //         console.log(" This is a Master Admin");
-            //         dispatch(setTreeAdmin(true));
-            //       } else {
-            //         console.log(data);
-            //         console.log("This is not a Tree Admin");
-            //         dispatch(setTreeAdmin(false));
-            //       }
-            //     } else {
-            //       dispatch(setTreeAdmin(false));
-            //       paidMapHandler(json);
-            //     }
-            //   }
-            // } else {
-            //   setPaidSate(true);
-            //   if (json.user_id == data?.user.id) {
-            //     dispatch(setTreeAdmin(true));
-            //     isLoading(false);
-            //   } else {
-            //     const shared = json.shared_users.find(
-            //       (res) => res.user_id === data?.user.id
-            //     );
-            //     if (shared) {
-            //       if (shared.role == "viewer") {
-            //         dispatch(setTreeAdmin(false));
-            //         isLoading(false);
-            //       }
-            //       if (shared.role == "editor") {
-            //         dispatch(setTreeAdmin(true));
-            //         isLoading(false);
-            //       }
-            //       // console.log(shared);
-            //     } else {
-            //       if (data?.user.id === 456) {
-            //         console.log("Session is an Admin");
-            //         dispatch(setTreeAdmin(true));
-            //         isLoading(false);
-            //       } else {
-            //         router.push("/");
-            //       }
-            //     }
-            //   }
-            // }
           });
         });
-
-        // setEditedTree(json);
       });
+    } else {
+      if (id) {
+        console.log(id);
+        getTreeById(id).then((res) => {
+          const json = res.data;
+          setTreeDetails(res.data);
+          getNodeByTreeId(id).then((res) => {
+            setNodes(res);
+            console.log(res);
+            getNodeEdges(id).then((res) => {
+              setEdges(res);
+              console.log(res);
+              setEditedTree(json);
+              console.log("Tree Data", json);
+              isLoading(false);
+              if (json.user_id == data?.user.id && data) {
+                dispatch(setTreeAdmin(true));
+                setCover(false);
+              } else {
+                if (data?.user.role == 777) {
+                  console.log(" This is a Master Admin");
+                  dispatch(setTreeAdmin(true));
+                }
+              }
+            });
+          });
+        });
+      }
     }
-  }, [id, data]);
+    console.log(data);
+  }, [id, data?.user.id]);
 
   const toggleDrawer = (newOpen) => () => {
     if (newOpen == false) {
