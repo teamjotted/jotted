@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, use } from "react";
 // import ReactTags from "react-tag-autocomplete";
 import PropTypes from "prop-types";
 
@@ -20,6 +20,10 @@ import {
 import cookie from "cookiejs";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  accessMap,
+  changeAccessMap,
+  deleteAccessMap,
+  getAllAccessMap,
   getUserById,
   getUserEmail,
   priceMyTree,
@@ -120,25 +124,32 @@ export default function Sharepopup({
     setUsers([]);
     setInvited([]);
     if (tree) {
-      if (tree.shared_users.length > 0) {
-        for (let i = 0; i < tree?.shared_users.length; i++) {
-          console.log(tree.shared_users[i]);
-          getUserById(tree.shared_users[i].user_id).then((res) => {
-            console.log(res);
-            if (res) {
-              setInvited((prev) => [
-                ...prev,
-                {
-                  user_id: res.id,
-                  email: res.email,
-                  photo_url: res.photo_url,
-                  role: tree.shared_users[i].role,
-                },
-              ]);
-            }
-          });
-        }
-      }
+      // if (tree.shared_users.length > 0) {
+      //   for (let i = 0; i < tree?.shared_users.length; i++) {
+      //     console.log(tree.shared_users[i]);
+      //     getUserById(tree.shared_users[i].user_id).then((res) => {
+      //       console.log(res);
+      //       if (res) {
+      //         setInvited((prev) => [
+      //           ...prev,
+      //           {
+      //             user_id: res.id,
+      //             email: res.email,
+      //             photo_url: res.photo_url,
+      //             role: tree.shared_users[i].role,
+      //             isEditing:
+      //               tree.shared_users[i].role == "editor" ? true : false,
+      //             isAdmin: tree.shared_users[i].role == "admin" ? true : false,
+      //           },
+      //         ]);
+      //       }
+      //     });
+      //   }
+      // }
+      getAllAccessMap(tree.id).then((res) => {
+        console.log(res);
+        setInvited(res);
+      });
     }
   }, [openShare]);
 
@@ -201,21 +212,23 @@ export default function Sharepopup({
   // }, [users]);
 
   function addUserHandler(e) {
-    const exist = invited.find(({ email }) => e == email);
+    const exist = invited.find(({ user }) => user.email == e);
     console.log("USER EXIST?", exist);
     if (!exist) {
       getUserEmail(e)
         .then((res) => {
           console.log(res);
-          setInvited((prev) => [
-            ...prev,
-            {
-              user_id: res.user.id,
-              email: res.user.email,
-              photo_url: res.user.photo_url,
-              role: "viewer",
-            },
-          ]);
+          const payload = {
+            user_id: res.user.id,
+            tree_id: tree.id,
+            level: "viewer",
+          };
+          accessMap(payload).then((res) => {
+            console.log(res);
+            getAllAccessMap(tree.id).then((res) => {
+              setInvited(res);
+            });
+          });
           console.log(invited);
         })
         .catch((e) => {
@@ -231,16 +244,44 @@ export default function Sharepopup({
 
   function handleRoleChange(e, user) {
     if (e == "remove") {
-      setInvited(invited.filter((item) => item.email !== user.email));
-
+      deleteAccessMap(user.id, tree.id).then((res) => {
+        getAllAccessMap(tree.id).then((res) => {
+          setInvited(res);
+        });
+      });
       handleClose();
       return;
     }
+
+    if (e == "editor") {
+      user.level = e;
+      console.log(user);
+    }
+    if (e == "viewer") {
+      user.level = e;
+      console.log(user);
+    }
+    const payload = {
+      access_id: user.id,
+      user_id: user.user_id,
+      level: user.level,
+      tree_id: tree.id,
+    };
+    changeAccessMap(payload).then((res) => {
+      console.log(res);
+      getAllAccessMap(tree.id).then((res) => {
+        setInvited(res);
+      });
+    });
+    // else {
+    //   console.log(user);
+
+    //   user.role = e;
+    // }
     console.log(invited);
-    user.role = e;
+    // user.role = e;
     handleClose();
   }
-  console.log(session);
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -311,72 +352,6 @@ export default function Sharepopup({
                 overflowY: "auto",
               }}
             >
-              <Box sx={{ display: "flex" }}>
-                <Avatar
-                  sx={{
-                    fontSize: 12,
-                    width: 25,
-                    alignSelf: "center",
-                    height: 25,
-                  }}
-                  src={tree.user?.photo_url}
-                />
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    fontWeight: 500,
-                    textAlign: "center",
-                    alignSelf: "center",
-                    ml: 2,
-                  }}
-                >
-                  {tree.user?.email}
-                </Typography>
-                <MenuItem sx={{ ml: "auto" }} onClick={(e) => handleClick(e)}>
-                  <Typography>Owner</Typography>
-                  {/* <KeyboardArrowDownIcon /> */}
-                </MenuItem>
-                {/* {selectedUser && (
-										<Menu
-											id={`basic-menu-${selectedUser?.id}`}
-											anchorEl={anchorEl}
-											open={open}
-											onClose={handleClose}
-											MenuListProps={{
-												'aria-labelledby': 'basic-button'
-											}}>
-											{selectedUser?.role == 'viewer' && (
-												<>
-													<MenuItem value={index} sx={{ backgroundColor: '#F2F1F6' }}>
-														Viewer
-													</MenuItem>
-													<MenuItem value={index} onClick={() => handleRoleChange('editor', selectedUser)}>
-														Editor
-													</MenuItem>
-													<Divider />
-													<MenuItem value={index} onClick={() => handleRoleChange('remove', selectedUser)}>
-														Remove access
-													</MenuItem>
-												</>
-											)}
-											{selectedUser?.role == 'editor' && (
-												<>
-													{' '}
-													<MenuItem value={index} onClick={() => handleRoleChange('viewer', selectedUser)}>
-														Viewer
-													</MenuItem>
-													<MenuItem value={index} sx={{ backgroundColor: '#F2F1F6' }}>
-														Editor
-													</MenuItem>
-													<Divider />
-													<MenuItem value={index} onClick={() => handleRoleChange('remove', selectedUser)}>
-														Remove access
-													</MenuItem>
-												</>
-											)}
-										</Menu>
-									)} */}
-              </Box>
               {invited.map((res, index) => {
                 return (
                   <Box key={index} sx={{ display: "flex" }}>
@@ -387,7 +362,7 @@ export default function Sharepopup({
                         alignSelf: "center",
                         height: 25,
                       }}
-                      src={res.photo_url}
+                      src={res.user?.photo_url}
                     />
                     <Typography
                       sx={{
@@ -398,14 +373,15 @@ export default function Sharepopup({
                         mx: 2,
                       }}
                     >
-                      {res?.email}
+                      {res.user?.email}
                     </Typography>
                     <MenuItem
                       sx={{ ml: "auto" }}
                       onClick={(e) => handleClick(e, res)}
                     >
-                      {res.role == "viewer" && <Typography>Viewer</Typography>}
-                      {res.role == "editor" && <Typography>Editor</Typography>}
+                      {res.level == "admin" && <Typography>Admin</Typography>}
+                      {res.level == "editor" && <Typography>Editor</Typography>}
+                      {res.level == "viewer" && <Typography>Viewer</Typography>}
                       <KeyboardArrowDownIcon />
                     </MenuItem>
                     {selectedUser && (
@@ -418,61 +394,44 @@ export default function Sharepopup({
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        {selectedUser?.role == "viewer" && (
-                          <>
-                            <MenuItem
-                              value={index}
-                              sx={{ backgroundColor: "#F2F1F6" }}
-                            >
-                              Viewer
-                            </MenuItem>
-                            <MenuItem
-                              value={index}
-                              onClick={() =>
-                                handleRoleChange("editor", selectedUser)
-                              }
-                            >
-                              Editor
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem
-                              value={index}
-                              onClick={() =>
-                                handleRoleChange("remove", selectedUser)
-                              }
-                            >
-                              Remove access
-                            </MenuItem>
-                          </>
-                        )}
-                        {selectedUser?.role == "editor" && (
-                          <>
-                            {" "}
-                            <MenuItem
-                              value={index}
-                              onClick={() =>
-                                handleRoleChange("viewer", selectedUser)
-                              }
-                            >
-                              Viewer
-                            </MenuItem>
-                            <MenuItem
-                              value={index}
-                              sx={{ backgroundColor: "#F2F1F6" }}
-                            >
-                              Editor
-                            </MenuItem>
-                            <Divider />
-                            <MenuItem
-                              value={index}
-                              onClick={() =>
-                                handleRoleChange("remove", selectedUser)
-                              }
-                            >
-                              Remove access
-                            </MenuItem>
-                          </>
-                        )}
+                        <MenuItem
+                          onClick={() => {
+                            console.log(selectedUser);
+                            handleRoleChange("viewer", selectedUser);
+                          }}
+                          value={index}
+                          sx={{
+                            backgroundColor:
+                              selectedUser.level == "viewer"
+                                ? "#F2F1F6"
+                                : "white",
+                          }}
+                        >
+                          Viewer
+                        </MenuItem>
+                        <MenuItem
+                          value={index}
+                          sx={{
+                            backgroundColor:
+                              selectedUser.level == "editor"
+                                ? "#F2F1F6"
+                                : "white",
+                          }}
+                          onClick={() =>
+                            handleRoleChange("editor", selectedUser)
+                          }
+                        >
+                          Editor
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem
+                          value={index}
+                          onClick={() =>
+                            handleRoleChange("remove", selectedUser)
+                          }
+                        >
+                          Remove access
+                        </MenuItem>
                       </Menu>
                     )}
                   </Box>
