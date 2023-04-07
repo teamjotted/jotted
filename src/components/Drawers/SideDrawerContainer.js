@@ -54,6 +54,8 @@ export default function SideDrawerContainer({
         <Box>
           {selectedNode?.type == "mainNode" ? (
             <MainNodeSidebar
+              tab={tab}
+              setTab={setTab}
               progress={progress}
               nextHandler={nextHandler}
               treeDetails={treeDetails}

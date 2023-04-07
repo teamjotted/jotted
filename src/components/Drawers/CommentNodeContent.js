@@ -9,6 +9,7 @@ import {
   LinearProgress,
   TextField,
   Avatar,
+  Chip,
 } from "@mui/material";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import EditIcon from "@mui/icons-material/Edit";
@@ -38,6 +39,7 @@ import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
 import { useSession } from "next-auth/react";
 import ChatBubbleRoundedIcon from "@mui/icons-material/ChatBubbleRounded";
+import { useRouter } from "next/router";
 export default function CommentNodeContent({
   setLoading,
   attachments,
@@ -59,6 +61,8 @@ export default function CommentNodeContent({
   const [message, setMessage] = useState();
   const [replying, setReplying] = useState();
   const [replyOpen, setReplyOpen] = useState();
+
+  const router = useRouter();
   function addCommentHandler() {
     if (data) {
       if (message) {
@@ -73,7 +77,7 @@ export default function CommentNodeContent({
         addComment(payload)
           .then((res) => {
             console.log(res);
-            getComments(tree.id).then((res) => {
+            getComments(tree.id, selectedNode.id).then((res) => {
               console.log(res);
               setComments(res);
             });
@@ -92,7 +96,7 @@ export default function CommentNodeContent({
     setComments([]);
     deleteComment(id).then((res) => {
       console.log(res);
-      getComments(tree.id).then((res) => {
+      getComments(tree.id, selectedNode.id).then((res) => {
         console.log(res);
         setComments(res);
       });
@@ -117,7 +121,7 @@ export default function CommentNodeContent({
         addComment(payload)
           .then((res) => {
             console.log(res);
-            getComments(tree.id).then((res) => {
+            getComments(tree.id, selectedNode.id).then((res) => {
               console.log(res);
               setComments(res);
             });
@@ -134,7 +138,7 @@ export default function CommentNodeContent({
 
   useEffect(() => {
     if (tree) {
-      getComments(tree.id).then((res) => {
+      getComments(tree.id, selectedNode.id).then((res) => {
         console.log(res);
         setComments(res);
       });
@@ -244,7 +248,10 @@ export default function CommentNodeContent({
                   </Typography>
                   <Box sx={{ my: 1, display: "flex" }}>
                     <Avatar
-                      sx={{ width: 30, height: 30 }}
+                      onClick={() => {
+                        router.push(`/user/${res.user.id}`);
+                      }}
+                      sx={{ width: 30, height: 30, cursor: "pointer" }}
                       src={res.user.photo_url}
                     />
                     <Box
@@ -274,9 +281,20 @@ export default function CommentNodeContent({
                         </Typography>
                         {res.user.id === tree.user_id && (
                           <>
-                            <Typography sx={{ fontSize: 12 }}>
-                              Map Creator
-                            </Typography>
+                            <Chip
+                              color="success"
+                              size="small"
+                              sx={{
+                                alignSelf: "center",
+                                mx: 0.5,
+                                alignSelf: "center",
+                                backgroundColor: "#E0F6FF", // Set the background color to E0F6FF
+                                borderRadius: "5px", // Set the radius to 20px
+                                color: "#0099FF", // Set the text color to white
+                              }}
+                              label="Creator"
+                              variant="filled"
+                            />
                           </>
                         )}
                       </>
@@ -654,7 +672,7 @@ export default function CommentNodeContent({
                 color: tab == 1 ? "#151127" : "white",
               }}
             >
-              Community
+              Discussion
             </Typography>
           </Box>
         </Box>

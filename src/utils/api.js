@@ -823,10 +823,15 @@ export async function addProgress(
     throw error;
   }
 }
-export async function getComments(tree_id) {
+export async function getComments(tree_id, node_id) {
   try {
     return await axios
-      .get(BASE_URL + `/comments?tree_id=${tree_id}`)
+      .get(
+        BASE_URL +
+          `/comments?tree_id=${tree_id}${
+            node_id ? `&naufeltree_id=${node_id}` : ``
+          } `
+      )
       .then((res) => {
         return res.data;
       });
