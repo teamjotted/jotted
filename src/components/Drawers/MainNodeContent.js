@@ -19,6 +19,7 @@ import mixpanel from "mixpanel-browser";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useRouter } from "next/router";
+import Groups2Icon from "@mui/icons-material/Groups2";
 import { motion } from "framer-motion";
 
 export default function MainNodeSidebar({
@@ -30,6 +31,8 @@ export default function MainNodeSidebar({
   handleEditNode,
   selectNode,
   progress,
+  setTab,
+  tab,
 }) {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -312,31 +315,64 @@ export default function MainNodeSidebar({
             </AvatarGroup>
           </Box>
         </Box>
-        <Box
-          onClick={() => {
-            nextHandler();
-            mixpanel.track("Start Map", {
-              tree_id: treeDetails.id,
-              tree_owner: treeDetails.user.id,
-            });
-          }}
-          sx={{
-            "&:hover": { opacity: 0.7 },
-            borderRadius: 2,
-            display: "flex",
-            boxShadow: 0,
-            backgroundColor: "#151127",
-            cursor: "pointer",
-            mx: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            p: 1,
-            my: 2,
-          }}
-        >
-          <Typography variant="body1" sx={{ fontWeight: 500, color: "white" }}>
-            Start Map
-          </Typography>
+        <Box sx={{ display: "flex" }}>
+          <Box
+            onClick={() => {
+              nextHandler();
+              mixpanel.track("Start Map", {
+                tree_id: treeDetails.id,
+                tree_owner: treeDetails.user.id,
+              });
+            }}
+            sx={{
+              flex: 2,
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              boxShadow: 0,
+              backgroundColor: "#151127",
+              cursor: "pointer",
+              mx: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              p: 1,
+              my: 2,
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{ fontWeight: 500, color: "white" }}
+            >
+              Start Map
+            </Typography>
+          </Box>
+          <Box
+            onClick={() => {
+              setTab(2);
+            }}
+            sx={{
+              flex: 1,
+              "&:hover": { opacity: 0.7 },
+              borderRadius: 2,
+              display: "flex",
+              boxShadow: 0,
+              backgroundColor: "#151127",
+              cursor: "pointer",
+              mx: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              p: 1,
+              my: 2,
+            }}
+          >
+            <Groups2Icon sx={{ color: "white" }} />
+            {/* <Typography
+              variant="body1"
+              sx={{ fontWeight: 500, color: "white" }}
+            >
+              Community
+            </Typography> */}
+          </Box>
         </Box>
         <DragDropContext onDragEnd={treeAdmin ? onDragEnd : null}>
           <Droppable droppableId="droppable-0">

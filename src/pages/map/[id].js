@@ -344,22 +344,17 @@ function Map() {
       });
   };
 
-  useEffect(() => {
-    // toggleDrawer(false);
-    //to make sure
-    nodes.map((res) => {
-      if (res.type == "mainNode") {
-        dispatch(setNodeId(res?.id));
-        setSelectedNode({
-          id: res?.id,
-          text: res?.label,
-          type: res?.type,
-          photo: res?.photo,
-          index: res?.index,
-        });
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   // toggleDrawer(false);
+  //   //to make sure
+  //   nodes.map((res) => {
+  //     if (res.type == "mainNode") {
+  //       console.log("DEFAULT NODE OPEN");
+  //       console.log(res);
+  //       selectNode(res);
+  //     }
+  //   });
+  // }, []);
 
   const handleNodeClick = (e, node) => {
     setSelectedNode({
@@ -722,7 +717,8 @@ function Map() {
   };
 
   useEffect(() => {
-    console.log(selectedNode);
+    console.log("SELECTED NODE HADNLER", selectedNode);
+    console.log("SELECTED NODE HADNLER- NODE:", node);
     setOpenUrl(false);
     setResource();
     setFrame();
@@ -877,6 +873,8 @@ function Map() {
         console.log(res.data);
         getNodeByTreeId(id).then((res) => {
           setNodes(res);
+          selectNode(res[0]);
+
           getNodeEdges(id).then((res) => {
             setEdges(res);
             setEditedTree(json);

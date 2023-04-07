@@ -720,7 +720,7 @@ export default function SubNodeContent({
                 alignItems: "center",
               }}
             >
-              Community
+              Discussion
             </Typography>
           </Box>
         </Box>

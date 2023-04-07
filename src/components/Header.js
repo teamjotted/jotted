@@ -30,7 +30,7 @@ export default function Header({
   setSearch,
   query,
   searchHandler,
-  session
+  session,
 }) {
   const { width } = useWindowDimensions();
   // const { data: session, status } = useSession();
@@ -180,6 +180,7 @@ export default function Header({
           <Typography
             variant="h1"
             sx={{
+              mx: 1,
               fontSize: 20,
               fontWeight: 700,
               maxWidth: 500,
