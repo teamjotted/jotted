@@ -221,9 +221,7 @@ export default function Sharepopup({
           const payload = {
             user_id: res.user.id,
             tree_id: tree.id,
-            isEditing: false,
-            isAdmin: false,
-            isViewing: true,
+            level: "viewer",
           };
           accessMap(payload).then((res) => {
             console.log(res);
@@ -256,21 +254,17 @@ export default function Sharepopup({
     }
 
     if (e == "editor") {
-      user.isEditing = true;
+      user.level = e;
       console.log(user);
     }
     if (e == "viewer") {
-      user.isEditing = false;
-      user.isAdmin = false;
+      user.level = e;
       console.log(user);
     }
     const payload = {
       access_id: user.id,
       user_id: user.user_id,
-      isAdmin: user.isAdmin,
-      isEditing: user.isEditing,
-      isPaid: user.isPaid,
-      isViewing: user.isViewing,
+      level: user.level,
       tree_id: tree.id,
     };
     changeAccessMap(payload).then((res) => {
@@ -385,23 +379,9 @@ export default function Sharepopup({
                       sx={{ ml: "auto" }}
                       onClick={(e) => handleClick(e, res)}
                     >
-                      {res.isAdmin == true ? (
-                        <Typography>Admin</Typography>
-                      ) : (
-                        <></>
-                      )}
-                      {(res.isEditing == true) & (res.isAdmin == false) ? (
-                        <Typography>Editor</Typography>
-                      ) : (
-                        <></>
-                      )}
-                      {(res.isViewing == true) &
-                      (res.isAdmin == false) &
-                      (res.isEditing == false) ? (
-                        <Typography>Viewer</Typography>
-                      ) : (
-                        <></>
-                      )}
+                      {res.level == "admin" && <Typography>Admin</Typography>}
+                      {res.level == "editor" && <Typography>Editor</Typography>}
+                      {res.level == "viewer" && <Typography>Viewer</Typography>}
                       <KeyboardArrowDownIcon />
                     </MenuItem>
                     {selectedUser && (
@@ -415,14 +395,16 @@ export default function Sharepopup({
                         }}
                       >
                         <MenuItem
-                          onClick={() =>
-                            handleRoleChange("viewer", selectedUser)
-                          }
+                          onClick={() => {
+                            console.log(selectedUser);
+                            handleRoleChange("viewer", selectedUser);
+                          }}
                           value={index}
                           sx={{
-                            backgroundColor: selectedUser.isEditing
-                              ? "white"
-                              : "#F2F1F6",
+                            backgroundColor:
+                              selectedUser.level == "viewer"
+                                ? "#F2F1F6"
+                                : "white",
                           }}
                         >
                           Viewer
@@ -430,9 +412,10 @@ export default function Sharepopup({
                         <MenuItem
                           value={index}
                           sx={{
-                            backgroundColor: selectedUser.isEditing
-                              ? "#F2F1F6"
-                              : "white",
+                            backgroundColor:
+                              selectedUser.level == "editor"
+                                ? "#F2F1F6"
+                                : "white",
                           }}
                           onClick={() =>
                             handleRoleChange("editor", selectedUser)

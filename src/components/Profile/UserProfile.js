@@ -372,7 +372,7 @@ export default function MyProfile() {
                 }}
               >
                 <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
-                  Shared Map
+                  Other Map
                 </Typography>
               </Box>
               <Box
@@ -454,7 +454,10 @@ export default function MyProfile() {
                         {shared.map((row, index) => {
                           return (
                             <Grid item xs={1} sm={1} md={2} key={index}>
-                              <MapCard row={row} handleClick={handleClick} />
+                              <MapCard
+                                row={row.tree[0]}
+                                handleClick={handleClick}
+                              />
                             </Grid>
                           );
                         })}
