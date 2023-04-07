@@ -81,6 +81,7 @@ import { options } from "../api/auth/[...nextauth]";
 import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
 import { toast } from "react-toastify";
+import { changeAccessMap } from "@/utils/api";
 // import dynamic from "next/dynamic";
 
 // const SideDrawerContainer = dynamic(() =>
@@ -122,8 +123,15 @@ function AlertDialogSlide({
           keepMounted
           aria-describedby="alert-dialog-slide-description"
         >
-          <Box sx={{ display: "flex", alignItems: "center", minWidth: 300 }}>
-            <DialogTitle>{tree.name}</DialogTitle>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              minWidth: 300,
+              overflow: "hidden",
+            }}
+          >
+            <DialogTitle sx={{ maxWidth: 550 }}>{tree.name}</DialogTitle>
             <IconButton
               onClick={() => {
                 router.back();
@@ -191,19 +199,26 @@ function AlertDialogSlide({
                 </Typography>
               </Box>
               <Box
-                onClick={session ? purchaseHandler : handleOpenLogin}
+                onClick={
+                  paymentLoading
+                    ? null
+                    : session
+                    ? purchaseHandler
+                    : handleOpenLogin
+                }
                 sx={{
                   flex: 1,
                   "&:hover": { opacity: 0.7 },
                   borderRadius: 2,
                   display: "flex",
                   boxShadow: 0,
-                  backgroundColor: "#151127",
+                  backgroundColor: paymentLoading ? "black" : "#151127",
                   cursor: "pointer",
                   mr: 1,
                   justifyContent: "center",
                   alignItems: "center",
                   p: 1,
+                  opacity: paymentLoading ? 0.7 : 1,
                 }}
               >
                 {paymentLoading ? (
@@ -362,13 +377,13 @@ function Map() {
     setSelectedNode(null);
   };
   function purchaseHandler() {
+    setPaymentLoading(true);
     if (treeDetails.isPublic == true) {
       if (treeDetails.price == 0) {
         const payload = {
           user_id: data.user.id,
           tree_id: treeDetails.id,
-          isPaid: "free",
-          level: "viewer",
+          level: treeDetails.user_id == data.user.id ? "admin" : "viewer",
         };
 
         accessMap(payload).then((res) => {
@@ -385,47 +400,59 @@ function Map() {
           const payload = {
             user_id: data.user.id,
             tree_id: treeDetails.id,
-            isPaid: "false",
-            level: "viewer",
+            level: "unpaid",
           };
 
           accessMap(payload).then((res) => {
             console.log(res);
             setCover(false);
+            setAccess(res.level);
           });
           isLoading(false);
         });
       }
     } else {
       toast.info("This Map Is Private");
+      router.push("/");
     }
   }
 
-  async function checkPayStatus() {
+  async function checkPayStatus(tree) {
     //if (!session) return false;
     setPaymentLoading(true);
     if (data) {
-      console.log("Checking price");
-      return await stripeVerifyPurchase(data.user.id, id).then((res) => {
-        if (res.purchase) {
-          console.log(res);
-          if (res.purchase.stripe.status == "paid") {
-            setCover(false);
+      if (data.user.id != tree.user_id) {
+        console.log("Checking price");
+        return await stripeVerifyPurchase(data.user.id, id).then((res) => {
+          if (res.purchase) {
+            console.log(res);
+            if (res.purchase.stripe.status == "paid") {
+              setCover(false);
+              getAccessMap(tree.id, data.user.id).then((res) => {
+                const payload = {
+                  access_id: res.id,
+                  user_id: data.user.id,
+                  level: "viewer",
+                  tree_id: tree.id,
+                };
+                changeAccessMap(payload).then((res) => {
+                  console.log(res);
+                  setAccess("viewer");
+                });
+              });
+            } else {
+              setCover(true);
+            }
           } else {
             setCover(true);
           }
-        } else {
-          setCover(true);
-        }
-        setPaymentLoading(false);
-      });
+          setPaymentLoading(false);
+        });
+      }
     } else {
+      setPaymentLoading(false);
       setCover(true);
     }
-  }
-
-  function privateTreeHandler(json) {
-    return false;
   }
 
   const toggleDrawer = (newOpen) => () => {
@@ -847,6 +874,7 @@ function Map() {
       getTreeById(id).then((res) => {
         const json = res.data;
         setTreeDetails(res.data);
+        console.log(res.data);
         getNodeByTreeId(id).then((res) => {
           setNodes(res);
           getNodeEdges(id).then((res) => {
@@ -855,7 +883,7 @@ function Map() {
           });
         });
         if (json.price > 0) {
-          checkPayStatus();
+          checkPayStatus(json);
         }
       });
     }
@@ -872,6 +900,9 @@ function Map() {
           }
           if (res.level == "editor") {
             dispatch(setTreeAdmin(true));
+          }
+          if (res.level == "unpaid") {
+            setCover(true);
           }
           if (res.user.role === 777) {
             dispatch(setTreeAdmin(true));
