@@ -239,7 +239,7 @@ function AlertDialogSlide({
                   <Typography
                     sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
                   >
-                    {tree.price == 0 ? "Join" : "Buy"} Now
+                    {tree.price == 0 ? "Start" : "Buy"} Now
                   </Typography>
                 )}
               </Box>
