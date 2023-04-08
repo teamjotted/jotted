@@ -9,6 +9,7 @@ import Router from "next/router";
 import { useEffect } from "react";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import Script from "next/script";
 
 mixpanel.init("73c9792296d221b289d08ad0b7f2639d", { debug: true });
 

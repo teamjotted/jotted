@@ -21,6 +21,7 @@ import { deleteTree, getTags } from "../../utils/api";
 import { media } from "../../mock/TreePhotos";
 import Carousel from "react-material-ui-carousel";
 import { useRouter } from "next/router";
+import UploadWidget from "../UploadWidget";
 
 export const DISCIPLINE_DATA_ARRAY = [
   "Search Engine Optimization",
@@ -32,7 +33,6 @@ export const DISCIPLINE_DATA_ARRAY = [
   "Affiliate Marketing",
   "Other",
 ];
-
 
 const style = {
   position: "absolute",
@@ -87,6 +87,7 @@ export default function EditTreePopup({
       setTag(editedTree.tags);
     }
   }, []);
+
   function photoHandler(e) {
     // console.log(media[e]);
     const photo = media[e];
@@ -190,6 +191,8 @@ export default function EditTreePopup({
                       Nevermind
                     </Typography>
                   </Box>
+                  {/* <UploadWidget tree_id={treeDetails.id} /> */}
+
                   <Box sx={{ p: 2 }}>
                     <Carousel
                       onChange={photoHandler}

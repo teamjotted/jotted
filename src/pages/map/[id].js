@@ -145,7 +145,13 @@ function AlertDialogSlide({
           <Divider />
           <DialogContent>
             <Box sx={{ display: "flex" }}>
-              <Avatar src={tree.user.photo_url} />
+              <Avatar
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  router.push(`/user/${tree.user.id}`);
+                }}
+                src={tree.user.photo_url}
+              />
               <Box sx={{ alignSelf: "center", ml: 1 }}>
                 <Typography sx={{ fontWeight: 500, textAlign: "center" }}>
                   {tree.user.firstname} {tree.user.lastname}
