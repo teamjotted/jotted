@@ -261,8 +261,9 @@ function AlertDialogSlide({
   }
 }
 
-function Map() {
-  const { data } = useSession();
+function Map({ data }) {
+  console.log(data);
+  //const { data } = useSession();
   useEffect(() => {}, [data]);
   //const [data, setData] = useState();
   const router = useRouter();
@@ -1234,18 +1235,18 @@ export default function MapProvider(props) {
   );
 }
 
-// export async function getServerSideProps({ req }) {
-//   const session = await getSession({ req });
-
-//   // if (!session) {
-//   //   return {
-//   //     redirect: {
-//   //       destination: "/",
-//   //       permanent: false,
-//   //     },
-//   //   };
-//   // }
-//   return {
-//     props: { data: session },
-//   };
-// }
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, options);
+  console.log("in map session ---------", session);
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+  return {
+    props: { data: session },
+  };
+}
