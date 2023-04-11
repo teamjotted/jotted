@@ -153,7 +153,7 @@ export default function EditTreePopup({
                     component={"img"}
                     width={200}
                     height={200}
-                    src={treeDetails.photo}
+                    src={editedTree.photo}
                   />
                   <Typography
                     sx={{
@@ -192,8 +192,11 @@ export default function EditTreePopup({
                     </Typography>
                   </Box>
                   {/* <UploadWidget tree_id={treeDetails.id} /> */}
-
-                  <Box sx={{ p: 2 }}>
+                  <UploadWidget
+                    setEditMode={setEditMode}
+                    setEditedTree={setEditedTree}
+                  />
+                  {/* <Box sx={{ p: 2 }}>
                     <Carousel
                       onChange={photoHandler}
                       navButtonsAlwaysVisible={true}
@@ -217,7 +220,7 @@ export default function EditTreePopup({
                         </Box>
                       ))}
                     </Carousel>
-                  </Box>
+                  </Box> */}
                 </>
               )}
             </>
@@ -241,7 +244,7 @@ export default function EditTreePopup({
                       component={"img"}
                       width={100}
                       height={100}
-                      src={item.photo}
+                      src={editedTree.photo}
                     />
                   </Box>
                 ))}

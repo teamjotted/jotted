@@ -13,7 +13,6 @@ export default function MapSection({ trees, handleClick, name, data }) {
   const { width } = useWindowDimensions();
   const router = useRouter();
   useEffect(() => {
-    console.log(trees);
     if (trees) {
       setLoading(false);
     }

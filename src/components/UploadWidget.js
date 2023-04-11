@@ -4,67 +4,66 @@ import { Box } from "@mui/material";
 import { useState } from "react";
 //import { editFoodImage } from "../utils/api";
 
-const UploadWidget = ({ tree_id, photo }) => {
-  const [previewImage, setPreviewImage] = useState(null);
-  const cloudinaryRef = useRef();
-  const widgetRef = useRef();
-  useEffect(() => {
-    console.log(cloudinaryRef.current, widgetRef);
+const UploadWidget = ({ tree_id, photo, setEditedTree, setEditMode }) => {
+  const [imageSrc, setImageSrc] = useState();
+  const [uploadData, setUploadData] = useState();
 
-    cloudinaryRef.current = window.cloudinary;
-    widgetRef.current = cloudinaryRef.current.createUploadWidget(
-      {
-        cloudName: "dymqpmvyq",
-        // uploadPreset: "foodcourt",
-      },
-      function (e, result) {
-        if (result.event == "success") {
-          console.log(result, tree_id);
-          setPreviewImage(result.info.url);
-          //   editFoodImage(food_id, result.info.url).then((res) => {
-          //     console.log(res);
-          //   });
-        }
-      }
+  function handleOnChange(changeEvent) {
+    const reader = new FileReader();
+
+    reader.onload = function (onLoadEvent) {
+      setImageSrc(onLoadEvent.target.result);
+      setUploadData(undefined);
+    };
+
+    reader.readAsDataURL(changeEvent.target.files[0]);
+  }
+  async function handleOnSubmit(event) {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    const fileInput = Array.from(form.elements).find(
+      ({ name }) => name === "file"
     );
-    //console.log(cloudinaryRef.current);
-  }, []);
 
-  useEffect(() => {
-    if (photo != "" || photo != null) {
-      setPreviewImage(photo);
+    const formData = new FormData();
+
+    for (const file of fileInput.files) {
+      formData.append("file", file);
     }
-  }, []);
+    formData.append("upload_preset", "maps-thumbnail");
+
+    const data = await fetch(
+      "https://api.cloudinary.com/v1_1/dymqpmvyq/image/upload/",
+      {
+        method: "POST",
+        body: formData,
+      }
+    ).then((r) => r.json());
+    console.log("data", data);
+    setImageSrc(data.secure_url);
+    setEditedTree({ photo: data.secure_url });
+    setUploadData(data);
+    setEditMode(false);
+  }
   return (
-    <>
-      {previewImage ? (
-        <Box onClick={() => widgetRef.current.open()}>
-          <img src={previewImage} width={128} height={128} />
-        </Box>
-      ) : (
-        <label>
-          <Box
-            onClick={() => widgetRef.current.open()}
-            sx={{
-              width: 128,
-              height: 128,
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              borderRadius: "5",
-              border: "1px dashed grey",
-              p: 3,
-              borderColor: "#D9D9D9",
-              mr: 2,
-            }}
-          >
-            <AddAPhotoIcon />
-          </Box>
-        </label>
+    <form method="post" onChange={handleOnChange} onSubmit={handleOnSubmit}>
+      <p>
+        <input type="file" name="file" />
+      </p>
+      <img width={imageSrc ? 300 : 0} src={imageSrc} />
+      {imageSrc && !uploadData && (
+        <p>
+          <button style={{ color: "red" }}>Upload Photo!</button>
+        </p>
       )}
-    </>
+      {/* {uploadData && (
+        // <code>
+        //   <pre>{JSON.stringify(uploadData, null, 2)}</pre>
+        // </code>
+        // <>Uplaoded</>
+      )} */}
+    </form>
   );
 };
 

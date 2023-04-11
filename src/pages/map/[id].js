@@ -72,7 +72,7 @@ import EditTreePopup from "@/components/Popup/EditTreePopup";
 import Toolbar from "@/components/Toolbar";
 import { media } from "../../mock/NodePhotos";
 import { borderRadius } from "@mui/system";
-import CloseIcon from "@mui/icons-material/Close";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
@@ -138,7 +138,11 @@ function AlertDialogSlide({
               }}
               sx={{ ml: "auto", mr: 1 }}
             >
-              <CloseIcon />
+              <ArrowBackIosIcon
+                sx={{
+                  pl: 0.6,
+                }}
+              />
             </IconButton>
           </Box>
 
