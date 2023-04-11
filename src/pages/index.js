@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 
-
 import {
   Box,
   CssBaseline,
@@ -119,7 +118,7 @@ export default function Home() {
         })
         .catch((e) => {
           console.log("logout");
-          logoutBtnHandler();
+          //logoutBtnHandler();
         });
     }
   }
@@ -315,8 +314,7 @@ export default function Home() {
                         color: "black",
                       }}
                     >
-                      <br/>
-                      {' '}into courses
+                      <br /> into courses
                     </Typography>
                   </Typography>
                   {/* <Typography
@@ -505,8 +503,7 @@ export default function Home() {
           alignContent: "center",
           justifyContent: "center",
         }}
-      >
-      </Box>
+      ></Box>
     </Box>
   );
 }

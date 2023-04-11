@@ -13,7 +13,6 @@ export default function MapSection({ trees, handleClick, name, data }) {
   const { width } = useWindowDimensions();
   const router = useRouter();
   useEffect(() => {
-    console.log(trees);
     if (trees) {
       setLoading(false);
     }
@@ -22,7 +21,7 @@ export default function MapSection({ trees, handleClick, name, data }) {
   return (
     <Box sx={{ overflow: "hidden" }}>
       <Box sx={{ m: 1 }}>
-        <Typography sx={{ fontSize: 50, fontWeight: 700, font: "inter" }}>
+        <Typography sx={{ fontSize: 40, fontWeight: 700, font: "inter" }}>
           {name}
         </Typography>
       </Box>

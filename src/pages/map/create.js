@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import { media } from "../../mock/TreePhotos";
+import UploadWidget from "@/components/UploadWidget";
 export const DISCIPLINE_DATA_ARRAY = [
   "Search Engine Optimization",
   "Social Media Marketing",
@@ -97,7 +98,7 @@ export default function Create() {
             display: "flex",
           }}
         >
-          <Box sx={{ width: 600 }}>
+          <Box sx={{ width: 600, mt: 10 }}>
             <Typography sx={{ fontWeight: 700 }}>Create New Map</Typography>
             <TextField
               sx={{ backgroundColor: "white", my: 1 }}
