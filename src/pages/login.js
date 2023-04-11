@@ -13,7 +13,7 @@ import Image from "next/image";
 import LoginContainer from "../components/LoginContainer";
 import SignupContainer from "../components/SignupContainer";
 import { signOut, signIn, useSession, getSession } from "next-auth/react";
-import { createUser, verifyNewUser } from "@/utils/api";
+import { createUser, getUserEmail, verifyNewUser } from "@/utils/api";
 import { toast } from "react-toastify";
 import cookie from "cookiejs";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
@@ -42,7 +42,10 @@ export default function Login({ data }) {
       .then((res) => {
         if (res?.ok) {
           console.log(res);
-          cookie.set("j_ce_u", token);
+          getUserEmail(email).then((res) => {
+            console.log(res);
+            cookie.set("j_ce_u", res.authToken);
+          });
           router.push("/");
         } else {
           toast.error("Incorrect Credentials, Please Try Again!");
@@ -52,6 +55,7 @@ export default function Login({ data }) {
         console.log(e);
       });
   };
+
   const handleSignup = () => {
     if ((name, email, password, username)) {
       const user = {
@@ -75,7 +79,9 @@ export default function Login({ data }) {
       toast.error("Looks like your missing something");
     }
   };
+
   function handleVerify() {
+    console.log("Verifying", otp + email);
     if (otp && verify) {
       verifyNewUser({ otp, email }).then((res) => {
         console.log(res);

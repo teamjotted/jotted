@@ -21,6 +21,7 @@ import { deleteTree, getTags } from "../../utils/api";
 import { media } from "../../mock/TreePhotos";
 import Carousel from "react-material-ui-carousel";
 import { useRouter } from "next/router";
+import UploadWidget from "../UploadWidget";
 
 export const DISCIPLINE_DATA_ARRAY = [
   "Search Engine Optimization",
@@ -32,7 +33,6 @@ export const DISCIPLINE_DATA_ARRAY = [
   "Affiliate Marketing",
   "Other",
 ];
-
 
 const style = {
   position: "absolute",
@@ -87,6 +87,7 @@ export default function EditTreePopup({
       setTag(editedTree.tags);
     }
   }, []);
+
   function photoHandler(e) {
     // console.log(media[e]);
     const photo = media[e];
@@ -152,7 +153,7 @@ export default function EditTreePopup({
                     component={"img"}
                     width={200}
                     height={200}
-                    src={treeDetails.photo}
+                    src={editedTree.photo}
                   />
                   <Typography
                     sx={{
@@ -190,7 +191,12 @@ export default function EditTreePopup({
                       Nevermind
                     </Typography>
                   </Box>
-                  <Box sx={{ p: 2 }}>
+                  {/* <UploadWidget tree_id={treeDetails.id} /> */}
+                  <UploadWidget
+                    setEditMode={setEditMode}
+                    setEditedTree={setEditedTree}
+                  />
+                  {/* <Box sx={{ p: 2 }}>
                     <Carousel
                       onChange={photoHandler}
                       navButtonsAlwaysVisible={true}
@@ -214,7 +220,7 @@ export default function EditTreePopup({
                         </Box>
                       ))}
                     </Carousel>
-                  </Box>
+                  </Box> */}
                 </>
               )}
             </>
@@ -238,7 +244,7 @@ export default function EditTreePopup({
                       component={"img"}
                       width={100}
                       height={100}
-                      src={item.photo}
+                      src={editedTree.photo}
                     />
                   </Box>
                 ))}

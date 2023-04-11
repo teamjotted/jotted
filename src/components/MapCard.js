@@ -103,7 +103,7 @@ export default function MapCard({ row, handleClick }) {
                 variant="h1"
                 sx={{
                   display: "-webkit-box",
-                  overflow: "hidden",
+                  // overflow: "hidden",
                   WebkitBoxOrient: "vertical",
                   WebkitLineClamp: 2,
                   fontWeight: 600,
@@ -127,7 +127,7 @@ export default function MapCard({ row, handleClick }) {
                 color: "white",
               }}
             >
-              {row?.description.toLowerCase()}
+              {row?.description}
             </Typography>
           </Box>
         </Box>
