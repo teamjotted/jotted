@@ -9,6 +9,7 @@ import {
   MenuItem,
   Divider,
   LinearProgress,
+  CircularProgress,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
@@ -21,6 +22,30 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useRouter } from "next/router";
 import Groups2Icon from "@mui/icons-material/Groups2";
 import { motion } from "framer-motion";
+
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: "relative", ml: "auto" }}>
+      <CircularProgress color={"inherit"} variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 10,
+          right: 0,
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="body2" sx={{ fontWeight: 800, fontSize: 12 }}>
+          {props.viewedAmount}/{props.totalAmount}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
 
 export default function MainNodeSidebar({
   nextHandler,
@@ -492,14 +517,14 @@ export default function MainNodeSidebar({
                                       </Typography>
                                     </>
                                   </Box>
-                                  <Typography
-                                    variant="body2"
-                                    sx={{ ml: "auto", p: 0.2, fontWeight: 800 }}
-                                  >
-                                    {viewedAmount}/{totalAmount}
-                                  </Typography>
+                                  <CircularProgressWithLabel
+                                    sx={{ ml: "auto" }}
+                                    value={progressAmount}
+                                    viewedAmount={viewedAmount}
+                                    totalAmount={totalAmount}
+                                  />
                                 </Box>
-                                <LinearProgress
+                                {/* <LinearProgress
                                   // color={
                                   //   totalResources == 100 ? "success" : "info"
                                   // }
@@ -507,7 +532,7 @@ export default function MainNodeSidebar({
                                   color={"inherit"}
                                   variant="determinate"
                                   value={progressAmount}
-                                />
+                                /> */}
                               </Box>
                             </motion.div>
                           )}

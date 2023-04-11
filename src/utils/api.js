@@ -373,7 +373,7 @@ export async function getMySharedTrees() {
   }
 }
 
-export async function shareMyTree(invited, tree_id) {
+export async function shareMyTree(tree_id) {
   const { token } = await getSession();
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -381,11 +381,7 @@ export async function shareMyTree(invited, tree_id) {
   console.log(invited);
   try {
     return await axios
-      .post(
-        BASE_URL + `/share`,
-        { shared_users: invited, tree_id },
-        { headers }
-      )
+      .post(BASE_URL + `/share`, { tree_id }, { headers })
       .then((res) => {
         console.log(res);
         return res;

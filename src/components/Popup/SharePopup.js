@@ -106,6 +106,7 @@ export default function Sharepopup({
   const [selectedUser, setSelectedUser] = useState();
   const open = Boolean(anchorEl);
   const handleClick = (event, user) => {
+    console.log(user);
     setSelectedUser(user);
     console.log(event.currentTarget);
     setAnchorEl(event.currentTarget);
@@ -179,33 +180,23 @@ export default function Sharepopup({
   const shareHandler = () => {
     //console.log(invited);
     console.log(values.numberformat);
-    shareMyTree(invited, tree.id)
-      .then((res) => {
-        console.log(res.data);
-        setTreeDetails(res.data);
-        setEditedTree({
-          shared_users: res.data.shared_users,
-          price: res.data.price,
+    if (values) {
+      priceMyTree(tree.id, values.numberformat)
+        .then((res) => {
+          console.log(res);
+          if (res) {
+            setEditedTree({
+              price: res.data.tree.price,
+            });
+          }
+          toast.success("Saved");
+          setOpenShare(false);
+        })
+        .catch((e) => {
+          console.log(e);
+          setOpenShare(false);
         });
-        toast.success("Saved");
-        setOpenShare(false);
-      })
-      .then(() => {
-        if (values) {
-          priceMyTree(tree.id, values.numberformat).then((res) => {
-            console.log(res);
-            if (res) {
-              setEditedTree({
-                price: res.data.tree.price,
-              });
-            }
-          });
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-        setOpenShare(false);
-      });
+    }
   };
   // useEffect(() => {
   // 	console.log(users[users.length - 1]);
@@ -374,6 +365,7 @@ export default function Sharepopup({
                       }}
                     >
                       {res.user?.email}
+                      {res.user?.id}
                     </Typography>
                     <MenuItem
                       sx={{ ml: "auto" }}
@@ -384,11 +376,13 @@ export default function Sharepopup({
                       {res.level == "viewer" && <Typography>Viewer</Typography>}
                       <KeyboardArrowDownIcon />
                     </MenuItem>
-                    {selectedUser && (
+                    {selectedUser ? (
                       <Menu
                         id={`basic-menu-${selectedUser?.id}`}
                         anchorEl={anchorEl}
-                        open={open}
+                        open={
+                          selectedUser?.user.id == res.user.id ? open : null
+                        }
                         onClose={handleClose}
                         MenuListProps={{
                           "aria-labelledby": "basic-button",
@@ -433,6 +427,8 @@ export default function Sharepopup({
                           Remove access
                         </MenuItem>
                       </Menu>
+                    ) : (
+                      <></>
                     )}
                   </Box>
                 );

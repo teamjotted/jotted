@@ -621,7 +621,7 @@ function Map() {
     }
   }
   const onConnect = useCallback((edge) => {
-    setEdges((eds) => addEdge(edge, eds));
+    //setEdges((eds) => addEdge(edge, eds));
     let newEdge = {
       source: edge.source,
       target: edge.target,
@@ -630,7 +630,9 @@ function Map() {
     };
 
     createNodeEdge(newEdge, id).then((res) => {
+      console.log(id);
       getNodeEdges(id).then((res) => {
+        console.log(res);
         setEdges(res);
       });
     });
