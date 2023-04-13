@@ -24,7 +24,6 @@ export const options = {
             return e;
           });
 
-        console.log(data);
         const token = data.authToken;
 
         if (data.user) {
@@ -46,9 +45,6 @@ export const options = {
   ],
   callbacks: {
     jwt: async ({ token, user }) => {
-      console.log("token_jwt", token);
-      console.log("tuser_jwt", user);
-
       const { data } = await axios
         .get(
           `https://xg3n-4mh1-ngd5.n7.xano.io/api:w4ONEGEJ:v2/user_by_email?email=${token.email}`
@@ -58,14 +54,12 @@ export const options = {
           console.log(e);
           return e;
         });
-      console.log(data);
       token.id = data.user;
       token.token = data.authToken;
 
       return token;
     },
     session: async ({ session, token }) => {
-      console.log(session);
       // cookie.set("j_ce_u", session.authToken);
       session.user = token.id;
       session.token = token.token;
@@ -105,6 +99,5 @@ export const options = {
   },
   debug: true,
 };
-const Auth = (req, res) => NextAuth(req, res, options);
 
-export default Auth;
+export default NextAuth(options);

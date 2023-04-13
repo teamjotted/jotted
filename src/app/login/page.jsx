@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Box,
@@ -7,18 +9,18 @@ import {
   TextField,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import useWindowDimenstions from "../contexts/hooks/useWindowDimensions";
+import { useRouter } from "next/navigation";
+import useWindowDimenstions from "../../contexts/hooks/useWindowDimensions";
 import Image from "next/image";
-import LoginContainer from "../components/LoginContainer";
-import SignupContainer from "../components/SignupContainer";
+import LoginContainer from "../../components/LoginContainer";
+import SignupContainer from "../../components/SignupContainer";
 import { signOut, signIn, useSession, getSession } from "next-auth/react";
 import { createUser, getUserEmail, verifyNewUser } from "@/utils/api";
 import { toast } from "react-toastify";
 import cookie from "cookiejs";
 import { getCookies, getCookie, setCookie, deleteCookie } from "cookies-next";
 
-export default function Login({ data }) {
+const page = () => {
   const { width, height } = useWindowDimenstions();
   const [email, setEmail] = useState("");
   const router = useRouter();
@@ -228,9 +230,10 @@ export default function Login({ data }) {
       )} */}
     </Box>
   );
-}
+};
+export default page;
 
-export async function getServerSideProps({ req, res }) {
+async function getServerSideProps({ req, res }) {
   const session = await getSession({ req });
   console.log(session);
 

@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import Default from "@/components/Nodes/Default";
 import Main from "@/components/Nodes/Main";
@@ -41,7 +43,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, {
   useCallback,
   useEffect,
@@ -70,26 +72,19 @@ import EditNodePopup from "@/components/Popup/EditNodePopup";
 import Sharepopup from "@/components/Popup/SharePopup";
 import EditTreePopup from "@/components/Popup/EditTreePopup";
 import Toolbar from "@/components/Toolbar";
-import { media } from "../../mock/NodePhotos";
+import { media } from "../../../mock/NodePhotos";
 import { borderRadius } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]";
+import { options } from "../../../pages/api/auth/[...nextauth]";
 import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
 import { toast } from "react-toastify";
 import { changeAccessMap } from "@/utils/api";
-// import dynamic from "next/dynamic";
 
-// const SideDrawerContainer = dynamic(() =>
-//   import("@/components/Drawers/SideDrawerContainer")
-// );
-// const ResourceDrawer = dynamic(() =>
-//   import("@/components/Drawers/ResourceDrawer/ResourceDrawer")
-// );
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -261,7 +256,7 @@ function AlertDialogSlide({
   }
 }
 
-function Map({ data }) {
+const Map = ({ data }) => {
   console.log(data);
   //const { data } = useSession();
   useEffect(() => {}, [data]);
@@ -1225,17 +1220,19 @@ function Map({ data }) {
       </Box>
     );
   }
-}
+};
 
-export default function MapProvider(props) {
+const page = (props) => {
   return (
     <ReactFlowProvider>
       <Map {...props} />
     </ReactFlowProvider>
   );
-}
+};
 
-export async function getServerSideProps(context) {
+export default page;
+
+async function getData(context) {
   const session = await getServerSession(context.req, context.res, options);
   console.log("in map session ---------", session);
   // if (!session) {

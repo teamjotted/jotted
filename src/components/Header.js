@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 

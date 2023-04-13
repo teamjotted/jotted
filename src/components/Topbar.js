@@ -3,7 +3,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import SellRoundedIcon from "@mui/icons-material/SellRounded";
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import StarsIcon from "@mui/icons-material/Stars";
 import PaymentsIcon from "@mui/icons-material/Payments";
@@ -13,7 +13,8 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 export default function Topbar({ router }) {
   const [cur, setCur] = useState();
   //const router = useRouter();
-  const { catalog } = router.query;
+  const catalog = null;
+  //const { catalog } = router.query;
   const pages = ["home", "featured", "free", "paid"];
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function Topbar({ router }) {
     }
   }, []);
   return (
-    <Box sx={{ display: "flex",  }}>
+    <Box sx={{ display: "flex" }}>
       <Box
         onClick={() => {
           if (catalog != "") {
@@ -37,7 +38,7 @@ export default function Topbar({ router }) {
           p: 3,
           py: 1.5,
           my: 1,
-          mr:10,
+          mr: 10,
           borderRadius: 2,
           backgroundColor: catalog == null ? "white" : "",
           cursor: "pointer",
@@ -73,7 +74,7 @@ export default function Topbar({ router }) {
           p: 3,
           py: 1.5,
           my: 1,
-          mr:10,
+          mr: 10,
           borderRadius: 1,
           backgroundColor: catalog == "featured" ? "white" : "",
           cursor: "pointer",
@@ -112,7 +113,7 @@ export default function Topbar({ router }) {
         sx={{
           p: 3,
           py: 1.5,
-          mr:10,
+          mr: 10,
           my: 1,
           borderRadius: 1,
           backgroundColor: catalog == "free" ? "white" : "",
@@ -172,7 +173,6 @@ export default function Topbar({ router }) {
         <Typography
           variant="h1"
           sx={{
-       
             fontSize: 18,
             color: catalog == "recent" ? "black" : "#7B7B7B",
           }}

@@ -1,7 +1,7 @@
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { Avatar, Box, Grid, Stack, Tooltip, Typography } from "@mui/material";
 import { Inter, Poppin } from "@next/font/google";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MapCard from "./MapCard";
 import ShortCardSkeleton from "./Skeletons/ShortCardSkeleton";
