@@ -69,7 +69,7 @@ export default function MyProfile() {
   }
   function handleClick(id) {
     console.log(id);
-    router.push(`/map/${id}`);
+    router.push(`/map/${id}/view`);
   }
   function sectionHandler() {}
 
