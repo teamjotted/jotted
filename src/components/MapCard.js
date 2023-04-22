@@ -69,6 +69,7 @@ export default function MapCard({ row, handleClick }) {
             title={`Created by ${row._user?.firstname} ${row._user?.lastname}`}
           >
             <Avatar
+              alt={`${row._user?.firstname}`}
               sx={{
                 ml: "auto",
                 mr: 1,

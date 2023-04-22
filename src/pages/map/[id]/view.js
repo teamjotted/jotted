@@ -106,7 +106,6 @@ const panOnDrag = [1, 2];
 
 
 function Map() {
-  console.log(data);
   const { data } = useSession();
   useEffect(() => {}, [data]);
   //const [data, setData] = useState();
