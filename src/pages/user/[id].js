@@ -10,7 +10,7 @@ import {
   Stack,
   Pagination,
 } from "@mui/material";
-import { getSession, signOut } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
@@ -29,7 +29,10 @@ import { media } from "../../mock/TreePhotos";
 import MapCard from "@/components/MapCard";
 import MyProfile from "@/components/Profile/UserProfile";
 import CheckIcon from "@mui/icons-material/Check";
-export default function User({ data }) {
+
+export default function User() {
+  const { data } = useSession();
+
   const scrollRef = useRef(null);
 
   const router = useRouter();
@@ -66,7 +69,7 @@ export default function User({ data }) {
       //   setTrees(res.data);
       // });
     }
-  }, [id]);
+  }, [id, data]);
 
   function handleClick(id) {
     console.log(id);
@@ -102,7 +105,14 @@ export default function User({ data }) {
         >
           <Box sx={{ maxWidth: 1000, mt: 3, width: 1000 }}>
             <Box sx={{ display: "flex", m: 1 }}>
-              <Avatar sx={{ width: 100, height: 100 }} src={user?.photo_url} />
+              <Avatar
+                alt={`${user?.firstname}`}
+                sx={{ width: 100, height: 100 }}
+                src={
+                  user?.photo_url ||
+                  `https://avatars.dicebear.com/api/micah/${user?.email}.svg`
+                }
+              />
               <Box
                 sx={{
                   ml: 2,
@@ -217,18 +227,18 @@ export default function User({ data }) {
     </Box>
   );
 }
-export async function getServerSideProps({ req }) {
-  const session = await getSession({ req });
+// export async function getServerSideProps({ req }) {
+//   const session = await getSession({ req });
 
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return {
-    props: { data: session },
-  };
-}
+//   // if (!session) {
+//   //   return {
+//   //     redirect: {
+//   //       destination: "/",
+//   //       permanent: false,
+//   //     },
+//   //   };
+//   // }
+//   return {
+//     props: { data: session },
+//   };
+// }

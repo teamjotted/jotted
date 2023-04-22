@@ -428,8 +428,7 @@ export default function Home() {
             </Box>
             <>
               <br />
-              <br />
-              <br />
+
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -470,7 +469,7 @@ export default function Home() {
                   </Typography>
                 </Box>
               </Box>
-              <Topbar router={router} />
+              {width > 600 && <Topbar router={router} /> }
             </>
             <Box sx={{ mt: 10 }}>
               <MapSection
