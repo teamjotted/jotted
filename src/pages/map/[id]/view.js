@@ -105,9 +105,9 @@ const nodeTypes = {
 const panOnDrag = [1, 2];
 
 
-function Map({ data }) {
+function Map() {
   console.log(data);
-  //const { data } = useSession();
+  const { data } = useSession();
   useEffect(() => {}, [data]);
   //const [data, setData] = useState();
   const router = useRouter();
@@ -979,18 +979,3 @@ export default function MapProvider(props) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, options);
-  console.log("in map session ---------", session);
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-  return {
-    props: { data: session },
-  };
-}
