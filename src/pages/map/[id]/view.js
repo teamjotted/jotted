@@ -70,14 +70,14 @@ import EditNodePopup from "@/components/Popup/EditNodePopup";
 import Sharepopup from "@/components/Popup/SharePopup";
 import EditTreePopup from "@/components/Popup/EditTreePopup";
 import Toolbar from "@/components/Toolbar";
-import { media } from "../../mock/NodePhotos";
+import { media } from "../../../mock/NodePhotos";
 import { borderRadius } from "@mui/system";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { getServerSession } from "next-auth";
-import { options } from "../api/auth/[...nextauth]";
+import { options } from "../../api/auth/[...nextauth]";
 import SideDrawerContainer from "@/components/Drawers/SideDrawerContainer";
 import ResourceDrawer from "@/components/Drawers/ResourceDrawer/ResourceDrawer";
 import { toast } from "react-toastify";
@@ -104,162 +104,6 @@ const nodeTypes = {
 };
 const panOnDrag = [1, 2];
 
-function AlertDialogSlide({
-  open,
-  tree,
-  router,
-  purchaseHandler,
-  session,
-  handleOpenLogin,
-  paymentLoading,
-}) {
-  if (tree) {
-    return (
-      <div>
-        <Dialog
-          open={open}
-          onClose={() => {}}
-          TransitionComponent={Transition}
-          keepMounted
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              minWidth: 300,
-              overflow: "hidden",
-            }}
-          >
-            <DialogTitle sx={{ maxWidth: 550 }}>{tree.name}</DialogTitle>
-            <IconButton
-              onClick={() => {
-                router.back();
-              }}
-              sx={{ ml: "auto", mr: 1 }}
-            >
-              <ArrowBackIosIcon
-                sx={{
-                  pl: 0.6,
-                }}
-              />
-            </IconButton>
-          </Box>
-
-          <Divider />
-          <DialogContent>
-            <Box sx={{ display: "flex" }}>
-              <Avatar
-                sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  router.push(`/user/${tree.user.id}`);
-                }}
-                src={tree.user.photo_url}
-              />
-              <Box sx={{ alignSelf: "center", ml: 1 }}>
-                <Typography sx={{ fontWeight: 500, textAlign: "center" }}>
-                  {tree.user.firstname} {tree.user.lastname}
-                </Typography>
-              </Box>
-            </Box>
-            <DialogContentText
-              sx={{ mt: 1 }}
-              id="alert-dialog-slide-description"
-            >
-              <Typography sx={{ color: "black", fontWeight: 600 }}>
-                Description:{" "}
-              </Typography>
-              {tree.description}
-            </DialogContentText>
-          </DialogContent>
-          {/* <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose}>Agree</Button>
-        </DialogActions> */}
-          <Divider />
-          <DialogContent>
-            <Box sx={{ display: "flex" }}>
-              <Typography sx={{ fontWeight: 600 }}>Price: </Typography>
-              <Typography sx={{ fontWeight: 600, ml: 1 }}>
-                ${tree.price.toFixed(2)}
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", mt: 2 }}>
-              <Box
-                onClick={() => {}}
-                sx={{
-                  flex: 1,
-                  "&:hover": { opacity: 0.7 },
-                  borderRadius: 2,
-                  display: "flex",
-                  boxShadow: 0,
-                  border: 1,
-                  borderColor: "#151127",
-                  cursor: "pointer",
-                  mr: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  p: 1,
-                }}
-              >
-                <Typography
-                  sx={{ color: "#151127", fontWeight: 600, fontSize: 12 }}
-                >
-                  Save
-                </Typography>
-              </Box>
-              <Box
-                onClick={
-                  paymentLoading
-                    ? null
-                    : session
-                    ? purchaseHandler
-                    : handleOpenLogin
-                }
-                sx={{
-                  flex: 1,
-                  "&:hover": { opacity: 0.7 },
-                  borderRadius: 2,
-                  display: "flex",
-                  boxShadow: 0,
-                  backgroundColor: paymentLoading ? "black" : "#151127",
-                  cursor: "pointer",
-                  mr: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  p: 1,
-                  opacity: paymentLoading ? 0.7 : 1,
-                }}
-              >
-                {paymentLoading ? (
-                  <>
-                    <CircularProgress size={10} />
-                    <Typography
-                      sx={{
-                        color: "white",
-                        ml: 1,
-                        fontSize: 12,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Validating...
-                    </Typography>
-                  </>
-                ) : (
-                  <Typography
-                    sx={{ color: "white", fontWeight: 600, fontSize: 12 }}
-                  >
-                    {tree.price == 0 ? "Start" : "Buy"} Now
-                  </Typography>
-                )}
-              </Box>
-            </Box>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-  }
-}
 
 function Map({ data }) {
   console.log(data);
@@ -423,43 +267,7 @@ function Map({ data }) {
     }
   }
 
-  async function checkPayStatus(tree) {
-    //if (!session) return false;
-    setPaymentLoading(true);
-    if (data) {
-      if (data.user.id != tree.user_id) {
-        console.log("Checking price");
-        return await stripeVerifyPurchase(data.user.id, id).then((res) => {
-          if (res.purchase) {
-            console.log(res);
-            if (res.purchase.stripe.status == "paid") {
-              setCover(false);
-              getAccessMap(tree.id, data.user.id).then((res) => {
-                const payload = {
-                  access_id: res.id,
-                  user_id: data.user.id,
-                  level: "viewer",
-                  tree_id: tree.id,
-                };
-                changeAccessMap(payload).then((res) => {
-                  console.log(res);
-                  setAccess("viewer");
-                });
-              });
-            } else {
-              setCover(true);
-            }
-          } else {
-            setCover(true);
-          }
-          setPaymentLoading(false);
-        });
-      }
-    } else {
-      setPaymentLoading(false);
-      setCover(true);
-    }
-  }
+
 
   const toggleDrawer = (newOpen) => () => {
     if (newOpen == false) {
@@ -893,9 +701,7 @@ function Map({ data }) {
             setEditedTree(json);
           });
         });
-        if (json.price > 0) {
-          checkPayStatus(json);
-        }
+
       });
     }
 
@@ -913,7 +719,7 @@ function Map({ data }) {
             dispatch(setTreeAdmin(true));
           }
           if (res.level == "unpaid") {
-            setCover(true);
+            router.push(`/${id}`)
           }
           if (res.user.role === 777) {
             dispatch(setTreeAdmin(true));
@@ -922,6 +728,8 @@ function Map({ data }) {
           setAccess(res.level);
         } else {
           setCover(true);
+          router.push(`/map/${id}`)
+
           //set default not claimed yet
           setAccess("new");
         }
@@ -949,7 +757,6 @@ function Map({ data }) {
 
         <>
           <CssBaseline />
-          {!cover ? (
             <>
               <SideDrawerContainer
                 handleOpenLogin={handleOpenLogin}
@@ -1059,70 +866,7 @@ function Map({ data }) {
                 </ReactFlow>
               </div>
             </>
-          ) : (
-            <div style={{ backgroundColor: "#FBF9FB" }} className="wrapper">
-              <AlertDialogSlide
-                session={data?.user}
-                open={cover}
-                tree={treeDetails}
-                router={router}
-                purchaseHandler={purchaseHandler}
-                handleOpenLogin={handleOpenLogin}
-                paymentLoading={paymentLoading}
-              />
-              <ReactFlow
-                snapToGrid={true}
-                snapGrid={[20, 20]}
-                style={{ height: "100vh", visibility: "visible" }}
-                nodes={nodes}
-                nodeTypes={nodeTypes}
-                // setViewport={setViewport}
-                edges={edges}
-                onInit={onInit}
-                fitView
-                attributionPosition="top-right"
-                panOnDrag={false}
-                // panOnScroll
-                // selectionOnDrag
-                // panOnDrag={panOnDrag}
-                zoomOnDoubleClick={false}
-                zoomOnScroll={false}
-              >
-                <Box sx={{ zIndex: 1000, position: "absolute", width: "100%" }}>
-                  <Header
-                    session={data}
-                    editHandleOpen={editHandleOpen}
-                    shareHandleOpen={shareHandleOpen}
-                    handleSignIn={handleSignIn}
-                    treeDetails={treeDetails}
-                    treeadmin={treeAdmin}
-                  />
-                </Box>
 
-                <Controls />
-                <Background color="#aaa" gap={20} />
-                {treeAdmin && (
-                  <Box
-                    sx={{
-                      zIndex: 1000,
-                      position: "absolute",
-                      top: "90%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      backgroundColor: "#FEFEFF",
-                      borderRadius: 2,
-                      boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                      px: 4,
-                      py: 1,
-                    }}
-                  >
-                    {" "}
-                    <Toolbar />
-                  </Box>
-                )}
-              </ReactFlow>
-            </div>
-          )}
           {cover == null && (
             <Box
               sx={{
