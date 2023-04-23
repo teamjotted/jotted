@@ -31,7 +31,7 @@ export const DISCIPLINE_DATA_ARRAY = [
 export default function Create() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [treePhoto, setTreePhoto] = useState("");
+  const [treePhoto, setTreePhoto] = useState(media[0].photo);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -70,7 +70,7 @@ export default function Create() {
         console.log(res);
       });
 
-      router.push(`/map/${res.id}`);
+      router.push(`/map/${res.id}/view`);
     });
   }
   function photoHandler(e) {
