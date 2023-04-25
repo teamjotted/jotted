@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
+import learnerImage from "src/images/jottedHomeScreenIMG.png";
 
 import {
   Box,
@@ -357,8 +358,11 @@ export default function Home() {
                   </Box>
                 </Box>
               )}
-              <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}>
-                {paidTrees.length > 0 ? (
+              <Box>
+              {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
+                <img src={learnerImage} alt="jotted learner celbrating"/>
+
+                {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
                       return (
@@ -423,7 +427,7 @@ export default function Home() {
                   </Carousel>
                 ) : (
                   <Skeleton variant="rounded" width={"100%"} height={300} />
-                )}
+                )} */}
               </Box>
             </Box>
             <>
