@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
-import headerDesign from "src/components/headerDesign.svg";
+import headerDesign from "headerDesign.png";
+import jotedLogoNew from"/Users/brinleekidd/jotted/jottedLogo.png";
 
 import {
   Box,
@@ -286,7 +287,6 @@ export default function Home() {
             </FormControl>
           </Box> */}
         </Box>
-
         <Box sx={{ display: "flex", width: 1050, mx: 2, py: 10 }}>
           <Box
             sx={{
@@ -367,8 +367,8 @@ export default function Home() {
                 </Box>
               )}
               <Box>
+              <img src={require('headerDesign.png')} alt="jotted content map"/>
               {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
-              <img src={headerDesign} alt=""/>
                 {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
@@ -463,7 +463,7 @@ export default function Home() {
                 variant="subtitle1"
                 sx={{ color: "white", font: "Inter", fontSize:"17px", mb: 0, textAlign: "center" }}
               >
-                only 11 percent of business leaders strongly agreed that college graduates have the skills employers need
+                only 11% of business leaders strongly agreed that college graduates have the skills employers need
               </Typography>
               <Typography
                 variant="subtitle1"
@@ -475,21 +475,20 @@ export default function Home() {
                   fontWeight: "bold",
                 }}
               >
-                learn high-demand skills with jotted!
+                explore high-demand skills and careers with jotted!
               </Typography>
             </Box>
             <>
-              <br />
-              <br/>
-              <br/>
-              <br/>
-              <br/>
+
               <br/>
               <br/>
               <br/>
               <br/>
               <br/>
 
+              {/* jotted logo */}
+              <img src={jotedLogoNew} alt="jotted logo"/>
+             
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
                 <TextField
@@ -534,6 +533,9 @@ export default function Home() {
               </Box>
               {width > 600 && <Topbar router={router} /> }
             </>
+            <br/>
+            <br/>
+            <br/>
             <Box sx={{ mt: 10 }}>
               <MapSection
                 name={"Today’s featured maps"}
