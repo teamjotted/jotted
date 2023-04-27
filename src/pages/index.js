@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
 import learnerImage from "src/images/jottedHomeScreenIMG.png";
+import headerImage from "src/images/littleDesign.png";
 
 import {
   Box,
@@ -360,7 +361,7 @@ export default function Home() {
               )}
               <Box>
               {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
-                <img src={learnerImage} alt="jotted learner celbrating"/>
+                <img src={headerImage} alt="jotted learner celbrating"/>
 
                 {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
