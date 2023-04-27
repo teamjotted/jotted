@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
-import learnerImage from "src/images/jottedHomeScreenIMG.png";
-import headerImage from "src/images/littleDesign.png";
+import headerDesign from "src/components/headerDesign.svg";
 
 import {
   Box,
@@ -233,7 +232,7 @@ export default function Home() {
   }
   return (
     <Box
-      sx={{ backgroundColor: "#FAFAFA", height: "100%", minHeight: "100vh" }}
+      sx={{ backgroundColor: "#F4F7F8", height: "100%", minHeight: "100vh" }}
     >
       <Head>
         <title>Jotted</title>
@@ -304,19 +303,19 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
+                    sx={{ fontSize: "80px", fontWeight: 600, font: "Poppins" }}
                   >
-                    Turning content
+                    turning content
                     <Typography
                       display="inline"
                       sx={{
-                        fontSize: "60px",
+                        fontSize: "80px",
                         fontWeight: 600,
                         font: "inter",
                         color: "black",
                       }}
                     >
-                      <br /> into courses
+                      <br /> <i>into courses</i>
                     </Typography>
                   </Typography>
                   {/* <Typography
@@ -326,16 +325,24 @@ export default function Home() {
                     into courses
                   
                   </Typography> */}
-                  <Typography sx={{ fontSize: "14px", my: 1, font: "inter" }}>
-                    <br />
-                    Join over a thousand learners{" "}
-                    <b>
-                      turning the internet into an accessible online university
-                    </b>{" "}
-                    by mapping the best resources on the web into learning
-                    pathways!
+                  <Typography sx={{ fontSize: "16px", my: 1, font: "inter" }}>
+                    <b>join over 14,000 learners gaining in-demand skills of the future on jotted!</b>{" "}
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                      <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>empower internal talent</span>
+                      </li>
+                      <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>rapidly up-skill your team with AI</span>
+                      </li>
+                      <li style={{ display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare your company for the future</span>
+                      </li>
+                    </ul>
                   </Typography>
-                  <Box
+                  {/* <Box
                     onClick={() => {
                       router.push(`/recent`);
                     }}
@@ -356,13 +363,12 @@ export default function Home() {
                     <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
                       Explore
                     </Typography>
-                  </Box>
+                  </Box> */}
                 </Box>
               )}
               <Box>
               {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
-                <img src={headerImage} alt="jotted learner celbrating"/>
-
+              <img src={headerDesign} alt=""/>
                 {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
@@ -429,10 +435,60 @@ export default function Home() {
                 ) : (
                   <Skeleton variant="rounded" width={"100%"} height={300} />
                 )} */}
+              {/* </Box> */}
               </Box>
+            </Box>
+            <br/>
+            <br/>
+            <br/>
+            <Box
+              sx={{
+                height: "85px",
+                width: "1100px",
+                backgroundColor: "#011018",
+                p: 2,
+                borderRadius: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.3)",
+                transition: "transform 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                },
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "white", font: "Inter", fontSize:"17px", mb: 0, textAlign: "center" }}
+              >
+                only 11 percent of business leaders strongly agreed that college graduates have the skills employers need
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: "#00A4FF",
+                  font: "Inter",
+                  fontSize:"20px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                learn high-demand skills with jotted!
+              </Typography>
             </Box>
             <>
               <br />
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
 
               <Box sx={{ display: "flex", my: 5 }}>
                 {" "}
@@ -442,7 +498,7 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search #WebUniversity for jotted a map..."
+                  placeholder="search for in-demand skills in emerging fields"
                   size="small"
                   sx={{
                     flex: 2,
@@ -450,6 +506,7 @@ export default function Home() {
                     borderRadius: 2,
                     backgroundColor: "white",
                     boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.1)",
+                    border: "3px solid #151127"
                   }}
                 />
                 <Box
@@ -467,10 +524,11 @@ export default function Home() {
                     justifyContent: "center",
                     alignItems: "center",
                     width: 150,
+                    border: "3px solid #151127"
                   }}
                 >
                   <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
-                    Search
+                    search
                   </Typography>
                 </Box>
               </Box>
