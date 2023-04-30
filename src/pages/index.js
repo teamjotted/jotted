@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
-import headerDesign from "headerDesign.png";
-import jotedLogoNew from"/Users/brinleekidd/jotted/jottedLogo.png";
+import headerDesign from "public/headerDesign.png";
+import jotedLogoNew from "/Users/brinleekidd/jotted/public/jottedLogo.png";
 
 import {
   Box,
@@ -298,7 +298,7 @@ export default function Home() {
               flexDirection: "column",
             }}
           >
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", position: 'relative' }}>
               {width > 700 && (
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
@@ -318,27 +318,20 @@ export default function Home() {
                       <br /> <i>into courses</i>
                     </Typography>
                   </Typography>
-                  {/* <Typography
-                    // variant="h2"
-                    sx={{ fontSize:"72px", fontWeight: 600, font: "inter", color: "black" }}
-                  >
-                    into courses
-                  
-                  </Typography> */}
                   <Typography sx={{ fontSize: "16px", my: 1, font: "inter" }}>
-                    <b>join over 14,000 learners gaining in-demand skills of the future on jotted!</b>{" "}
+                    <b>join over 14,000 learners learning skills of the future with jotted!</b>{" "}
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>empower internal talent</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>learn in-demand skills as they're demanded</span>
                       </li>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>rapidly up-skill your team with AI</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>rapidly up-skill with our AI learning tools</span>
                       </li>
                       <li style={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare your company for the future</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare yourself for the future of work</span>
                       </li>
                     </ul>
                   </Typography>
@@ -367,7 +360,13 @@ export default function Home() {
                 </Box>
               )}
               <Box>
-              <img src={require('headerDesign.png')} alt="jotted content map"/>
+                <Box
+                sx={{
+                  }}
+                >
+                <img src={'./headerDesign.png'} height="460px" alt="jotted content map"/>
+              </Box>
+              
               {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
                 {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
@@ -438,11 +437,9 @@ export default function Home() {
               {/* </Box> */}
               </Box>
             </Box>
-            <br/>
-            <br/>
-            <br/>
             <Box
               sx={{
+                marginTop: -5,
                 height: "85px",
                 width: "1100px",
                 backgroundColor: "#011018",
@@ -453,6 +450,7 @@ export default function Home() {
                 justifyContent: "center",
                 flexDirection: "column",
                 boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.3)",
+                zIndex: 1,
                 transition: "transform 0.2s ease-in-out",
                 "&:hover": {
                   transform: "translateY(-5px)",
@@ -461,7 +459,7 @@ export default function Home() {
             >
               <Typography
                 variant="subtitle1"
-                sx={{ color: "white", font: "Inter", fontSize:"17px", mb: 0, textAlign: "center" }}
+                sx={{ color: "white", font: "Inter", fontSize:"16px", mb: 0, textAlign: "center" }}
               >
                 only 11% of business leaders strongly agreed that college graduates have the skills employers need
               </Typography>
@@ -479,17 +477,17 @@ export default function Home() {
               </Typography>
             </Box>
             <>
-
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-              <br/>
-
-              {/* jotted logo */}
-              <img src={jotedLogoNew} alt="jotted logo"/>
-             
-              <Box sx={{ display: "flex", my: 5 }}>
+              <Box sx={{
+                marginTop: 20,
+                marginLeft: 50,
+                transition: "transform 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                },
+              }}>
+              <img src={'./jottedLogo.png'} width="250px" alt="jotted logo"/>
+              </Box>
+              <Box sx={{ display: "flex" }}>
                 {" "}
                 <TextField
                   fullWidth
@@ -497,7 +495,7 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="search for in-demand skills in emerging fields"
+                  placeholder="what are you curious about?"
                   size="small"
                   sx={{
                     flex: 2,
