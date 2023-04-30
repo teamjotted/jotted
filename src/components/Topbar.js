@@ -14,7 +14,7 @@ export default function Topbar({ router }) {
   const [cur, setCur] = useState();
   //const router = useRouter();
   const { catalog } = router.query;
-  const pages = ["home", "featured", "free", "paid"];
+  const pages = ["home", "featured", "free", "paid", "AI", , "Creativity", "Marketing", "Animation", "Data", "Innovation"];
 
   useEffect(() => {
     console.log(catalog);
