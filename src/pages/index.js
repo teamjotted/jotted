@@ -317,7 +317,7 @@ export default function Home() {
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>learn in-demand skills as they're demanded</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>learn in-demand skills as they are demanded</span>
                       </li>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
