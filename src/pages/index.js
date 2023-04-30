@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Header from "@/components/Header";
-import headerDesign from "public/headerDesign.png";
-import jotedLogoNew from "/Users/brinleekidd/jotted/public/jottedLogo.png";
 
 import {
   Box,
