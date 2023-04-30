@@ -87,7 +87,7 @@ export default function Header({
             onChange={(e) => {
               setSearch(e.target.value);
             }}
-            placeholder="search for a map"
+            placeholder="what are you curious about?"
             size="small"
             sx={{ flex: 1, mx: 2, color: "white", maxWidth: 400, mt: 0.5 }}
           />

@@ -1,9 +1,14 @@
 ![Group 4396 (1)](https://user-images.githubusercontent.com/46513712/222882538-20401b9d-3287-4b7e-ad5d-594e2866a848.png)
 
 
-# Jotted
+# jotted
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+Our community is on a mission to turn the internet into an accessible, online university by curating the best digital resources already on the web into structured learning pathways (or courses).
+
+join the discord: https://t.co/KiLrqHuLEr
+visit our landing page: https://jotted.club/
 
 ## Getting Started
 
