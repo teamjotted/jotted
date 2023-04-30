@@ -53,7 +53,7 @@ export default function MapCard({ row, handleClick }) {
               alignItems: "center",
             }}
           >
-            <Typography
+            {/* <Typography
               variant="body1"
               sx={{
                 mx: 2,
@@ -63,9 +63,9 @@ export default function MapCard({ row, handleClick }) {
               }}
             >
               {row.price == 0 ? "Free" : "$" + row.price.toFixed(2)}
-            </Typography>
+            </Typography> */}
           </Box>
-          <Tooltip
+          {/* <Tooltip
             title={`Created by ${row._user?.firstname} ${row._user?.lastname}`}
           >
             <Avatar
@@ -78,7 +78,7 @@ export default function MapCard({ row, handleClick }) {
               }}
               src={row._user?.photo_url}
             />
-          </Tooltip>
+          </Tooltip> */}
         </Box>
         <Box
           sx={{

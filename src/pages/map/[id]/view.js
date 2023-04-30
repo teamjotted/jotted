@@ -104,7 +104,6 @@ const nodeTypes = {
 };
 const panOnDrag = [1, 2];
 
-
 function Map() {
   const { data } = useSession();
   useEffect(() => {}, [data]);
@@ -225,48 +224,6 @@ function Map() {
   const handleNodeBlur = () => {
     setSelectedNode(null);
   };
-  function purchaseHandler() {
-    setPaymentLoading(true);
-    if (treeDetails.isPublic == true) {
-      if (treeDetails.price == 0) {
-        const payload = {
-          user_id: data.user.id,
-          tree_id: treeDetails.id,
-          level: treeDetails.user_id == data.user.id ? "admin" : "viewer",
-        };
-
-        accessMap(payload).then((res) => {
-          console.log(res);
-          setCover(false);
-        });
-      } else {
-        isLoading(true);
-        stripePurchase(data.user.id, id).then((res) => {
-          console.log(res.response.result);
-          window.open(res.response.result.url);
-          //need to check on success purchase
-          //check if purchase and then set loading to false
-          const payload = {
-            user_id: data.user.id,
-            tree_id: treeDetails.id,
-            level: "unpaid",
-          };
-
-          accessMap(payload).then((res) => {
-            console.log(res);
-            setCover(false);
-            setAccess(res.level);
-          });
-          isLoading(false);
-        });
-      }
-    } else {
-      toast.info("This Map Is Private");
-      router.push("/");
-    }
-  }
-
-
 
   const toggleDrawer = (newOpen) => () => {
     if (newOpen == false) {
@@ -381,16 +338,18 @@ function Map() {
   }
 
   function selectNode(res) {
-    dispatch(setNodeId(res.id));
-    setSelectedNode({
-      id: res.id,
-      text: res.label,
-      type: res.type,
-      index: res.index || res.data.label,
-      photo: res.photo,
-      type: res.type,
-      index: res.index,
-    });
+    if (res) {
+      dispatch(setNodeId(res.id));
+      setSelectedNode({
+        id: res.id,
+        text: res.label,
+        type: res.type,
+        index: res.index || res.data.label,
+        photo: res.photo,
+        type: res.type,
+        index: res.index,
+      });
+    }
   }
 
   function resouceClickHandler(res) {
@@ -700,7 +659,6 @@ function Map() {
             setEditedTree(json);
           });
         });
-
       });
     }
 
@@ -718,7 +676,7 @@ function Map() {
             dispatch(setTreeAdmin(true));
           }
           if (res.level == "unpaid") {
-            router.push(`/${id}`)
+            router.push(`/${id}`);
           }
           if (res.user.role === 777) {
             dispatch(setTreeAdmin(true));
@@ -727,7 +685,7 @@ function Map() {
           setAccess(res.level);
         } else {
           setCover(true);
-          router.push(`/map/${id}`)
+          router.push(`/map/${id}`);
 
           //set default not claimed yet
           setAccess("new");
@@ -756,78 +714,78 @@ function Map() {
 
         <>
           <CssBaseline />
-            <>
-              <SideDrawerContainer
-                handleOpenLogin={handleOpenLogin}
-                progress={progress}
-                openNode={openNode}
-                toggleDrawer={toggleDrawer}
-                selectedNode={selectedNode}
-                nextHandler={nextHandler}
+          <>
+            <SideDrawerContainer
+              handleOpenLogin={handleOpenLogin}
+              progress={progress}
+              openNode={openNode}
+              toggleDrawer={toggleDrawer}
+              selectedNode={selectedNode}
+              nextHandler={nextHandler}
+              nodes={nodes}
+              treeDetails={treeDetails}
+              treeAdmin={treeAdmin}
+              handleEditNode={handleEditNode}
+              loading={nodeLoading}
+              setLoading={setNodeLoading}
+              selectNode={selectNode}
+              attachments={attachments}
+              resource={resource}
+              resouceClickHandler={resouceClickHandler}
+              setAttachment={setAttachment}
+            >
+              {width > 800 && (
+                <ResourceDrawer
+                  likeHandler={likeHandler}
+                  dislikeHandler={dislikeHandler}
+                  frameRefresh={frameRefresh}
+                  setFrameRefresh={setFrameRefresh}
+                  setFrame={setFrame}
+                  frame={frame}
+                  nextHandler={nextHandler}
+                  openUrl={openUrl}
+                  setOpenUrl={setOpenUrl}
+                  resource={resource}
+                  prevHandler={prevHandler}
+                  treeAdmin={treeAdmin}
+                />
+              )}
+            </SideDrawerContainer>
+            <div
+              style={{ backgroundColor: "#FBF9FB" }}
+              className="wrapper"
+              ref={reactFlowWrapper}
+            >
+              <ReactFlow
+                snapToGrid={true}
+                snapGrid={[20, 20]}
+                style={{ height: "100vh", visibility: "visible" }}
                 nodes={nodes}
-                treeDetails={treeDetails}
-                treeAdmin={treeAdmin}
-                handleEditNode={handleEditNode}
-                loading={nodeLoading}
-                setLoading={setNodeLoading}
-                selectNode={selectNode}
-                attachments={attachments}
-                resource={resource}
-                resouceClickHandler={resouceClickHandler}
-                setAttachment={setAttachment}
+                nodeTypes={nodeTypes}
+                // setViewport={setViewport}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={treeAdmin ? onEdgesChange : onEdgesChange}
+                onConnect={treeAdmin ? onConnect : null}
+                onInit={onInit}
+                nodesDraggable={treeAdmin ? true : false}
+                onNodeDragStop={treeAdmin ? handleDragStop : handleDragStop}
+                onNodeClick={treeAdmin ? handleNodeClick : handleNodeClick}
+                fitView
+                onDrop={onDrop}
+                attributionPosition="top-right"
+                onConnectStart={treeAdmin ? onConnectStart : null}
+                onConnectStop={treeAdmin ? onConnectStop : null}
+                onPaneClick={handleNodeBlur}
+                onDragOver={onDragOver}
+                onEdgeUpdate={onEdgeUpdate}
+                onEdgeUpdateStart={treeAdmin ? onEdgeUpdateStart : null}
+                onEdgeUpdateEnd={onEdgeUpdateEnd}
+                // panOnScroll
+                // selectionOnDrag
+                // panOnDrag={panOnDrag}
               >
-                {width > 800 && (
-                  <ResourceDrawer
-                    likeHandler={likeHandler}
-                    dislikeHandler={dislikeHandler}
-                    frameRefresh={frameRefresh}
-                    setFrameRefresh={setFrameRefresh}
-                    setFrame={setFrame}
-                    frame={frame}
-                    nextHandler={nextHandler}
-                    openUrl={openUrl}
-                    setOpenUrl={setOpenUrl}
-                    resource={resource}
-                    prevHandler={prevHandler}
-                    treeAdmin={treeAdmin}
-                  />
-                )}
-              </SideDrawerContainer>
-              <div
-                style={{ backgroundColor: "#FBF9FB" }}
-                className="wrapper"
-                ref={reactFlowWrapper}
-              >
-                <ReactFlow
-                  snapToGrid={true}
-                  snapGrid={[20, 20]}
-                  style={{ height: "100vh", visibility: "visible" }}
-                  nodes={nodes}
-                  nodeTypes={nodeTypes}
-                  // setViewport={setViewport}
-                  edges={edges}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={treeAdmin ? onEdgesChange : onEdgesChange}
-                  onConnect={treeAdmin ? onConnect : null}
-                  onInit={onInit}
-                  nodesDraggable={treeAdmin ? true : false}
-                  onNodeDragStop={treeAdmin ? handleDragStop : handleDragStop}
-                  onNodeClick={treeAdmin ? handleNodeClick : handleNodeClick}
-                  fitView
-                  onDrop={onDrop}
-                  attributionPosition="top-right"
-                  onConnectStart={treeAdmin ? onConnectStart : null}
-                  onConnectStop={treeAdmin ? onConnectStop : null}
-                  onPaneClick={handleNodeBlur}
-                  onDragOver={onDragOver}
-                  onEdgeUpdate={onEdgeUpdate}
-                  onEdgeUpdateStart={treeAdmin ? onEdgeUpdateStart : null}
-                  onEdgeUpdateEnd={onEdgeUpdateEnd}
-                  // panOnScroll
-                  // selectionOnDrag
-                  // panOnDrag={panOnDrag}
-                >
-                  <Box
+                <Box
                     sx={{ zIndex: 1000, position: "absolute", width: "100%" }}
                   >
                     <Header
@@ -839,32 +797,32 @@ function Map() {
                       treeadmin={treeAdmin}
                     />
                   </Box>
-                  <Controls showInteractive={false} />
-                  <Background color="#aaa" gap={20} />
-                  {access == "admin" || access == "editor" ? (
-                    <Box
-                      sx={{
-                        zIndex: 1000,
-                        position: "absolute",
-                        top: "90%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        backgroundColor: "#FEFEFF",
-                        borderRadius: 2,
-                        boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
-                        px: 4,
-                        py: 1,
-                      }}
-                    >
-                      {" "}
-                      <Toolbar />
-                    </Box>
-                  ) : (
-                    <></>
-                  )}
-                </ReactFlow>
-              </div>
-            </>
+                <Controls showInteractive={false} />
+                <Background color="#aaa" gap={20} />
+                {access == "admin" || access == "editor" ? (
+                  <Box
+                    sx={{
+                      zIndex: 1000,
+                      position: "absolute",
+                      top: "90%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      backgroundColor: "#FEFEFF",
+                      borderRadius: 2,
+                      boxShadow: "0px 5px 40px -2px rgba(0,0,0,0.15)",
+                      px: 4,
+                      py: 1,
+                    }}
+                  >
+                    {" "}
+                    <Toolbar />
+                  </Box>
+                ) : (
+                  <></>
+                )}
+              </ReactFlow>
+            </div>
+          </>
 
           {cover == null && (
             <Box
@@ -977,4 +935,3 @@ export default function MapProvider(props) {
     </ReactFlowProvider>
   );
 }
-

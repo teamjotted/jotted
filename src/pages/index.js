@@ -24,10 +24,6 @@ import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
 import { getPublicTrees } from "@/utils/api";
 import MapSection from "@/components/MapSection";
 import Layout from "@/components/Layout";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import SellRoundedIcon from "@mui/icons-material/SellRounded";
-import PublicRoundedIcon from "@mui/icons-material/PublicRounded";
-import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import { motion } from "framer-motion";
 import Sidebar from "@/components/Topbar";
 import Link from "next/link";
@@ -231,7 +227,7 @@ export default function Home() {
   }
   return (
     <Box
-      sx={{ backgroundColor: "#FAFAFA", height: "100%", minHeight: "100vh" }}
+      sx={{ backgroundColor: "#F4F7F8", height: "100%", minHeight: "100vh" }}
     >
       <Head>
         <title>Jotted</title>
@@ -285,7 +281,6 @@ export default function Home() {
             </FormControl>
           </Box> */}
         </Box>
-
         <Box sx={{ display: "flex", width: 1050, mx: 2, py: 10 }}>
           <Box
             sx={{
@@ -297,43 +292,44 @@ export default function Home() {
               flexDirection: "column",
             }}
           >
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", position: 'relative' }}>
               {width > 700 && (
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize: "60px", fontWeight: 600, font: "Inter" }}
+                    sx={{ fontSize: "80px", fontWeight: 600, font: "Poppins" }}
                   >
-                    Turning content
+                    turning content
                     <Typography
                       display="inline"
                       sx={{
-                        fontSize: "60px",
+                        fontSize: "80px",
                         fontWeight: 600,
                         font: "inter",
                         color: "black",
                       }}
                     >
-                      <br /> into courses
+                      <br /> <i>into courses</i>
                     </Typography>
                   </Typography>
-                  {/* <Typography
-                    // variant="h2"
-                    sx={{ fontSize:"72px", fontWeight: 600, font: "inter", color: "black" }}
-                  >
-                    into courses
-                  
-                  </Typography> */}
-                  <Typography sx={{ fontSize: "14px", my: 1, font: "inter" }}>
-                    <br />
-                    Join over a thousand learners{" "}
-                    <b>
-                      turning the internet into an accessible online university
-                    </b>{" "}
-                    by mapping the best resources on the web into learning
-                    pathways!
+                  <Typography sx={{ fontSize: "16px", my: 1, font: "inter" }}>
+                    <b>join over 14,000 learners learning skills of the future with jotted!</b>{" "}
+                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                      <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>learn in-demand skills as they are demanded</span>
+                      </li>
+                      <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>rapidly up-skill with our AI learning tools</span>
+                      </li>
+                      <li style={{ display: 'flex', alignItems: 'center' }}>
+                        <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare yourself for the future of work</span>
+                      </li>
+                    </ul>
                   </Typography>
-                  <Box
+                  {/* <Box
                     onClick={() => {
                       router.push(`/recent`);
                     }}
@@ -354,11 +350,19 @@ export default function Home() {
                     <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
                       Explore
                     </Typography>
-                  </Box>
+                  </Box> */}
                 </Box>
               )}
-              <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}>
-                {paidTrees.length > 0 ? (
+              <Box>
+                <Box
+                sx={{
+                  }}
+                >
+                <img src={'./headerDesign.png'} height="460px" alt="jotted content map"/>
+              </Box>
+              
+              {/* <Box sx={{ flex: 1, ml: width > 700 ? 7 : 0, maxWidth: 400 }}> */}
+                {/* {paidTrees.length > 0 ? (
                   <Carousel autoPlay infiniteLoop swipeable interval={10000}>
                     {paidTrees.map((res) => {
                       return (
@@ -423,13 +427,61 @@ export default function Home() {
                   </Carousel>
                 ) : (
                   <Skeleton variant="rounded" width={"100%"} height={300} />
-                )}
+                )} */}
+              {/* </Box> */}
               </Box>
             </Box>
+            <Box
+              sx={{
+                marginTop: -5,
+                height: "85px",
+                width: "1100px",
+                backgroundColor: "#011018",
+                p: 2,
+                borderRadius: "15px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.3)",
+                zIndex: 1,
+                transition: "transform 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                },
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                sx={{ color: "white", font: "Inter", fontSize:"16px", mb: 0, textAlign: "center" }}
+              >
+                only 11% of business leaders strongly agreed that college graduates have the skills employers need
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: "#00A4FF",
+                  font: "Inter",
+                  fontSize:"20px",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
+                explore high-demand skills and careers with jotted!
+              </Typography>
+            </Box>
             <>
-              <br />
-
-              <Box sx={{ display: "flex", my: 5 }}>
+              <Box sx={{
+                marginTop: 20,
+                marginLeft: 50,
+                transition: "transform 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                },
+              }}>
+              <img src={'./jottedLogo.png'} width="250px" alt="jotted logo"/>
+              </Box>
+              <Box sx={{ display: "flex" }}>
                 {" "}
                 <TextField
                   fullWidth
@@ -437,7 +489,7 @@ export default function Home() {
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
-                  placeholder="Search #WebUniversity for jotted a map..."
+                  placeholder="what are you curious about?"
                   size="small"
                   sx={{
                     flex: 2,
@@ -445,6 +497,7 @@ export default function Home() {
                     borderRadius: 2,
                     backgroundColor: "white",
                     boxShadow: "0px 5px 9px rgba(0, 0, 0, 0.1)",
+                    border: "3px solid #151127"
                   }}
                 />
                 <Box
@@ -462,15 +515,19 @@ export default function Home() {
                     justifyContent: "center",
                     alignItems: "center",
                     width: 150,
+                    border: "3px solid #151127"
                   }}
                 >
                   <Typography sx={{ color: "white", fontWeight: 500, py: 1 }}>
-                    Search
+                    search
                   </Typography>
                 </Box>
               </Box>
               {width > 600 && <Topbar router={router} /> }
             </>
+            <br/>
+            <br/>
+            <br/>
             <Box sx={{ mt: 10 }}>
               <MapSection
                 name={"Today’s featured maps"}
