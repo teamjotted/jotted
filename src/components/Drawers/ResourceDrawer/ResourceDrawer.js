@@ -109,7 +109,9 @@ export default function ResourceDrawer({
             sx={{
               position: "fixed",
               zIndex: 100,
-              right: 15,
+              left: 420, // changed from right
+              ml: 5, // added margin-left
+              mr: "auto", // changed from mr: 5
             }}
           >
             <Box
