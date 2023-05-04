@@ -297,7 +297,7 @@ export default function Home() {
                 <Box sx={{ flex: 1, mr: width > 600 ? 7 : 0 }}>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize: "80px", fontWeight: 600, font: "Poppins" }}
+                    sx={{ fontSize: "80px", fontWeight: 600, font: "Poppins", marginTop:2}}
                   >
                     turning content
                     <Typography
@@ -313,19 +313,18 @@ export default function Home() {
                     </Typography>
                   </Typography>
                   <Typography sx={{ fontSize: "16px", my: 1, font: "inter" }}>
-                    <b>join over 14,000 learners learning skills of the future with jotted!</b>{" "}
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>learn in-demand skills as they are demanded</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>discover skills valued by employers</span>
                       </li>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>rapidly up-skill with our AI learning tools</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare youself for the future with free courses</span>
                       </li>
                       <li style={{ display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
-                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>prepare yourself for the future of work</span>
+                        <span style={{ fontSize: '16px', font: 'Inter', verticalAlign: 'middle' }}>join our mission to make online education equitable and accessible</span>
                       </li>
                     </ul>
                   </Typography>
@@ -467,7 +466,8 @@ export default function Home() {
                   fontWeight: "bold",
                 }}
               >
-                explore high-demand skills and careers with jotted!
+                join over 14,000 learners learning skills of the future for free with jotted!
+
               </Typography>
             </Box>
             <>
