@@ -21,7 +21,7 @@ import {
   TextField,
 } from "@mui/material";
 import useWindowDimensions from "@/contexts/hooks/useWindowDimensions";
-import { getPublicTrees } from "@/utils/api";
+import { getMyJobCard, getPublicTrees } from "@/utils/api";
 import MapSection from "@/components/MapSection";
 import Layout from "@/components/Layout";
 import { motion } from "framer-motion";
@@ -29,6 +29,7 @@ import Sidebar from "@/components/Topbar";
 import Link from "next/link";
 import Carousel from "react-material-ui-carousel";
 import Topbar from "@/components/Topbar";
+import JobSection from "@/components/JobSection";
 const inter = Inter({ subsets: ["latin"] });
 
 const categories = ["Free", "Paid", "Education", "Business"];
@@ -76,6 +77,8 @@ export default function Home() {
     console.log(id);
     router.push(`/map/${id}`);
   }
+
+  const [jobCard, setJobCard] = useState([]);
 
   function searchHandler() {
     console.log(search);
@@ -125,6 +128,8 @@ export default function Home() {
     //   router.push("/login");
     // }
     router.prefetch("/map");
+
+    getMyJobCard().then((res)=>{setJobCard(res.data)}).catch((e)=>{console.log(e)})
 
     getPublicTrees(
       pageState.page,
@@ -529,6 +534,12 @@ export default function Home() {
             <br/>
             <br/>
             <Box sx={{ mt: 10 }}>
+            <JobSection
+                name={"Explore Jobs of the Future"}
+                jobs={jobCard}
+                handleClick={handleClick}
+                data={"featured"}
+              />
               <MapSection
                 name={"Today’s featured maps"}
                 trees={trees}

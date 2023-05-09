@@ -4,6 +4,22 @@ import { getSession } from "next-auth/react";
 import { BASE_URL, STRIPE_URL } from "./config";
 import { toast } from "react-toastify";
 
+// export async function jobTree(id) {
+//   const [title, setTitle] = useState("");
+//   const [listItems, setListItems] = useState([]);
+
+//   useEffect(() => {
+//     axios.get("").then((response) => {
+//       setTitle(response.data.title);
+//       setListItems(response.data.listItems);
+//     });
+//   }, []);
+
+//   const handleClick = () => {
+    
+// };
+// }
+
 export async function stripeConnect(id) {
   const { token } = await getSession();
   const headers = {
@@ -917,5 +933,17 @@ export async function deleteAccessMap(id, tree_id) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+export async function getMyJobCard() {
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  };
+  try {
+    return await axios.get(BASE_URL + `/job_cards`);
+  } catch (e) {
+    throw e;
   }
 }
