@@ -288,7 +288,7 @@ export default function MyProfile() {
               my: 2,
             }}
           >
-            <Box
+            {/* <Box
               ref={scrollRef}
               onClick={newMapbtnHandler}
               sx={{
@@ -323,7 +323,7 @@ export default function MyProfile() {
                   mr: 0,
                 }}
               />
-            </Box>
+            </Box> */}
           </Box>
           <Box>
             <Box
@@ -353,7 +353,7 @@ export default function MyProfile() {
                   My Maps
                 </Typography>
               </Box>
-              <Box
+              {/* <Box
                 onClick={() => {
                   setSection("shared");
                 }}
@@ -374,8 +374,8 @@ export default function MyProfile() {
                 <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
                   Other Map
                 </Typography>
-              </Box>
-              <Box
+              </Box> */}
+              {/* <Box
                 onClick={() => {
                   setSection("purchases");
                 }}
@@ -396,7 +396,7 @@ export default function MyProfile() {
                 <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
                   Purchased Maps
                 </Typography>
-              </Box>
+              </Box> */}
               <Box
                 onClick={() => {
                   setSection("resources");

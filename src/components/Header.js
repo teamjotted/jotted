@@ -250,7 +250,7 @@ export default function Header({
           >
             {/* <BackButton onClick={onClick} />{" "} */}
           </Box>
-          {width > 450 && (
+          {/* {width > 450 && (
             <Box
               onClick={() => {
                 router.push("/map/create");
@@ -279,7 +279,7 @@ export default function Header({
                 New Map
               </Typography>
             </Box>
-          )}
+          )} */}
           <Box
             sx={{
               ml: "auto",
