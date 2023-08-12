@@ -313,7 +313,7 @@ export default function Home() {
                     </Typography>
                   </Typography>
                   <Typography sx={{ fontSize: "16px", my: 1, font: "inter" }}>
-                    <b>join over 14,000 learners learning skills of the future with jotted!</b>{" "}
+                    <b>join over 30,000 learners learning skills of the future with jotted!</b>{" "}
                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                       <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ color: '#00A4FF', marginRight: '10px', fontSize: '20px', fontWeight: 'bold', verticalAlign: 'middle' }}>✓</span>
