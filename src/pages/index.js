@@ -466,7 +466,7 @@ export default function Home() {
                   fontWeight: "bold",
                 }}
               >
-                join over 14,000 learners learning skills of the future for free with jotted!
+                join over 30,000 learners learning skills of the future for free with jotted!
 
               </Typography>
             </Box>
